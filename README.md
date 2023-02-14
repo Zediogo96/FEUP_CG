@@ -1,10 +1,12 @@
 # CG 2022/2023
 
-## Group T0xG0y
-| Name             | Number    | E-Mail             |
-| ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+## Group T06G11
+
+| Name             | Number    | E-Mail               |
+| ---------------- | --------- | -------------------- |
+| Afonso Martins   | 202005900 | up202003529@fe.up.pt |
+| Eduardo Silva    | 202005283 | up202005283@fe.up.pt |
+| José Pinto       | 202003529 | up202003529@fe.up.pt |
 
 ----
 

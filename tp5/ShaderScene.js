@@ -77,6 +77,9 @@ export class ShaderScene extends CGFscene {
 
 		this.texture2 = new CGFtexture(this, "textures/FEUP.jpg");
 
+		this.water_texture = new CGFtexture(this, "textures/waterTex.jpg");
+		this.water_texture_map = new CGFtexture(this, "textures/waterMap.jpg");
+
 		// shaders initialization
 
 		this.testShaders = [
@@ -89,7 +92,8 @@ export class ShaderScene extends CGFscene {
 			new CGFshader(this.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag"),
 			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/sepia.frag"),
 			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/convolution.frag"),
-			new CGFshader(this.gl, "shaders/blue_yellow.vert", "shaders/blue_yellow.frag") // Exercise 1
+			new CGFshader(this.gl, "shaders/blue_yellow.vert", "shaders/blue_yellow.frag"), // Exercise 1
+			new CGFshader(this.gl, "shaders/water.vert", "shaders/water.frag") // Water
 		];
 
 		// additional texture will have to be bound to texture unit 1 later, when using the shader, with "this.texture2.bind(1);"
@@ -97,6 +101,10 @@ export class ShaderScene extends CGFscene {
 		this.testShaders[5].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ timeFactor: 0 });
+		this.testShaders[9].setUniformsValues({ uSampler2: 1 }); // Exercise 1
+		this.testShaders[10].setUniformsValues({ uSampler2: 1 }); // Water
+		this.testShaders[10].setUniformsValues({ uSampler3: 3 });
+		this.testShaders[10].setUniformsValues({ timeFactor: 0 });
 
 
 		// Shaders interface variables
@@ -111,7 +119,8 @@ export class ShaderScene extends CGFscene {
 			'Animation example': 6,
 			'Sepia': 7,
 			'Convolution': 8,
-			'Blue & Yellow': 9 // Exercise 1
+			'Blue & Yellow': 9, // Exercise 1
+			'Water': 10 // Water
 		};
 
 		// shader code panels references
@@ -197,6 +206,8 @@ export class ShaderScene extends CGFscene {
 			// Doing the modulus (%) by 100 makes the timeFactor loop between 0 and 99
 			// ( so the loop period of timeFactor is 100 times 100 ms = 10s ; the actual animation loop depends on how timeFactor is used in the shader )
 			this.testShaders[6].setUniformsValues({ timeFactor: t / 100 % 100 });
+		else if (this.selectedExampleShader == 10)
+			this.testShaders[10].setUniformsValues({ timeFactor: t / 100 % 1000 });
 	}
 
 	// main display function
@@ -227,10 +238,13 @@ export class ShaderScene extends CGFscene {
 		this.pushMatrix();
 
 		// bind additional texture to texture unit 1
-		this.texture2.bind(1);
+		// this.texture2.bind(2);
+		this.water_texture.bind(1);
+		this.water_texture_map.bind(3);
 
 		if (this.selectedObject==0) {
 			// teapot (scaled and rotated to conform to our axis)
+
 
 			this.pushMatrix();
 	

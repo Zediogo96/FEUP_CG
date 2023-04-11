@@ -17,40 +17,48 @@ export class MyCylinder extends CGFobject {
     initBuffers() {
         this.vertices = [];
         this.normals = [];
+        this.indices = [];
     
-        var theta = 0;
-        var thetaIncrement = (2 * Math.PI) / this.slices;
-        var stackIncrement = 2.0 / this.stacks;
+        var phi = 0;
+        var phiIncrement = Math.PI / this.slices;
+        var thetaIncrement = (2 * Math.PI) / this.stacks;
     
         for (var i = 0; i <= this.slices; i++) {
     
-            var x = Math.cos(theta) * 0.5;
-            var y = Math.sin(theta) * 0.5;
-            var z = -1;
+            var theta = 0;
+            var sinPhi = Math.sin(phi);
+            var cosPhi = Math.cos(phi);
     
             for (var j = 0; j <= this.stacks; j++) {
     
-                this.vertices.push(x, y, z);
-                this.normals.push(x, y, 0);
+                var x = cosPhi * Math.cos(theta);
+                var y = cosPhi * Math.sin(theta);
+                var z = sinPhi;
     
-                z += stackIncrement;
+                this.vertices.push(x, y, z);
+                this.normals.push(x, y, z);
+    
+                theta += thetaIncrement;
             }
     
-            theta += thetaIncrement;
+            phi += phiIncrement;
         }
     
-        this.indices = [];
-    
-        var vertexNumber = 1;
+        var vertexNumber = 0;
     
         for (var i = 0; i < this.slices; i++) {
     
             for (var j = 0; j < this.stacks; j++) {
     
-                this.indices.push(vertexNumber, vertexNumber + this.stacks, vertexNumber + this.stacks + 1);
-                this.indices.push(vertexNumber + this.stacks, vertexNumber, vertexNumber - 1);
-                this.indices.push(vertexNumber + this.stacks + 1, vertexNumber + this.stacks, vertexNumber);
-                this.indices.push(vertexNumber, vertexNumber + this.stacks, vertexNumber - 1);
+                var vertex1 = vertexNumber;
+                var vertex2 = vertexNumber + this.stacks + 1;
+                var vertex3 = vertexNumber + this.stacks;
+                var vertex4 = vertexNumber + 1;
+    
+                this.indices.push(vertex1, vertex2, vertex3);
+                this.indices.push(vertex3, vertex2, vertex1);
+                this.indices.push(vertex3, vertex1, vertex4);
+                this.indices.push(vertex4, vertex1, vertex3);
     
                 vertexNumber++;
             }

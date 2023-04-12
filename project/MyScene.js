@@ -12,7 +12,7 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.initCameras();
     this.initLights();
 
@@ -26,23 +26,25 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 30, 30,5);
+    this.plane = new MyPlane(this, 30);
+    this.sphere = new MySphere(this, 30, 30, 5, false);
+    this.panorama
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
+    this.displayNormals = true;
 
     this.enableTextures(true);
 
-this.texture = new CGFtexture(this, "images/earth.jpg");
-this.appearance = new CGFappearance(this);
-this.appearance.setAmbient(0.7, 0.7, 0.7, 1.0);
-this.appearance.setDiffuse(1.0, 1.0, 1.0, 1.0);
-this.appearance.setSpecular(0.4, 0.4, 0.4, 1.0);
-this.appearance.setShininess(10.0);
-this.appearance.setTexture(this.texture);
-this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+    this.texture = new CGFtexture(this, "images/earth.jpg");
+    this.appearance = new CGFappearance(this);
+    this.appearance.setAmbient(0.7, 0.7, 0.7, 1.0);
+    this.appearance.setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.appearance.setSpecular(0.4, 0.4, 0.4, 1.0);
+    this.appearance.setShininess(10.0);
+    this.appearance.setTexture(this.texture);
+    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
   }
   initLights() {
@@ -80,6 +82,7 @@ this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
+    (this.displayNormals) ? this.sphere.enableNormalViz() : this.sphere.disableNormalViz();
 
     // ---- BEGIN Primitive drawing section
     this.pushMatrix();

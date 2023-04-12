@@ -1,11 +1,12 @@
 import { CGFobject } from '../lib/CGF.js';
 
 export class MySphere extends CGFobject {
-  constructor(scene, slices, sectors, radius) {
+  constructor(scene, slices, sectors, radius, inverted) {
     super(scene);
     this.numSlices = sectors * 2;
     this.numSectors = slices;
     this.radius = radius;
+    this.inverted = inverted;
 
     this.initBuffers();
   }
@@ -40,11 +41,24 @@ export class MySphere extends CGFobject {
           const currentIndex = slice * numVerticesPerSlice + sector;
           const nextIndex = currentIndex + numVerticesPerSlice;
 
-          this.indices.push(currentIndex + 1, currentIndex, nextIndex);
-          this.indices.push(currentIndex + 1, nextIndex, nextIndex + 1);
+          if (this.inverted) {
+            this.indices.push(currentIndex, currentIndex + 1, nextIndex);
+            this.indices.push(nextIndex, currentIndex + 1, nextIndex + 1);
+          } else {
+            this.indices.push(currentIndex + 1, currentIndex, nextIndex);
+            this.indices.push(currentIndex + 1, nextIndex, nextIndex + 1);
+          }
         }
 
-        this.normals.push(x, y, z);
+        // Inside the loop that creates the vertices and normals
+        const normal = vec3.fromValues(x, y, z);
+        vec3.normalize(normal, normal);
+
+        if (this.inverted) {
+          vec3.negate(normal, normal);
+        }
+
+        this.normals.push(normal[0], normal[1], normal[2]);
         theta += thetaIncrement;
 
         const tu = 0.25 + sectorSize * sector;
@@ -52,6 +66,10 @@ export class MySphere extends CGFobject {
         this.texCoords.push(tu, tv);
       }
       phi += phiIncrement;
+    }
+
+    if (this.inverted) {
+      this.indices.reverse();
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;

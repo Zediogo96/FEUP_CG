@@ -1,6 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
+import { MyPanorama } from "./MyPanorama.js";
 
 /**
  * MyScene
@@ -28,16 +29,19 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
     this.sphere = new MySphere(this, 30, 30, 5, false);
-    this.panorama
+    this.panorama = new MyPanorama(this, 30, 30, 5, false);
+    
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
     this.displayNormals = true;
+    this.shouldMagnify = true;
 
     this.enableTextures(true);
 
     this.texture = new CGFtexture(this, "images/earth.jpg");
+
     this.appearance = new CGFappearance(this);
     this.appearance.setAmbient(0.7, 0.7, 0.7, 1.0);
     this.appearance.setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -49,7 +53,7 @@ export class MyScene extends CGFscene {
   }
   initLights() {
     this.lights[0].setPosition(15, 5, 5, 1);
-    this.lights[0].setAmbient(0.5, 0.5, 0.5, 0.5);
+    this.lights[0].setAmbient(1.0, 1.0, 1.0, 1.0);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
@@ -59,7 +63,7 @@ export class MyScene extends CGFscene {
       1.0,
       0.1,
       1000,
-      vec3.fromValues(50, 10, 15),
+      vec3.fromValues(800, 100, 150),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -85,12 +89,12 @@ export class MyScene extends CGFscene {
     (this.displayNormals) ? this.sphere.enableNormalViz() : this.sphere.disableNormalViz();
 
     // ---- BEGIN Primitive drawing section
-    this.pushMatrix();
-    this.appearance.apply();
-    this.sphere.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // this.appearance.apply();
+    // this.sphere.display();
+    // this.popMatrix();
 
-
+    this.panorama.display();
 
     // ---- END Primitive drawing section
   }

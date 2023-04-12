@@ -72,7 +72,7 @@ export class MySphere extends CGFobject {
     }
 
     if (this.inverted) {
-      this.indices.reverse();
+      this.texCoords.reverse();
     }
 
     this.primitiveType = this.scene.gl.TRIANGLES;

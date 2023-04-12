@@ -35,7 +35,7 @@ export class MyScene extends CGFscene {
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 0.3;
-    this.displayNormals = true;
+    this.displayNormals = false;
     this.shouldMagnify = true;
 
     this.displayPanorama = true;

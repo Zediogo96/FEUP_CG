@@ -65,7 +65,7 @@ export class MySphere extends CGFobject {
         const tv = sliceSize * slice;
 
         if (this.inverted) {
-          this.texCoords.push(1 - tu,tv);
+          this.texCoords.push(1 - tu,1- tv);
         } else this.texCoords.push(tu, tv);
       }
       phi += phiIncrement;

@@ -2,7 +2,7 @@ import { MySphere } from "./MySphere.js";
 import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
 
 /**
- * MyUnitCubeQuad
+ * MyPanorama
  * @constructor
  * @param scene - Reference to MyScene object
  */
@@ -10,7 +10,7 @@ export class MyPanorama extends CGFobject {
 	constructor(scene) {
 
         super(scene);
-        this.sphere = new MySphere(this.scene, 30, 30, 200, true);
+        this.sphere = new MySphere(this.scene, 30, 30, 5, true);
         this.initBuffers();
         this.initMaterials();
     }
@@ -47,6 +47,7 @@ export class MyPanorama extends CGFobject {
         this.scene.pushMatrix();
         this.appeareance.apply();
         this.sphere.display();
+        (this.scene.displayNormals) ? this.sphere.enableNormalViz() : this.sphere.disableNormalViz();
         this.scene.popMatrix();
     }
         

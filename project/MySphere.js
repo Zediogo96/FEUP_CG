@@ -50,16 +50,23 @@ export class MySphere extends CGFobject {
           }
         }
 
+        // Inside the loop that creates the vertices and normals
+        const normal = vec3.fromValues(x, y, z);
+        vec3.normalize(normal, normal);
+
         if (this.inverted) {
-          this.normals.push(-x, -y, -z);
-        } else {
-          this.normals.push(x, y, z);
+          vec3.negate(normal, normal);
         }
+
+        this.normals.push(normal[0], normal[1], normal[2]);
         theta += thetaIncrement;
 
         const tu = 0.25 + sectorSize * sector;
         const tv = sliceSize * slice;
-        this.texCoords.push(tu, tv);
+
+        if (this.inverted) {
+          this.texCoords.push(1 - tu,tv);
+        } else this.texCoords.push(tu, tv);
       }
       phi += phiIncrement;
     }

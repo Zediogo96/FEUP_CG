@@ -84,9 +84,12 @@ export class MyScene extends CGFscene {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
+    this.scale(this.scaleFactor * 3, this.scaleFactor * 3, this.scaleFactor * 3);
+
     // Draw axis
     if (this.displayAxis) this.axis.display();
     (this.displayNormals) ? this.sphere.enableNormalViz() : this.sphere.disableNormalViz();
+    (this.displayNormals) ? this.panorama.enableNormalViz() : this.panorama.disableNormalViz();
 
     // ---- BEGIN Primitive drawing section
     // this.pushMatrix();

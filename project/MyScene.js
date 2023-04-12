@@ -2,6 +2,7 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
+import { MyTerrain } from "./MyTerrain.js";
 
 /**
  * MyScene
@@ -30,6 +31,7 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this, 30);
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
+    this.terrain = new MyTerrain(this);
     
 
     //Objects connected to MyInterface
@@ -40,6 +42,7 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = true;
     this.displaySphere = false;
+    this.displayTerrain = true;
 
     this.enableTextures(true);
 
@@ -60,13 +63,20 @@ export class MyScene extends CGFscene {
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
+
+    this.lights[1].setPosition(0, 5, 0, 1);
+    this.lights[1].setAmbient(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
+
   }
   initCameras() {
     this.camera = new CGFcamera(
       2,
       0.1,
       1000,
-      vec3.fromValues(800, 100, 150),
+      vec3.fromValues(50, 10, 15),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -84,15 +94,14 @@ export class MyScene extends CGFscene {
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
     this.loadIdentity();
+    this.setDefaultAppearance();
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
 
-    this.scale(this.scaleFactor * 3, this.scaleFactor * 3, this.scaleFactor * 3);
+    this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
-    (this.displayNormals) ? this.sphere.enableNormalViz() : this.sphere.disableNormalViz();
-    (this.displayNormals) ? this.panorama.enableNormalViz() : this.panorama.disableNormalViz();
 
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
@@ -102,7 +111,16 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
-    if (this.displayPanorama) this.panorama.display();
+    if (this.displayTerrain) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.terrain.display();
+      this.popMatrix();
+    }
+
+    if (this.displayPanorama){ this.panorama.display();}
+
+    
 
     // ---- END Primitive drawing section
   }

@@ -10,19 +10,18 @@ export class MyPanorama extends CGFobject {
 	constructor(scene) {
 
         super(scene);
-        this.sphere = new MySphere(this.scene, 30, 30, 100, true);
+        this.sphere = new MySphere(this.scene, 20, 20, 200, true);
         this.initBuffers();
         this.initMaterials();
     }
 
     initMaterials() {
         const setTextureProperties = (material, texture) => {
-            material.setAmbient(0.9, 0.9, 0.9, 1);
-            material.setDiffuse(1.0, 1.0, 1.0, 1);
-            material.setSpecular(1.0, 1.0, 1.0, 1);
-            material.setShininess(10);
+        //    make it transparent
+            material.setEmission(1, 1, 1, 1);
             material.setTexture(texture);
             material.setTextureWrap('REPEAT', 'REPEAT');
+
         };
 
         this.appeareance = new CGFappearance(this.scene);
@@ -58,7 +57,7 @@ export class MyPanorama extends CGFobject {
         this.scene.pushMatrix();
         this.appeareance.apply();
         // translate the sphere to be centered on the camera position
-        this.scene.translate(cameraPos[0], cameraPos[1] + (this.sphere.radius / 2), cameraPos[2]);
+        // this.scene.translate(cameraPos[0], cameraPos[1] + (this.sphere.radius / 2), cameraPos[2]);
         // rotate the sphere so that the camera is always looking at the center of the sphere
         this.scene.rotate(- Math.PI / 2, 0, 0, 1);
         this.sphere.display();

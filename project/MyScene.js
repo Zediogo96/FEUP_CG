@@ -34,9 +34,12 @@ export class MyScene extends CGFscene {
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.scaleFactor = 1;
+    this.scaleFactor = 0.3;
     this.displayNormals = true;
     this.shouldMagnify = true;
+
+    this.displayPanorama = true;
+    this.displaySphere = false;
 
     this.enableTextures(true);
 
@@ -92,12 +95,14 @@ export class MyScene extends CGFscene {
     (this.displayNormals) ? this.panorama.enableNormalViz() : this.panorama.disableNormalViz();
 
     // ---- BEGIN Primitive drawing section
-    // this.pushMatrix();
-    // this.appearance.apply();
-    // this.sphere.display();
-    // this.popMatrix();
+    if (this.displaySphere) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.sphere.display();
+      this.popMatrix();
+    }
 
-    this.panorama.display();
+    if (this.displayPanorama) this.panorama.display();
 
     // ---- END Primitive drawing section
   }

@@ -22,6 +22,9 @@ export class MyTriangle extends CGFobject {
 			0, 1, 2,
 		];
 
+		//other face 
+		this.indices.push(0, 2, 1);
+
 		this.texCoords = [
 			0, 0,
 			0, 0.5,

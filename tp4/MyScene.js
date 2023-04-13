@@ -2,6 +2,8 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/
 import { MyQuad } from "./MyQuad.js";
 import { MyTangram } from "./MyTangram.js";
 import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
+import { MyWing } from "./Wing.js";
+import { MyBird } from "./Bird.js";
 
 /**
  * MyScene
@@ -30,6 +32,10 @@ export class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.quad = new MyQuad(this);
         this.tangram = new MyTangram(this);
+        this.wing = new MyWing(this);
+        this.bird = new MyBird(this);
+
+
         
 
         //------ Applied Material
@@ -61,7 +67,9 @@ export class MyScene extends CGFscene {
         this.displayAxis = true;
         this.displayQuad = false;
         this.displayTangram = false;
-        this.displayCube = true;
+        this.displayCube = false;
+        this.displayWing = true;
+        this.displayBird = true;
 
         this.shouldMagnify = true;
         this.scaleFactor = 3;
@@ -150,6 +158,20 @@ export class MyScene extends CGFscene {
 
         if (this.displayCube)
             this.cube.display();
+
+        if (this.displayWing)
+            this.pushMatrix();
+            //rotate to be on the xz plane
+            this.rotate(-Math.PI/2, 1, 0, 0);
+            this.wing.display();
+            this.popMatrix();
+
+        if (this.displayBird)
+            this.pushMatrix();
+            //rotate to be on the xz plane
+            this.rotate(-Math.PI/2, 1, 0, 0);
+            this.bird.display();
+            this.popMatrix();
 
         // ---- END Primitive drawing section
     }

@@ -1,5 +1,5 @@
 import { MyQuad } from './MyQuad.js';
-import { CGFappearance, CGFobject } from '../lib/CGF.js';
+import { CGFappearance, CGFobject } from '../../lib/CGF.js';
 
 export class MyCuboid extends CGFobject {
   constructor(scene, width, height, depth, tex1, tex2, tex3, tex4, tex5, tex6) {

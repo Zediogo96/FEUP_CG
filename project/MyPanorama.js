@@ -1,4 +1,4 @@
-import { MySphere } from "./MySphere.js";
+import { MySphere } from "./objects/MySphere.js";
 import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
 
 /**

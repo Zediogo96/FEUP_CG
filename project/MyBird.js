@@ -1,11 +1,11 @@
 
 import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
 
-import { MySphere } from "./MySphere.js";
-import { MyQuad } from './MyQuad.js';
-import { MyCuboid } from './MyCuboid.js';
-import { MyCone } from './MyCone.js';
-import { MyTriangle } from './MyTriangle.js';
+import { MySphere } from "./objects/MySphere.js";
+import { MyQuad } from './objects/MyQuad.js';
+import { MyCuboid } from './objects/MyCuboid.js';
+import { MyCone } from './objects/MyCone.js';
+import { MyTriangle } from './objects/MyTriangle.js';
 
 /**
  * MyBird
@@ -30,6 +30,8 @@ export class MyBird extends CGFobject {
 
         this.eye = new MySphere(this.scene, 30, 30, 0.5, false);
 
+        this.teste = new MySphere(this.scene, 30, 16, 8);
+
         // this.oval_teste = new MyOval(20,20,50)
         this.initBuffers();
         this.initMaterials();
@@ -37,8 +39,6 @@ export class MyBird extends CGFobject {
 
     initMaterials() {
 
-        
-        
         this.birdBody = new CGFappearance(this.scene);
         this.birdBody.setAmbient(0.9, 0.9, 0.9, 1);
         this.birdBody.setDiffuse(0.9, 0.9, 0.9, 1);
@@ -161,7 +161,5 @@ export class MyBird extends CGFobject {
         this.scene.rotate(- 2* Math.PI / 3  , 0 , 1 ,0);
         this.eye.display();
         this.scene.popMatrix();
-
-
       }
 }

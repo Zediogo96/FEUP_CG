@@ -3,6 +3,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyBird } from "./MyBird.js";
 
 /**
  * MyScene
@@ -32,6 +33,8 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
+
+    this.bird = new MyBird(this);
     
 
     //Objects connected to MyInterface
@@ -40,7 +43,7 @@ export class MyScene extends CGFscene {
     this.displayNormals = false;
     this.shouldMagnify = true;
 
-    this.displayPanorama = true;
+    this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = true;
 
@@ -76,7 +79,7 @@ export class MyScene extends CGFscene {
       2,
       0.1,
       1000,
-      vec3.fromValues(50, 10, 15),
+      vec3.fromValues(5, 1, 5),
       vec3.fromValues(0, 0, 0)
     );
   }
@@ -119,6 +122,10 @@ export class MyScene extends CGFscene {
     }
 
     if (this.displayPanorama){ this.panorama.display();}
+
+    this.pushMatrix();
+    this.bird.display();
+    this.popMatrix();
 
     
 

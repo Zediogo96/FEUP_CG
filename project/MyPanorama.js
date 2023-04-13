@@ -26,7 +26,7 @@ export class MyPanorama extends CGFobject {
 
         this.appeareance = new CGFappearance(this.scene);
         this.panoramaTexture = new CGFtexture(this.scene, 'images/panorama4.jpg');
-        console.log(this.panoramaTexture)
+        
 
         setTextureProperties(this.appeareance, this.panoramaTexture);
     }

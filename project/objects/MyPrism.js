@@ -66,7 +66,6 @@ export class MyPrism extends CGFobject {
             vertexNumber += 2;
         }
 
-        // Bottom face
         for (var i = 0; i < this.slices; i++) {
 
             var x0 = Math.cos(ang) * this.size / 2;
@@ -98,38 +97,22 @@ export class MyPrism extends CGFobject {
 
             this.indices.push(bottomCenterIdx, bottomIdx1, bottomIdx2);
 
-            ang += angIncrement;
-        }
-
-        // Top face
-        for (var i = 0; i < this.slices; i++) {
-
-            var x0 = Math.cos(ang) * this.size / 2;
-            var y0 = Math.sin(ang) * this.size / 2;
-            var x1 = Math.cos(ang + angIncrement) * this.size / 2;
-            var y1 = Math.sin(ang + angIncrement) * this.size / 2;
-
-            var s0 = (x0 / this.size + 1) / 2;
-            var t0 = (y0 / this.size + 1) / 2;
-            var s1 = (x1 / this.size + 1) / 2;
-            var t1 = (y1 / this.size + 1) / 2;
-
             // Top face
             this.vertices.push(...topCenter);
-            this.vertices.push(x1, y1, this.size / 2);
             this.vertices.push(x0, y0, this.size / 2);
+            this.vertices.push(x1, y1, this.size / 2);
 
             this.normals.push(0, 0, 1);
             this.normals.push(0, 0, 1);
             this.normals.push(0, 0, 1);
 
             this.texCoords.push(s0, t0);
-            this.texCoords.push(s1, t0);
             this.texCoords.push(s0, t1);
+            this.texCoords.push(s1, t0);
 
             var topCenterIdx = this.vertices.length / 3 - 3;
-            var topIdx1 = this.vertices.length / 3 - 2;
-            var topIdx2 = this.vertices.length / 3 - 1;
+            var topIdx1 = this.vertices.length / 3 - 1;
+            var topIdx2 = this.vertices.length / 3 - 2;
 
             this.indices.push(topIdx2, topIdx1, topCenterIdx);
 

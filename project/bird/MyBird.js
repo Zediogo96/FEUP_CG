@@ -39,7 +39,7 @@ export class MyBird extends CGFobject {
 
         this.legEnd = new MyTriangle(this.scene, 0.5);
 
-        this.feather = new MyPrism(this.scene, 10, 3, 3);
+        this.feather = new MyPrism(this.scene, 1, 3, 3);
 
         this.initBuffers();
         this.initMaterials();
@@ -141,31 +141,8 @@ export class MyBird extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.scene.translate(5, 6.3, 0);
-        this.headSpike.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(5, 6.3, 0);
-        this.headSpike.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(4, 6.1, 0);
-        this.scene.rotate(Math.PI / 8, 0, 0, 1);
-        this.headSpike.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(3.3, 5.7, 0);
-        this.scene.rotate(Math.PI / 8, 0, 0, 1);
-        this.headSpike.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
         this.scene.translate(-3, 0, -1)
         this.scene.rotate(- Math.PI / 8, 0, 0, 1);
-        
         this.leg.display();
         this.scene.popMatrix();
 
@@ -173,7 +150,6 @@ export class MyBird extends CGFobject {
         this.beakTex.apply();
         this.scene.translate(-3, 0, 1)
         this.scene.rotate(- Math.PI / 8, 0, 0, 1);
-        
         this.leg.display();
         this.scene.popMatrix();
 
@@ -191,13 +167,28 @@ export class MyBird extends CGFobject {
         this.legEnd.display();
         this.scene.popMatrix();
 
-        this.scene.pushMatrix();
-        this.scene.translate(0, 15, 0)
-        this.wingTex.apply();
 
-        this.scene.scale(1, 1, 0.4)
+        this.scene.pushMatrix();
+        this.wingTex.apply();
+        this.scene.translate(5, 6.0, 0);
+        this.scene.scale(1, 1, 0.2)
         this.scene.rotate(Math.PI / 2, 0, 0, 1)
-        
+        this.feather.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(4, 5.8, 0);
+        this.scene.scale(1, 1, 0.2)
+        this.scene.rotate(Math.PI / 2, 0, 0, 1)
+        this.scene.rotate(Math.PI / 8, 0, 0, 1);
+        this.feather.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(3, 5.2, 0);
+        this.scene.scale(1, 1, 0.2)
+        this.scene.rotate(Math.PI / 2, 0, 0, 1)
+        this.scene.rotate(Math.PI / 5, 0, 0, 1);
         this.feather.display();
         this.scene.popMatrix();
     }

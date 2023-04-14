@@ -14,7 +14,7 @@ import { MyEyes } from './MyEyes.js';
  * @param scene - Reference to MyScene object
  */
 export class MyBird extends CGFobject {
-	constructor(scene) {
+    constructor(scene) {
 
         super(scene);
 
@@ -38,49 +38,32 @@ export class MyBird extends CGFobject {
     }
 
     initMaterials() {
+        const setMaterialProperties = (material, texture) => {
+            material.setAmbient(0.9, 0.9, 0.9, 1);
+            material.setDiffuse(0.9, 0.9, 0.9, 1);
+            material.setSpecular(0.1, 0.1, 0.1, 1);
+            material.setShininess(10.0);
+            material.loadTexture(texture);
+            material.setTextureWrap('REPEAT', 'REPEAT');
+        };
 
         this.birdBody = new CGFappearance(this.scene);
-        this.birdBody.setAmbient(0.9, 0.9, 0.9, 1);
-        this.birdBody.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.birdBody.setSpecular(0.1, 0.1, 0.1, 1);
-        this.birdBody.setShininess(10.0);
-        this.birdBody.loadTexture('images/birdBody.jpg');
-        this.birdBody.setTextureWrap('REPEAT', 'REPEAT');
+        setMaterialProperties(this.birdBody, 'images/birdBody.jpg');
 
         this.beakTex = new CGFappearance(this.scene);
-        this.beakTex.setAmbient(0.9, 0.9, 0.9, 1);
-        this.beakTex.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.beakTex.setSpecular(0.1, 0.1, 0.1, 1);
-        this.beakTex.setShininess(10.0);
-        this.beakTex.loadTexture('images/beak.jpg');
-        this.beakTex.setTextureWrap('REPEAT', 'REPEAT');
+        setMaterialProperties(this.beakTex, 'images/beak.jpg');
 
         this.wingTex = new CGFappearance(this.scene);
-        this.wingTex.setAmbient(0.9, 0.9, 0.9, 1);
-        this.wingTex.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.wingTex.setSpecular(0.1, 0.1, 0.1, 1);
-        this.wingTex.setShininess(10.0);
-        this.wingTex.loadTexture('images/wing.jpg');
-        this.wingTex.setTextureWrap('REPEAT', 'REPEAT');
+        setMaterialProperties(this.wingTex, 'images/wing.jpg');
 
         this.eyeTex = new CGFappearance(this.scene);
-        this.eyeTex.setAmbient(0.9, 0.9, 0.9, 1);
-        this.eyeTex.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.eyeTex.setSpecular(0.1, 0.1, 0.1, 1);
-        this.eyeTex.setShininess(10.0);
-        this.eyeTex.loadTexture('images/eye.jpg');
-        this.eyeTex.setTextureWrap('REPEAT', 'REPEAT');
+        setMaterialProperties(this.eyeTex, 'images/eye.jpg');
 
         this.normalTex = new CGFappearance(this.scene);
-        this.normalTex.setAmbient(0.9, 0.9, 0.9, 1);
-        this.normalTex.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.normalTex.setSpecular(0.1, 0.1, 0.1, 1);
-        this.normalTex.setShininess(10.0);
-        this.normalTex.loadTexture('images/altimetry.jpg');
-        this.normalTex.setTextureWrap('REPEAT', 'REPEAT');
-
+        setMaterialProperties(this.normalTex, 'images/altimetrsy.png'); /* de proposito para dar o branco, lazy af */
 
     }
+
 
     processTextureFiltering() {
         if (this.scene.shouldMagnify) {
@@ -95,21 +78,21 @@ export class MyBird extends CGFobject {
     display() {
 
         this.processTextureFiltering();
-         
+
         this.scene.pushMatrix();
         this.scene.scale(2.1, 1.2, 1);
         this.scene.translate(0, 2.5, 0);
         this.birdBody.apply();
         this.bodySphere.display();
         this.birdBody.apply();
-    
+
         this.scene.popMatrix();
         this.normalTex.apply();
         this.scene.pushMatrix();
         this.scene.translate(5, 4, 0);
-        this.scene.scale(1.2, 1 , 1);
+        this.scene.scale(1.2, 1, 1);
         this.headSphere.display();
-        this.scene.popMatrix();  
+        this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.wingTex.apply();
@@ -120,7 +103,7 @@ export class MyBird extends CGFobject {
         this.beakTex.apply();
         this.beak.display();
         this.scene.popMatrix();
-        
+
         this.scene.pushMatrix();
         this.eyeTex.apply();
         this.eyes.display();
@@ -129,15 +112,15 @@ export class MyBird extends CGFobject {
         this.scene.pushMatrix();
         this.wingTex.apply();
         this.scene.translate(-5.5, 3, -2);
-        this.scene.rotate( - Math.PI / 2 , 1 , 0 ,0);
+        this.scene.rotate(- Math.PI / 2, 1, 0, 0);
         this.tail.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.translate(-5.5, 3, 2);
         this.scene.scale(1, 1, -1);
-        this.scene.rotate(Math.PI / 2 , 1 , 0 ,0);
-        this.scene.rotate( - Math.PI / 2 , 0, 0 ,1);
+        this.scene.rotate(Math.PI / 2, 1, 0, 0);
+        this.scene.rotate(- Math.PI / 2, 0, 0, 1);
         this.tail.display();
         this.scene.popMatrix();
 
@@ -158,6 +141,5 @@ export class MyBird extends CGFobject {
         this.headSpike.display();
         this.scene.popMatrix();
 
-
-      }
+    }
 }

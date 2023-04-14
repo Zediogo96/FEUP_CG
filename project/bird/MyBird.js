@@ -2,11 +2,11 @@
 import { CGFappearance, CGFobject, CGFtexture } from '../../lib/CGF.js';
 
 import { MySphere } from "../objects/MySphere.js";
-import { MyQuad } from '../objects/MyQuad.js';
-import { MyCuboid } from '../objects/MyCuboid.js';
-import { MyCone } from '../objects/MyCone.js';
 import { MyTriangle } from '../objects/MyTriangle.js';
+
 import { MyWings } from './MyWings.js';
+import { MyBeak } from './MyBeak.js';
+import { MyEyes } from './MyEyes.js';
 
 /**
  * MyBird
@@ -20,14 +20,11 @@ export class MyBird extends CGFobject {
 
         this.tex1 = new CGFtexture(this.scene, 'images/birdBody.jpg');
 
-        this.sphere = new MySphere(this.scene, 30, 30, 0.5, false);
-        // this.bodyCuboid = new MyCuboid(this.scene, 8, 4, 5, this.tex1, this.tex1, 0 , this.tex1);
-        // this.headCuboid = new MyCuboid(this.scene, 4, 4, 4);
-        this.cone = new MyCone(this.scene, 10,10, 1, 2);
+        this.beak = new MyBeak(this.scene);
 
-        this.wing = new MyWings(this.scene, 3, 5, 1.6);
+        this.wings = new MyWings(this.scene, 3, 5, 1.6);
 
-        this.eye = new MySphere(this.scene, 30, 30, 0.5, false);
+        this.eyes = new MyEyes(this.scene);
 
         this.bodySphere = new MySphere(this.scene, 30, 16, 2, false);
         this.headSphere = new MySphere(this.scene, 30, 16, 2, false);
@@ -36,7 +33,6 @@ export class MyBird extends CGFobject {
 
         this.headSpike = new MyTriangle(this.scene, 0.5);
 
-        // this.oval_teste = new MyOval(20,20,50)
         this.initBuffers();
         this.initMaterials();
     }
@@ -107,49 +103,27 @@ export class MyBird extends CGFobject {
         this.bodySphere.display();
         this.birdBody.apply();
     
-        // this.bodyCuboid.display();
         this.scene.popMatrix();
         this.normalTex.apply();
         this.scene.pushMatrix();
         this.scene.translate(5, 4, 0);
         this.scene.scale(1.2, 1 , 1);
         this.headSphere.display();
-
-        // this.headCuboid.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.beakTex.apply();
-        this.scene.translate(6.8, 3.1, 0);
-        this.scene.rotate( - Math.PI / 2 , 0 , 0 ,1);
-        // rotate 10 degrees is Math.PI/18
-        this.scene.rotate( - Math.PI / 6 , 0 , 0 ,1);
-        this.cone.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.beakTex.apply();
-        this.scene.translate(7.2, 2.5, 0);
-        this.scene.rotate( - Math.PI / 2 , 0 , 0 ,1);
-        this.sphere.display();
-        this.scene.popMatrix();
+        this.scene.popMatrix();  
 
         this.scene.pushMatrix();
         this.wingTex.apply();
-        this.wing.display();
+        this.wings.display();
         this.scene.popMatrix();
 
+        this.scene.pushMatrix();
+        this.beakTex.apply();
+        this.beak.display();
+        this.scene.popMatrix();
+        
+        this.scene.pushMatrix();
         this.eyeTex.apply();
-        this.scene.pushMatrix();
-        this.scene.translate(6.7, 4.5, 1);
-        this.scene.rotate(- Math.PI / 3   , 0 , 1 ,0);
-        this.eye.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(6.7, 4.5, -1);
-        this.scene.rotate(- 2* Math.PI / 3  , 0 , 1 ,0);
-        this.eye.display();
+        this.eyes.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();

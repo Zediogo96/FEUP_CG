@@ -21,10 +21,11 @@ export class MyBird extends CGFobject {
         super(scene);
 
         this.tex1 = new CGFtexture(this.scene, 'images/beak.jpg');
+        this.tex2 = new CGFtexture(this.scene, 'images/wing.jpg');
 
         this.beak = new MyBeak(this.scene);
 
-        this.wings = new MyWings(this.scene, 3, 5, 1.6);
+        this.wings = new MyWings(this.scene, 3.2, 5, 1.6, this.tex2);
 
         this.eyes = new MyEyes(this.scene);
 
@@ -166,7 +167,6 @@ export class MyBird extends CGFobject {
         this.scene.rotate(- 2.3 * Math.PI / 3 , 0 , 0, 1)
         this.legEnd.display();
         this.scene.popMatrix();
-
 
         this.scene.pushMatrix();
         this.wingTex.apply();

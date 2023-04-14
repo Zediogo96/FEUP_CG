@@ -3,7 +3,7 @@ import { MyPlane } from "./objects/MyPlane.js";
 import { MySphere } from "./objects/MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
-import { MyBird } from "./MyBird.js";
+import { MyBird } from "./bird/MyBird.js";
 
 /**
  * MyScene

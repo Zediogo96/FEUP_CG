@@ -1,11 +1,12 @@
 
-import { CGFappearance, CGFobject, CGFtexture } from '../lib/CGF.js';
+import { CGFappearance, CGFobject, CGFtexture } from '../../lib/CGF.js';
 
-import { MySphere } from "./objects/MySphere.js";
-import { MyQuad } from './objects/MyQuad.js';
-import { MyCuboid } from './objects/MyCuboid.js';
-import { MyCone } from './objects/MyCone.js';
-import { MyTriangle } from './objects/MyTriangle.js';
+import { MySphere } from "../objects/MySphere.js";
+import { MyQuad } from '../objects/MyQuad.js';
+import { MyCuboid } from '../objects/MyCuboid.js';
+import { MyCone } from '../objects/MyCone.js';
+import { MyTriangle } from '../objects/MyTriangle.js';
+import { MyWings } from './MyWings.js';
 
 /**
  * MyBird
@@ -24,9 +25,7 @@ export class MyBird extends CGFobject {
         // this.headCuboid = new MyCuboid(this.scene, 4, 4, 4);
         this.cone = new MyCone(this.scene, 10,10, 1, 2);
 
-        this.wing = new MyQuad(this.scene, 3, 5);
-
-        this.wingEnd = new MyTriangle(this.scene, 1.6);
+        this.wing = new MyWings(this.scene, 3, 5, 1.6);
 
         this.eye = new MySphere(this.scene, 30, 30, 0.5, false);
 
@@ -137,38 +136,7 @@ export class MyBird extends CGFobject {
 
         this.scene.pushMatrix();
         this.wingTex.apply();
-        this.scene.translate(0, 2.5 , 4);
-        this.scene.rotate( - Math.PI / 3 , 1 , 0 ,0);
         this.wing.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(0, 2.5 , -4);
-        this.scene.rotate(Math.PI / 3 , 1 , 0 ,0);
-        this.scene.scale(1, -1, -1);
-        this.wing.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(0, 1.8 , 7.6);
-        // rotate 45 degrees in y axis
-        this.scene.rotate( - Math.PI / 2 , 0 , 1 ,0);
-        this.scene.rotate( - Math.PI / 2 , 1 , 0 ,0);
-        this.scene.rotate( - Math.PI / 2 , 0 , 0 ,1);
-        this.scene.rotate(Math.PI / 9 , 1 , 0 ,0);
-        this.wingEnd.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(0, 1.8 , -7.6);
-        // rotate 45 degrees in y axis
-        this.scene.rotate( - Math.PI / 2 , 0 , 1 ,0);
-        this.scene.rotate( - Math.PI / 2 , 1 , 0 ,0);
-        this.scene.rotate(Math.PI / 2 , 0 , 0 ,1);
-        // rotate 20 degrees is Math.PI / 9
-        this.scene.rotate(Math.PI / 9 , 1 , 0 ,0);
-        
-        this.wingEnd.display();
         this.scene.popMatrix();
 
         this.eyeTex.apply();

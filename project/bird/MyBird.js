@@ -3,6 +3,8 @@ import { CGFappearance, CGFobject, CGFtexture } from '../../lib/CGF.js';
 
 import { MySphere } from "../objects/MySphere.js";
 import { MyTriangle } from '../objects/MyTriangle.js';
+import { MyCuboid } from '../objects/MyCuboid.js';
+import { MyPrism } from '../objects/MyPrism.js';
 
 import { MyWings } from './MyWings.js';
 import { MyBeak } from './MyBeak.js';
@@ -18,7 +20,7 @@ export class MyBird extends CGFobject {
 
         super(scene);
 
-        this.tex1 = new CGFtexture(this.scene, 'images/birdBody.jpg');
+        this.tex1 = new CGFtexture(this.scene, 'images/beak.jpg');
 
         this.beak = new MyBeak(this.scene);
 
@@ -32,6 +34,12 @@ export class MyBird extends CGFobject {
         this.tail = new MyTriangle(this.scene, 1.6);
 
         this.headSpike = new MyTriangle(this.scene, 0.5);
+
+        this.leg = new MyCuboid(this.scene, 0.2, 1.5, 0.2, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1);
+
+        this.legEnd = new MyTriangle(this.scene, 0.5);
+
+        this.feather = new MyPrism(this.scene, 10, 3, 3);
 
         this.initBuffers();
         this.initMaterials();
@@ -80,17 +88,25 @@ export class MyBird extends CGFobject {
         this.processTextureFiltering();
 
         this.scene.pushMatrix();
-        this.scene.scale(2.1, 1.2, 1);
+        this.scene.scale(2, 1.1, 0.9);
+        this.scene.translate(0, 2.4, 0);
+        this.normalTex.apply();
+        this.bodySphere.display();
+        this.birdBody.apply();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.scale(2.1, 1.1, 1);
         this.scene.translate(0, 2.5, 0);
         this.birdBody.apply();
         this.bodySphere.display();
         this.birdBody.apply();
-
         this.scene.popMatrix();
+
         this.normalTex.apply();
         this.scene.pushMatrix();
         this.scene.translate(5, 4, 0);
-        this.scene.scale(1.2, 1, 1);
+        this.scene.scale(1.2, 0.9, 0.8);
         this.headSphere.display();
         this.scene.popMatrix();
 
@@ -130,7 +146,12 @@ export class MyBird extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.scene.translate(4, 6.3, 0);
+        this.scene.translate(5, 6.3, 0);
+        this.headSpike.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(4, 6.1, 0);
         this.scene.rotate(Math.PI / 8, 0, 0, 1);
         this.headSpike.display();
         this.scene.popMatrix();
@@ -141,5 +162,43 @@ export class MyBird extends CGFobject {
         this.headSpike.display();
         this.scene.popMatrix();
 
+        this.scene.pushMatrix();
+        this.scene.translate(-3, 0, -1)
+        this.scene.rotate(- Math.PI / 8, 0, 0, 1);
+        
+        this.leg.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.beakTex.apply();
+        this.scene.translate(-3, 0, 1)
+        this.scene.rotate(- Math.PI / 8, 0, 0, 1);
+        
+        this.leg.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(-3, -0.5, -1)
+        this.scene.rotate(Math.PI / 2,0 , 1, 0)
+        this.scene.rotate(- 2.3 * Math.PI / 3 , 0 , 0, 1)
+        this.legEnd.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(-3, -0.5, 1)
+        this.scene.rotate(Math.PI / 2,0 , 1, 0)
+        this.scene.rotate(- 2.3 * Math.PI / 3 , 0 , 0, 1)
+        this.legEnd.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(0, 15, 0)
+        this.wingTex.apply();
+
+        this.scene.scale(1, 1, 0.4)
+        this.scene.rotate(Math.PI / 2, 0, 0, 1)
+        
+        this.feather.display();
+        this.scene.popMatrix();
     }
 }

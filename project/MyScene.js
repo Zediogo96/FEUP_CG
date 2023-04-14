@@ -45,7 +45,7 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = true;
+    this.displayTerrain = false;
 
     this.enableTextures(true);
 

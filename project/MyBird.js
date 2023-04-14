@@ -20,8 +20,8 @@ export class MyBird extends CGFobject {
         this.tex1 = new CGFtexture(this.scene, 'images/birdBody.jpg');
 
         this.sphere = new MySphere(this.scene, 30, 30, 0.5, false);
-        this.bodyCuboid = new MyCuboid(this.scene, 8, 4, 5, this.tex1, this.tex1, 0 , this.tex1);
-        this.headCuboid = new MyCuboid(this.scene, 4, 4, 4);
+        // this.bodyCuboid = new MyCuboid(this.scene, 8, 4, 5, this.tex1, this.tex1, 0 , this.tex1);
+        // this.headCuboid = new MyCuboid(this.scene, 4, 4, 4);
         this.cone = new MyCone(this.scene, 10,10, 1, 2);
 
         this.wing = new MyQuad(this.scene, 3, 5);
@@ -30,7 +30,12 @@ export class MyBird extends CGFobject {
 
         this.eye = new MySphere(this.scene, 30, 30, 0.5, false);
 
-        this.teste = new MySphere(this.scene, 30, 16, 8);
+        this.bodySphere = new MySphere(this.scene, 30, 16, 2, false);
+        this.headSphere = new MySphere(this.scene, 30, 16, 2, false);
+
+        this.tail = new MyTriangle(this.scene, 1.6);
+
+        this.headSpike = new MyTriangle(this.scene, 0.5);
 
         // this.oval_teste = new MyOval(20,20,50)
         this.initBuffers();
@@ -46,7 +51,6 @@ export class MyBird extends CGFobject {
         this.birdBody.setShininess(10.0);
         this.birdBody.loadTexture('images/birdBody.jpg');
         this.birdBody.setTextureWrap('REPEAT', 'REPEAT');
-
 
         this.beakTex = new CGFappearance(this.scene);
         this.beakTex.setAmbient(0.9, 0.9, 0.9, 1);
@@ -72,6 +76,15 @@ export class MyBird extends CGFobject {
         this.eyeTex.loadTexture('images/eye.jpg');
         this.eyeTex.setTextureWrap('REPEAT', 'REPEAT');
 
+        this.normalTex = new CGFappearance(this.scene);
+        this.normalTex.setAmbient(0.9, 0.9, 0.9, 1);
+        this.normalTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.normalTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.normalTex.setShininess(10.0);
+        this.normalTex.loadTexture('images/altimetry.jpg');
+        this.normalTex.setTextureWrap('REPEAT', 'REPEAT');
+
+
     }
 
     processTextureFiltering() {
@@ -89,19 +102,29 @@ export class MyBird extends CGFobject {
         this.processTextureFiltering();
          
         this.scene.pushMatrix();
+        this.scene.scale(2.1, 1.2, 1);
+        this.scene.translate(0, 2.5, 0);
         this.birdBody.apply();
-        this.bodyCuboid.display();
+        this.bodySphere.display();
+        this.birdBody.apply();
+    
+        // this.bodyCuboid.display();
         this.scene.popMatrix();
-
+        this.normalTex.apply();
         this.scene.pushMatrix();
-        this.scene.translate(5, 2, 0);
-        this.headCuboid.display();
+        this.scene.translate(5, 4, 0);
+        this.scene.scale(1.2, 1 , 1);
+        this.headSphere.display();
+
+        // this.headCuboid.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.beakTex.apply();
-        this.scene.translate(7, 3.1, 0);
+        this.scene.translate(6.8, 3.1, 0);
         this.scene.rotate( - Math.PI / 2 , 0 , 0 ,1);
+        // rotate 10 degrees is Math.PI/18
+        this.scene.rotate( - Math.PI / 6 , 0 , 0 ,1);
         this.cone.display();
         this.scene.popMatrix();
 
@@ -148,18 +171,51 @@ export class MyBird extends CGFobject {
         this.wingEnd.display();
         this.scene.popMatrix();
 
-
         this.eyeTex.apply();
         this.scene.pushMatrix();
-        this.scene.translate(6.7, 5, 1);
+        this.scene.translate(6.7, 4.5, 1);
         this.scene.rotate(- Math.PI / 3   , 0 , 1 ,0);
         this.eye.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.scene.translate(6.7, 5, -1);
+        this.scene.translate(6.7, 4.5, -1);
         this.scene.rotate(- 2* Math.PI / 3  , 0 , 1 ,0);
         this.eye.display();
         this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.wingTex.apply();
+        this.scene.translate(-5.5, 3, -2);
+        this.scene.rotate( - Math.PI / 2 , 1 , 0 ,0);
+        this.tail.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(-5.5, 3, 2);
+        this.scene.scale(1, 1, -1);
+        this.scene.rotate(Math.PI / 2 , 1 , 0 ,0);
+        this.scene.rotate( - Math.PI / 2 , 0, 0 ,1);
+        this.tail.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(5, 6.3, 0);
+        this.headSpike.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(4, 6.3, 0);
+        this.scene.rotate(Math.PI / 8, 0, 0, 1);
+        this.headSpike.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(3.3, 5.7, 0);
+        this.scene.rotate(Math.PI / 8, 0, 0, 1);
+        this.headSpike.display();
+        this.scene.popMatrix();
+
+
       }
 }

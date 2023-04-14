@@ -17,25 +17,35 @@ export class MyTriangle extends CGFobject {
 		this.vertices = [
 			-this.size, -this.size, 0,	//0
 			this.size, -this.size, 0,	//1
-			-this.size, this.size, 0	//2
+			-this.size, this.size, 0,	//2
+			-this.size, -this.size, 0,	//3 - duplicate of vertex 0
+			this.size, -this.size, 0,	//4 - duplicate of vertex 1
+			-this.size, this.size, 0	//5 - duplicate of vertex 2
 		];
 
 		this.texCoords = [
-			0, 0,
-			1, 0,
 			0, 1,
+			1, 1,
+			0, 0,
+			0, 1,
+			1, 1,
+			0, 0
 		];
 
 		this.normals = [
 			0, 0, 1,
 			0, 0, 1,
 			0, 0, 1,
+			0, 0, -1,
+			0, 0, -1,
+			0, 0, -1
 		];
 		
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
+			4, 3, 5
 		];
 
 		//The defined indices (and corresponding vertices)

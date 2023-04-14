@@ -1,8 +1,6 @@
 
 import { CGFobject, CGFtexture } from '../../lib/CGF.js';
-import { MyQuad } from '../objects/MyQuad.js';
 import { MyTriangle } from '../objects/MyTriangle.js';
-import { MyPrism } from '../objects/MyPrism.js';
 import { MyCuboid } from '../objects/MyCuboid.js';
 
 

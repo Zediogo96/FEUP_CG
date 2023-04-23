@@ -37,9 +37,6 @@ export class MyScene extends CGFscene {
     this.terrain = new MyTerrain(this);
 
     this.bird = new MyBird(this);
-
-    this.test = new MyTriangularPrism(this, 5, 0.2);
-
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 0.3;
@@ -49,7 +46,7 @@ export class MyScene extends CGFscene {
     this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = false;
-    this.displayBird = false;
+    this.displayBird = true;
 
     this.enableTextures(true);
 
@@ -132,12 +129,6 @@ export class MyScene extends CGFscene {
       this.bird.display();
       this.popMatrix();
     }
-
-    this.pushMatrix();
-    this.test.display();
-    this.popMatrix();
-
-
 
     // ---- END Primitive drawing section
   }

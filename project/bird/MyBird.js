@@ -25,7 +25,7 @@ export class MyBird extends CGFobject {
 
         this.beak = new MyBeak(this.scene);
 
-        this.wings = new MyWings(this.scene, 3.2, 5, 1.6, this.tex2);
+        this.wings = new MyWings(this.scene, 5, 0.2, 5, this.tex2);
 
         this.eyes = new MyEyes(this.scene);
 

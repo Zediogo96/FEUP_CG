@@ -1,9 +1,11 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./objects/MyPlane.js";
 import { MySphere } from "./objects/MySphere.js";
+import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyBird } from "./bird/MyBird.js";
+
 
 /**
  * MyScene
@@ -35,7 +37,8 @@ export class MyScene extends CGFscene {
     this.terrain = new MyTerrain(this);
 
     this.bird = new MyBird(this);
-    
+
+    this.test = new MyTriangularPrism(this, 5, 0.2);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -46,6 +49,7 @@ export class MyScene extends CGFscene {
     this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = false;
+    this.displayBird = false;
 
     this.enableTextures(true);
 
@@ -121,13 +125,19 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
-    if (this.displayPanorama){ this.panorama.display();}
+    if (this.displayPanorama) { this.panorama.display(); }
+
+    if (this.displayBird) {
+      this.pushMatrix();
+      this.bird.display();
+      this.popMatrix();
+    }
 
     this.pushMatrix();
-    this.bird.display();
+    this.test.display();
     this.popMatrix();
 
-    
+
 
     // ---- END Primitive drawing section
   }

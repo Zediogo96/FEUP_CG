@@ -51,10 +51,9 @@ export class MyBird extends CGFobject {
     }
 
     accelerate(val) {
-
-        this.velocity += val;
+        console.log(this.scene.speedFactor)
+        this.velocity += val * this.scene.speedFactor;
         this.velocity = ((this.velocity > 0) ? this.velocity : 0);
-        this.velocity = Math.min(this.velocity, 1);
         this.current_y_state = 1;
     }
 
@@ -62,7 +61,6 @@ export class MyBird extends CGFobject {
         this.posY += val;
         (val > 0) ? this.current_y_state = this.y_state.ASCENDING : this.current_y_state = this.y_state.DESCENDING;
     }
-
 
     update(t) {
         var delta_t = t - this.lastUpdate;
@@ -87,26 +85,23 @@ export class MyBird extends CGFobject {
         this.scene.translate(this.posX, this.posY, this.posZ);
 
         let rotationAngle = Math.min(Math.abs(this.angleY), 0.3);
-        
+
         (this.angleY < 0) ? rotationAngle *= -1 : rotationAngle *= 1;
 
-        if (rotationAngle < 0.2 || rotationAngle > -0.2) this.scene.rotate(-rotationAngle, 0, 0, 1);
+        if (rotationAngle < 0.22 || rotationAngle > -0.22) this.scene.rotate(-rotationAngle, 0, 0, 1);
 
-        console.log(rotationAngle);
         this.scene.rotate(this.angleY, 0, 1, 0);
         this.scene.rotate(-rotationAngle, 0, 0, 1)
         this.scene.rotate(-Math.PI / 2, 0, 1, 0);
 
-        
-
-        if (this.current_y_state == 2) this.scene.rotate(Math.PI / 10 , 0, 0, 1);
-        else if (this.current_y_state == 3) this.scene.rotate(-Math.PI / 10 , 0, 0, 1);
+        if (this.current_y_state == 2) this.scene.rotate(Math.PI / 10, 0, 0, 1);
+        else if (this.current_y_state == 3) this.scene.rotate(-Math.PI / 10, 0, 0, 1);
         else if (this.current_y_state == 1 && this.last_y_state != 1) {
-            (this.last_y_state == 2) ? this.scene.rotate(-Math.PI / 10 , 0, 0, 1) : this.scene.rotate(Math.PI / 10 , 0, 0, 1);
+            (this.last_y_state == 2) ? this.scene.rotate(-Math.PI / 10, 0, 0, 1) : this.scene.rotate(Math.PI / 10, 0, 0, 1);
         }
 
         this.last_y_state = this.current_y_state;
-        
+
         this.bird.display();
         this.scene.popMatrix();
     }

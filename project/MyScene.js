@@ -29,6 +29,9 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+    // -- Update the scene every 12 milliseconds -- //
+    this.setUpdatePeriod(12);
+
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
@@ -48,7 +51,7 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = false;
+    this.displayTerrain = true;
     this.displayBird = true;
 
     this.enableTextures(true);
@@ -87,12 +90,34 @@ export class MyScene extends CGFscene {
       vec3.fromValues(0, 0, 0)
     );
   }
+
+  checkKeys() {
+    var text = "Keys pressed: ";
+    var keysPressed = false;
+    // Check for key codes e.g. in https://keycode.info/
+    if (this.gui.isKeyPressed("KeyW")) {
+      text += " W ";
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyS")) {
+      text += " S ";
+      keysPressed = true;
+    }
+    if (keysPressed)
+      console.log(text);
+  }
+
   setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
+
+  update(t) {
+    this.checkKeys();
+  }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -136,6 +161,7 @@ export class MyScene extends CGFscene {
     // this.pushMatrix();
     // this.test.display();
     // this.popMatrix();
+
     // ---- END Primitive drawing section
   }
 }

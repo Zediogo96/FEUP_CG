@@ -39,7 +39,7 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
 
-    this.bird = new MyBird(this);
+    this.bird = new MyBird(this,3);
 
     this.test = new MyTriangularPrism(this, 5);
 
@@ -53,6 +53,9 @@ export class MyScene extends CGFscene {
     this.displaySphere = false;
     this.displayTerrain = true;
     this.displayBird = true;
+
+    // MOVEMENT RELATED VARIABLES
+    this.speedFactor = 1;
 
     this.enableTextures(true);
 
@@ -92,19 +95,29 @@ export class MyScene extends CGFscene {
   }
 
   checkKeys() {
-    var text = "Keys pressed: ";
     var keysPressed = false;
     // Check for key codes e.g. in https://keycode.info/
     if (this.gui.isKeyPressed("KeyW")) {
-      text += " W ";
+      this.bird.accelerate(0.01 * this.speedFactor);
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyS")) {
-      text += " S ";
+      this.bird.accelerate(-0.08 * this.speedFactor);
       keysPressed = true;
     }
-    if (keysPressed)
-      console.log(text);
+    if (this.gui.isKeyPressed("KeyA")) {
+       this.bird.turn(Math.PI / 90);
+    }
+    if (this.gui.isKeyPressed("KeyD")) {
+      this.bird.turn(-Math.PI / 90);
+    }
+
+    if (this.gui.isKeyPressed("KeyR")) {
+      this.bird.reset();
+    }
+
+    /* if (keysPressed)
+      console.log(text); */
   }
 
   setDefaultAppearance() {
@@ -116,6 +129,7 @@ export class MyScene extends CGFscene {
 
   update(t) {
     this.checkKeys();
+    this.bird.update(t);
   }
 
   display() {
@@ -154,6 +168,7 @@ export class MyScene extends CGFscene {
 
     if (this.displayBird) {
       this.pushMatrix();
+      this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor)
       this.bird.display();
       this.popMatrix();
     }

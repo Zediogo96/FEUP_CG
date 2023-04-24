@@ -24,21 +24,21 @@ export class MyBirdObjects extends CGFobject {
 
         // -- TEXTURES -- //
         this.tex1 = new CGFtexture(this.scene, 'images/beak.jpg');
-        this.tex2 = new CGFtexture(this.scene, 'images/wing.jpg');        
+        this.tex2 = new CGFtexture(this.scene, 'images/wing.jpg');
 
         // -- OBJECTS -- //
-        
+
         this.wings = new MyWings(this.scene, 5, 0.2, 5, this.tex2);
-        
+
         this.body = new MyChest(this.scene);
 
         this.head = new MyHead(this.scene, this.beakTex, this.wingTex, this.eyeTex);
 
         this.tail = new MyTriangle(this.scene, 1.6);
-       
+
         this.leg = new MyCuboid(this.scene, 0.2, 1.5, 0.2, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1);
         this.legEnd = new MyTriangle(this.scene, 0.5);
-        
+
 
         this.initBuffers();
         this.initMaterials();
@@ -91,10 +91,8 @@ export class MyBirdObjects extends CGFobject {
 
     display() {
 
-        console.log(this.flap)
-
         this.processTextureFiltering();
-        
+
         this.scene.pushMatrix();
         this.birdBody.apply();
         this.body.display();
@@ -109,11 +107,12 @@ export class MyBirdObjects extends CGFobject {
         if (this.flap) this.scene.translate(0, 0.1, 0); else this.scene.translate(0, -0.1, 0);
         this.head.display();
         this.scene.popMatrix();
-        
+
         this.scene.pushMatrix();
         this.wingTex.apply();
         this.scene.translate(-5.5, 3, -2);
         this.scene.rotate(- Math.PI / 2, 1, 0, 0);
+        if (this.flap) this.scene.rotate(Math.PI / 12, 1, 0, 0); else this.scene.rotate(- Math.PI / 12, 1, 0, 0);
         this.tail.display();
         this.scene.popMatrix();
 
@@ -122,6 +121,7 @@ export class MyBirdObjects extends CGFobject {
         this.scene.scale(1, 1, -1);
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
         this.scene.rotate(- Math.PI / 2, 0, 0, 1);
+        if (this.flap) this.scene.rotate(Math.PI / 12, 0, 1, 0); else this.scene.rotate(- Math.PI / 12, 0, 1, 0);
         this.tail.display();
         this.scene.popMatrix();
 
@@ -152,6 +152,6 @@ export class MyBirdObjects extends CGFobject {
         this.legEnd.display();
         this.scene.popMatrix();
 
-        
+
     }
 }

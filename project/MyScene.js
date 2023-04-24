@@ -111,7 +111,12 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyD")) {
       this.bird.turn(-Math.PI / 90);
     }
-
+    if (this.gui.isKeyPressed("Space")) {
+      this.bird.ascend(0.1  * this.speedFactor);
+    }
+    if (this.gui.isKeyPressed("ControlLeft")) {
+      this.bird.ascend(-0.1 * this.speedFactor);
+    }
     if (this.gui.isKeyPressed("KeyR")) {
       this.bird.reset();
     }

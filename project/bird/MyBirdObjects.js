@@ -9,6 +9,7 @@ import { MyPrism } from '../objects/MyPrism.js';
 import { MyWings } from './MyWings.js';
 import { MyBeak } from './MyBeak.js';
 import { MyEyes } from './MyEyes.js';
+import { MyChest } from './MyChest.js';
 
 /**
  * MyBirdObjects
@@ -20,6 +21,8 @@ export class MyBirdObjects extends CGFobject {
 
         super(scene);
 
+        this.flap = false;
+
         // -- TEXTURES -- //
         this.tex1 = new CGFtexture(this.scene, 'images/beak.jpg');
         this.tex2 = new CGFtexture(this.scene, 'images/wing.jpg');
@@ -27,7 +30,7 @@ export class MyBirdObjects extends CGFobject {
         this.beak = new MyBeak(this.scene);
         this.wings = new MyWings(this.scene, 5, 0.2, 5, this.tex2);
         this.eyes = new MyEyes(this.scene);
-        this.bodySphere = new MySphere(this.scene, 30, 16, 2, false);
+        this.body = new MyChest(this.scene);
         this.headSphere = new MySphere(this.scene, 30, 16, 2, false);
         this.tail = new MyTriangle(this.scene, 1.6);
         this.headSpike = new MyTriangle(this.scene, 0.5);
@@ -80,25 +83,24 @@ export class MyBirdObjects extends CGFobject {
         return [this.posX, this.posY, this.posZ];
     }
 
+    update(t) {
+
+        console.log(this.flap)
+        let delta_t = t - this.lastUpdate;
+        if (delta_t > 500) {
+            this.flap = !this.flap;
+        }
+        this.lastUpdate = t;
+    }
+
 
     display() {
 
         this.processTextureFiltering();
-
+        
         this.scene.pushMatrix();
-        this.scene.scale(2, 1.1, 0.9);
-        this.scene.translate(0, 2.4, 0);
-        this.normalTex.apply();
-        this.bodySphere.display();
         this.birdBody.apply();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.scale(2.1, 1.1, 1);
-        this.scene.translate(0, 2.5, 0);
-        this.birdBody.apply();
-        this.bodySphere.display();
-        this.birdBody.apply();
+        this.body.display();
         this.scene.popMatrix();
 
         this.normalTex.apply();
@@ -153,15 +155,15 @@ export class MyBirdObjects extends CGFobject {
 
         this.scene.pushMatrix();
         this.scene.translate(-3, -0.5, -1)
-        this.scene.rotate(Math.PI / 2,0 , 1, 0)
-        this.scene.rotate(- 2.3 * Math.PI / 3 , 0 , 0, 1)
+        this.scene.rotate(Math.PI / 2, 0, 1, 0)
+        this.scene.rotate(- 2.3 * Math.PI / 3, 0, 0, 1)
         this.legEnd.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.translate(-3, -0.5, 1)
-        this.scene.rotate(Math.PI / 2,0 , 1, 0)
-        this.scene.rotate(- 2.3 * Math.PI / 3 , 0 , 0, 1)
+        this.scene.rotate(Math.PI / 2, 0, 1, 0)
+        this.scene.rotate(- 2.3 * Math.PI / 3, 0, 0, 1)
         this.legEnd.display();
         this.scene.popMatrix();
 

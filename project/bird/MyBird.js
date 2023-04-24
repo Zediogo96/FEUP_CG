@@ -39,12 +39,11 @@ export class MyBird extends CGFobject {
     }
     
     accelerate(val) {
-        console.log(this.velocity)
+
         this.velocity += val;
         this.velocity = ((this.velocity > 0) ? this.velocity : 0);
         this.velocity = Math.min(this.velocity, 1);
     }
-
 
     update(t) {
         var delta_t = t - this.lastUpdate;
@@ -54,14 +53,14 @@ export class MyBird extends CGFobject {
 
         this.position += this.velocity * (delta_t / 1000);
 
-
         this.lastUpdate = t;
+
+        this.bird.update(t);
+        this.bird.body.update(t);
+        this.bird.wings.update(t);
     }
 
     display() {
-
-        
-
 
         this.scene.pushMatrix();
         this.scene.translate(this.posX, this.posY, this.posZ);

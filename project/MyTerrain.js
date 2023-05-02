@@ -8,10 +8,10 @@ export class MyTerrain extends CGFobject {
         this.terrainShader = new CGFshader(scene.gl, 'shaders/terrain.vert', 'shaders/terrain.frag');
         this.texture1 = new CGFtexture(scene, 'images/terrain.jpg');
         this.texture2 = new CGFtexture(scene, 'images/heightmap.jpg');
+        this.texture3 = new CGFtexture(scene, 'images/altimetry.png')
 
-        this.terrainShader.setUniformsValues({ uSampler1: 1});
-        this.terrainShader.setUniformsValues({ uSampler2: 2});
-        this.plane = new MyPlane(scene, 20);
+        this.terrainShader.setUniformsValues({ uSampler1: 1, uSampler2: 2, uSampler3: 3});
+        this.plane = new MyPlane(scene, 200);
     }
 
     display() {
@@ -20,6 +20,7 @@ export class MyTerrain extends CGFobject {
 
         this.texture1.bind(1);
         this.texture2.bind(2);
+        this.texture3.bind(3);
 
         this.scene.pushMatrix();
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);

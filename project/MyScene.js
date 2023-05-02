@@ -3,6 +3,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import {MyBillboard} from "./MyBillboard.js";
 
 /**
  * MyScene
@@ -32,6 +33,7 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
+    this.tree = new MyBillboard(this);
     
 
     //Objects connected to MyInterface
@@ -102,6 +104,8 @@ export class MyScene extends CGFscene {
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
+
+    this.tree.display(1,1,1);
 
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {

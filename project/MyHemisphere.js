@@ -8,18 +8,22 @@ export class MyHemisphere extends CGFobject {
     this.radius = radius;
     this.inverted = inverted;
     
-    this.initMaterial(scene);
     this.initBuffers();
+    this.initMaterials(scene);
   }
 
-  initMaterial(scene) {
-        this.hemisphereMaterial = new CGFappearance(scene, 'images/cape_hill.jpg');
-        this.hemisphereMaterial.setAmbient(0.1, 0.1, 0.1, 1);
-        this.hemisphereMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.hemisphereMaterial.setSpecular(0.1, 0.1, 0.1, 1);
-        this.hemisphereMaterial.setShininess(10.0);
-        this.hemisphereMaterial.loadTexture("images/cape_hill.jpg");
-        this.hemisphereMaterial.setTextureWrap('REPEAT', 'REPEAT');
+  initMaterials(scene) {
+        const setMaterialProperties = (material, texture) => {
+            material.setAmbient(0.9, 0.9, 0.9, 1);
+            material.setDiffuse(0.9, 0.9, 0.9, 1);
+            material.setSpecular(0.1, 0.1, 0.1, 1);
+            material.setShininess(10.0);
+            material.loadTexture(texture);
+            material.setTextureWrap('REPEAT', 'REPEAT');
+        };
+
+        this.hemisphereMaterial = new CGFappearance(scene);
+        setMaterialProperties(this.hemisphereMaterial, "images/cape_hill.jpg");
     }
 
   initBuffers() {

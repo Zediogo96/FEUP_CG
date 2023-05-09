@@ -121,14 +121,14 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
-    if (this.displayPanorama){ this.panorama.display();}
-
     if (this.displayHemisphere) {
       this.pushMatrix();
       this.appearance.apply();
       this.hemisphere.display();
       this.popMatrix();
     }
+    if (this.displayPanorama){ this.panorama.display();}
+
 
     
 

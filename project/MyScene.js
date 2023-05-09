@@ -3,6 +3,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyHemisphere } from "./MyHemisphere.js";
 
 /**
  * MyScene
@@ -32,6 +33,7 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
+    this.hemisphere = new MyHemisphere(this, 30, 30, 5, false);
     
 
     //Objects connected to MyInterface
@@ -43,6 +45,7 @@ export class MyScene extends CGFscene {
     this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = true;
+    this.displayHemisphere = true;
 
     this.enableTextures(true);
 
@@ -119,6 +122,13 @@ export class MyScene extends CGFscene {
     }
 
     if (this.displayPanorama){ this.panorama.display();}
+
+    if (this.displayHemisphere) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.hemisphere.display();
+      this.popMatrix();
+    }
 
     
 

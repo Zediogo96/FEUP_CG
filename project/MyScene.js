@@ -3,7 +3,8 @@ import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
-import { MyHemisphere } from "./MyHemisphere.js";
+import { MyEgg } from "./MyEgg.js";
+import { MyNest } from "./MyNest.js";
 
 /**
  * MyScene
@@ -33,7 +34,8 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
-    this.hemisphere = new MyHemisphere(this, 30, 30, 5, false);
+    this.egg = new MyEgg(this);
+    this.nest = new MyNest(this);
     
 
     //Objects connected to MyInterface
@@ -45,11 +47,14 @@ export class MyScene extends CGFscene {
     this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = true;
-    this.displayHemisphere = true;
+    this.displayEgg = true;
+    this.displayNest = true
+
 
     this.enableTextures(true);
 
     this.texture = new CGFtexture(this, "images/earth.jpg");
+    this.texture2 = new CGFtexture(this, "images/egg.png");
 
     this.appearance = new CGFappearance(this);
     this.appearance.setAmbient(0.7, 0.7, 0.7, 1.0);
@@ -58,6 +63,7 @@ export class MyScene extends CGFscene {
     this.appearance.setShininess(10.0);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
 
   }
   initLights() {
@@ -106,6 +112,19 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
+    if (this.displayEgg) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.egg.display();
+      this.popMatrix();
+    }
+
+    if (this.displayNest) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.nest.display();
+      this.popMatrix();
+    }
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
       this.pushMatrix();
@@ -116,17 +135,14 @@ export class MyScene extends CGFscene {
 
     if (this.displayTerrain) {
       this.pushMatrix();
+      this.appearance.setTexture(this.texture2);
       this.appearance.apply();
       this.terrain.display();
+      this.appearance.setTexture(this.texture);
       this.popMatrix();
     }
 
-    if (this.displayHemisphere) {
-      this.pushMatrix();
-      this.appearance.apply();
-      this.hemisphere.display();
-      this.popMatrix();
-    }
+
     if (this.displayPanorama){ this.panorama.display();}
 
 

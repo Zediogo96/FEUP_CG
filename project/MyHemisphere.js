@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from '../lib/CGF.js';
+import { CGFobject } from '../lib/CGF.js';
 
 export class MyHemisphere extends CGFobject {
   constructor(scene, slices, sectors, radius, inverted) {
@@ -9,22 +9,7 @@ export class MyHemisphere extends CGFobject {
     this.inverted = inverted;
     
     this.initBuffers();
-    this.initMaterials(scene);
   }
-
-  initMaterials(scene) {
-        const setMaterialProperties = (material, texture) => {
-            material.setAmbient(0.9, 0.9, 0.9, 1);
-            material.setDiffuse(0.9, 0.9, 0.9, 1);
-            material.setSpecular(0.1, 0.1, 0.1, 1);
-            material.setShininess(10.0);
-            material.loadTexture(texture);
-            material.setTextureWrap('REPEAT', 'REPEAT');
-        };
-
-        this.hemisphereMaterial = new CGFappearance(scene);
-        setMaterialProperties(this.hemisphereMaterial, "images/cape_hill.jpg");
-    }
 
   initBuffers() {
     this.vertices = [];
@@ -52,7 +37,19 @@ export class MyHemisphere extends CGFobject {
         const z = this.radius * Math.sin(-theta) * sinPhi;
         this.vertices.push(x, y, z);
 
-        if (slice < this.numSlices && sector < this.numSectors) {
+        if (slice < this.numSlices && sector < this.numSectors/2  && !this.inverted) {
+          const currentIndex = slice * numVerticesPerSlice + sector;
+          const nextIndex = currentIndex + numVerticesPerSlice;
+
+          if (this.inverted) {
+            this.indices.push(currentIndex, currentIndex + 1, nextIndex);
+            this.indices.push(nextIndex, currentIndex + 1, nextIndex + 1);
+          } else {
+            this.indices.push(currentIndex + 1, currentIndex, nextIndex);
+            this.indices.push(currentIndex + 1, nextIndex, nextIndex + 1);
+          }
+        }
+        else if (slice < this.numSlices/2 && sector < this.numSectors  && this.inverted) {
           const currentIndex = slice * numVerticesPerSlice + sector;
           const nextIndex = currentIndex + numVerticesPerSlice;
 

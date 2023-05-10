@@ -18,6 +18,7 @@ export class MyScene extends CGFscene {
 
     this.initCameras();
     this.initLights();
+  
 
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -105,7 +106,11 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
+    this.pushMatrix();
+    this.rotate(0, 1, 0, 0);
+    this.rotate(0, 0, 0, 1);
     this.tree.display(1,1,1);
+    this.popMatrix();
 
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {

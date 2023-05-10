@@ -1,4 +1,4 @@
-import {CGFobject, CGFappearance, CGFtexture} from '../lib/CGF.js';
+import {CGFobject, CGFappearance, CGFtexture, CGFshader} from '../lib/CGF.js';
 import {MyQuad} from './MyQuad.js';
 /**
  * MyBillboard
@@ -10,6 +10,9 @@ export class MyBillboard extends CGFobject {
         super(scene);
 
         this.quad = new MyQuad(scene);
+
+
+        this.treeShader = new CGFshader(scene.gl, 'shaders/tree.vert', 'shaders/tree.frag');
 
         // -- Materials -- //
         this.material = new CGFappearance(scene);
@@ -28,6 +31,8 @@ export class MyBillboard extends CGFobject {
      * Displays the billboard in a certain position
      */
     display(x, y, z) {
+        //this.scene.setActiveShader(this.treeShader);
+        this.treetex.bind(0);
         // -- Planes -- //
         // -- Material -- //
         this.material.setTexture(this.treetex);

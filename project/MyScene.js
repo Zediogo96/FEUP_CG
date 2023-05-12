@@ -39,7 +39,7 @@ export class MyScene extends CGFscene {
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.scaleFactor = 0.3;
+    this.scaleFactor = 2;
     this.displayNormals = false;
     this.shouldMagnify = true;
 
@@ -109,7 +109,7 @@ export class MyScene extends CGFscene {
     this.pushMatrix();
     this.rotate(0, 1, 0, 0);
     this.rotate(0, 0, 0, 1);
-    this.tree.display(1,1,1);
+    this.tree.display(0,0,0);
     this.popMatrix();
 
     // ---- BEGIN Primitive drawing section

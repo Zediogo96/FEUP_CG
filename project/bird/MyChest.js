@@ -29,8 +29,8 @@ export class MyChest extends CGFobject {
 
     display() {
         this.scene.pushMatrix();
-        this.scene.scale(2.1, 1.1, 1);
-        this.scene.translate(0, 2.5, 0);
+        this.scene.scale(2.1, 0.8, 1);
+        this.scene.translate(0, 4, 0);
         if (this.flap) this.scene.translate(0, 0.1, 0); else this.scene.translate(0, -0.1, 0);
         this.bodySphere.display();
         this.scene.popMatrix();

@@ -8,6 +8,8 @@ import { MyWings } from './MyWings.js';
 import { MyChest } from './MyChest.js';
 import { MyHead } from './MyHead.js';
 
+import { MyTail } from './MyTail.js';
+
 /**
  * MyBirdObjects
  * @constructor
@@ -34,9 +36,9 @@ export class MyBirdObjects extends CGFobject {
 
         this.head = new MyHead(this.scene, this.beakTex, this.wingTex, this.eyeTex);
 
-        this.tail = new MyTriangle(this.scene, 1.6);
+        this.tail = new MyTail(this.scene);
 
-        this.leg = new MyCuboid(this.scene, 0.2, 1.5, 0.2, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1);
+        this.leg = new MyCuboid(this.scene, 0.2, 1.5, 0.2, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1,this.tex1);
         this.legEnd = new MyTriangle(this.scene, 0.5);
 
 
@@ -105,25 +107,15 @@ export class MyBirdObjects extends CGFobject {
 
         this.scene.pushMatrix();
         if (this.flap) this.scene.translate(0, 0.1, 0); else this.scene.translate(0, -0.1, 0);
+        this.scene.translate(1.5, 1.6, 0)
+        this.scene.scale(0.7, 0.7, 0.7);
+        
         this.head.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.wingTex.apply();
-        this.scene.translate(-5.5, 3, -2);
-        this.scene.rotate(- Math.PI / 2, 1, 0, 0);
-        if (this.flap) this.scene.rotate(Math.PI / 12, 1, 0, 0); else this.scene.rotate(- Math.PI / 12, 1, 0, 0);
         this.tail.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(-5.5, 3, 2);
-        this.scene.scale(1, 1, -1);
-        this.scene.rotate(Math.PI / 2, 1, 0, 0);
-        this.scene.rotate(- Math.PI / 2, 0, 0, 1);
-        if (this.flap) this.scene.rotate(Math.PI / 12, 0, 1, 0); else this.scene.rotate(- Math.PI / 12, 0, 1, 0);
-        this.tail.display();
-        this.scene.popMatrix();
+        this.scene.popMatrix();        
 
         this.scene.pushMatrix();
         this.scene.translate(-3, 0, -1)

@@ -77,6 +77,8 @@ export class MyBird extends CGFobject {
         this.bird.body.update(t);
 
         this.bird.wings.update(t);
+
+        this.bird.tail.update(t);
     }
 
     display() {

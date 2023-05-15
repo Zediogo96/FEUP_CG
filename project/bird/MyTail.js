@@ -23,10 +23,10 @@ export class MyTail extends CGFobject {
   update(t) {
     let delta_t = t - this.lastUpdate;
 
-    if (delta_t > 15) { // Adjust the time interval based on the desired speed of the animation
+    if (delta_t > 60) { // Adjust the time interval based on the desired speed of the animation
       this.flapAngle += 0.05 * this.flapDirection; // Adjust the increment value based on the desired rotation speed
 
-      if (this.flapAngle >= Math.PI / 7 || this.flapAngle <= -Math.PI / 7) {
+      if (this.flapAngle >= Math.PI / 40 || this.flapAngle <= -Math.PI / 40) {
         this.flapDirection *= -1; // Reverse direction when reaching the maximum or minimum angle
       }
 
@@ -37,21 +37,21 @@ export class MyTail extends CGFobject {
   display() {
 
     this.scene.pushMatrix();
-    this.scene.translate(-4, 3, -3.5);
+    this.scene.translate(-3.5, 3.5, -3);
     this.scene.rotate(- Math.PI / 2, 1, 0, 0);
     this.scene.rotate(this.flapAngle, 0,1,0)
-
-    this.scene.translate(-1.4, -1.3, 0);
+    this.scene.translate(-1.4, -1.8, 0);
+    this.scene.scale(0.7, 0.7, 0.7);
     this.tail.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
-    this.scene.translate(-4, 3, 3.5);
+    this.scene.translate(-3.5, 3.5, 3.2);
     this.scene.rotate(Math.PI / 2, 1, 0, 0);
     this.scene.rotate(- Math.PI / 2, 0, 0, 1);
     this.scene.rotate(this.flapAngle, 1, 0, 0);
-    this.scene.translate(1.4, -1.3, 0);
-    this.scene.scale(-1, 1, 1);
+    this.scene.translate(2, -1.4, 0);
+    this.scene.scale(-0.7, 0.7, 0.7);
     this.tail.display();
     this.scene.popMatrix();
   }

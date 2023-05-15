@@ -35,19 +35,22 @@ export class MyWings extends CGFobject {
   }
 
   display() {
+
     this.scene.pushMatrix();
-    this.scene.translate(0, 3, 3);
-    this.scene.scale(-0.7, 1, -1.3);
+    this.scene.translate(0, 3, 2);
     this.scene.rotate(-Math.PI / 2, 0, 0, 1);
     this.scene.rotate(this.flapAngle, 0, 1, 0);
+    this.scene.scale(1, -0.5, -1.3);
+    this.scene.translate(0, -0.7, -0.8);
     this.wing.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
-    this.scene.translate(0, 3, -3);
-    this.scene.scale(0.7, 1, 1.3);
-    this.scene.rotate(Math.PI / 2, 0, 0, 1);
+    this.scene.translate(0, 3, -2);
+    this.scene.rotate(-Math.PI / 2, 0, 0, 1);
     this.scene.rotate(-this.flapAngle, 0, 1, 0);
+    this.scene.scale(1, -0.5, 1.3);
+    this.scene.translate(0, -0.7, -0.8);
     this.wing.display();
     this.scene.popMatrix();
   }

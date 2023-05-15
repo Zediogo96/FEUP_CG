@@ -23,6 +23,8 @@ export class MyBirdObjects extends CGFobject {
         // -- ANIMATIONS -- //
         this.flap = false;
         this.lastUpdate = 0;
+        this.flapDirection = 1;
+        this.offset = 0;
 
         // -- TEXTURES -- //
         this.tex1 = new CGFtexture(this.scene, 'images/beak.jpg');
@@ -85,10 +87,23 @@ export class MyBirdObjects extends CGFobject {
 
     update(t) {
         let delta_t = t - this.lastUpdate;
+
         if (delta_t > 500) {
             this.flap = !this.flap;
             this.lastUpdate = t;
         }
+
+        if (delta_t > 20) {
+
+            if (this.offset >= 0.1 || this.offset <= -0.1) {
+                this.flapDirection *= -1;
+            }
+
+            this.offset += 0.01 * this.flapDirection;
+            
+            this.lastUpdate = t;
+        }
+    
     }
 
     display() {
@@ -97,6 +112,7 @@ export class MyBirdObjects extends CGFobject {
 
         this.scene.pushMatrix();
         this.birdBody.apply();
+        this.scene.translate(0, this.offset, 0)
         this.body.display();
         this.scene.popMatrix();
 
@@ -106,10 +122,9 @@ export class MyBirdObjects extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        if (this.flap) this.scene.translate(0, 0.1, 0); else this.scene.translate(0, -0.1, 0);
+        this.scene.translate(0, -this.offset, 0)
         this.scene.translate(1.5, 1.6, 0)
         this.scene.scale(0.7, 0.7, 0.7);
-        
         this.head.display();
         this.scene.popMatrix();
 
@@ -143,7 +158,5 @@ export class MyBirdObjects extends CGFobject {
         this.scene.rotate(- 2.3 * Math.PI / 3, 0, 0, 1)
         this.legEnd.display();
         this.scene.popMatrix();
-
-
     }
 }

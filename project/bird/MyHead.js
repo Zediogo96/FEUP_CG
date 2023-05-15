@@ -17,6 +17,8 @@ export class MyHead extends CGFobject {
 
         this.lastUpdate = 0;
         this.flap = true;
+        this.flapDirection = 1;
+        this.offset = 0;
 
         this.beakTex = beakTex;
         this.wingTex = wingTex;
@@ -52,6 +54,22 @@ export class MyHead extends CGFobject {
         this.normalTex = new CGFappearance(this.scene);
         setMaterialProperties(this.normalTex, 'images/altimetrsy.png'); /* de proposito para dar o branco, lazy af */
     }
+
+    update(t) {
+        let delta_t = t - this.lastUpdate;
+        if (delta_t > 20) {
+
+            if (this.offset >= 0.1 || this.offset <= -0.1) {
+                this.flapDirection *= -1;
+            }
+
+            this.offset += 0.01 * this.flapDirection;
+            
+            this.lastUpdate = t;
+        }
+    }
+
+
 
     display() {
 

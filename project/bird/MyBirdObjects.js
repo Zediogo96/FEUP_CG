@@ -1,14 +1,14 @@
 
 import { CGFappearance, CGFobject, CGFtexture } from '../../lib/CGF.js';
 
-import { MyTriangle } from '../objects/MyTriangle.js';
-import { MyCuboid } from '../objects/MyCuboid.js';
 
 import { MyWings } from './MyWings.js';
 import { MyChest } from './MyChest.js';
 import { MyHead } from './MyHead.js';
 
 import { MyTail } from './MyTail.js';
+
+import { MyLegs } from './MyLegs.js';
 
 /**
  * MyBirdObjects
@@ -40,9 +40,7 @@ export class MyBirdObjects extends CGFobject {
 
         this.tail = new MyTail(this.scene);
 
-        this.leg = new MyCuboid(this.scene, 0.2, 1.5, 0.2, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1,this.tex1);
-        this.legEnd = new MyTriangle(this.scene, 0.5);
-
+        this.legs = new MyLegs(this.scene, this.tex1);
 
         this.initBuffers();
         this.initMaterials();
@@ -88,11 +86,6 @@ export class MyBirdObjects extends CGFobject {
     update(t) {
         let delta_t = t - this.lastUpdate;
 
-        if (delta_t > 500) {
-            this.flap = !this.flap;
-            this.lastUpdate = t;
-        }
-
         if (delta_t > 20) {
 
             if (this.offset >= 0.1 || this.offset <= -0.1) {
@@ -130,33 +123,12 @@ export class MyBirdObjects extends CGFobject {
 
         this.scene.pushMatrix();
         this.tail.display();
-        this.scene.popMatrix();        
-
-        this.scene.pushMatrix();
-        this.scene.translate(-3, 0, -1)
-        this.scene.rotate(- Math.PI / 8, 0, 0, 1);
-        this.leg.display();
-        this.scene.popMatrix();
-
+        this.scene.popMatrix();       
+        
         this.scene.pushMatrix();
         this.beakTex.apply();
-        this.scene.translate(-3, 0, 1)
-        this.scene.rotate(- Math.PI / 8, 0, 0, 1);
-        this.leg.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(-3, -0.5, -1)
-        this.scene.rotate(Math.PI / 2, 0, 1, 0)
-        this.scene.rotate(- 2.3 * Math.PI / 3, 0, 0, 1)
-        this.legEnd.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.scene.translate(-3, -0.5, 1)
-        this.scene.rotate(Math.PI / 2, 0, 1, 0)
-        this.scene.rotate(- 2.3 * Math.PI / 3, 0, 0, 1)
-        this.legEnd.display();
-        this.scene.popMatrix();
+        this.scene.translate(0, 0.8, 0);
+        this.legs.display();
+        this.scene.popMatrix();        
     }
 }

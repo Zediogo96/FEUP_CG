@@ -43,6 +43,7 @@ export class MyBird extends CGFobject {
         this.posZ = 0;
         this.lastUpdate = 0;
         this.current_y_state = 1;
+        this.last_y_state = 1;
     }
 
     turn(val) {
@@ -51,7 +52,6 @@ export class MyBird extends CGFobject {
     }
 
     accelerate(val) {
-        console.log(this.scene.speedFactor)
         this.velocity += val * this.scene.speedFactor;
         this.velocity = ((this.velocity > 0) ? this.velocity : 0);
         this.current_y_state = 1;

@@ -68,11 +68,14 @@ export class MyBird extends CGFobject {
     update(t) {
         var delta_t = t - this.lastUpdate;
 
-        if (this.velocity === 0) this.current_y_state = this.y_state.STATIONARY;
+        if (this.velocity === 0) {
+            this.current_y_state = this.y_state.STATIONARY;
+            // MAY NEED TO BE REMOVED IF OTHER FEATURES ARE ADDED
+        }
 
         if (delta_t > 10) {
 
-            if (this.current_y_state == this.y_state.STATIONARY) {
+            if (this.current_y_state == this.y_state.STATIONARY || ((this.current_y_state === this.y_state.ASCENDING || this.current_y_state === this.y_state.DESCENDING) && this.velocity === 0)) {
                 this.offset += 0.01 * this.offset_dir;
 
                 if (this.offset >= 0.3 || this.offset <= -0.3) this.offset_dir *= -1;
@@ -83,7 +86,6 @@ export class MyBird extends CGFobject {
 
         this.posX += this.velocity * Math.sin(this.angleY);
         this.posZ += this.velocity * Math.cos(this.angleY);
-
 
         this.position += this.velocity * (delta_t / 1000);
 
@@ -102,6 +104,8 @@ export class MyBird extends CGFobject {
         this.scene.translate(this.posX, this.posY, this.posZ);
 
         let rotationAngle = Math.min(Math.abs(this.angleY), 0.3);
+
+        if (this.velocity === 0) (rotationAngle > 0) ? rotationAngle -= rotationAngle : rotationAngle += rotationAngle;
 
         (this.angleY < 0) ? rotationAngle *= -1 : rotationAngle *= 1;
 

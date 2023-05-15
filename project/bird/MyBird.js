@@ -15,12 +15,15 @@ export class MyBird extends CGFobject {
         this.posY = initial_y;
         this.posZ = 0;
         this.lastUpdate = 0;
+        this.offset = 0;
+        this.offset_dir = 1;
 
         this.y_state = {
             NORMAL: 1,
             ASCENDING: 2,
             DESCENDING: 3,
-            WAITING_CHANGE: 4
+            WAITING_CHANGE: 4,
+            STATIONARY: 5
         };
 
         this.last_y_state = this.y_state.NORMAL;
@@ -42,7 +45,7 @@ export class MyBird extends CGFobject {
         this.posY = 0;
         this.posZ = 0;
         this.lastUpdate = 0;
-        this.current_y_state = 1;
+        this.current_y_state = 5;
         this.last_y_state = 1;
     }
 
@@ -65,8 +68,22 @@ export class MyBird extends CGFobject {
     update(t) {
         var delta_t = t - this.lastUpdate;
 
+        if (this.velocity === 0) this.current_y_state = this.y_state.STATIONARY;
+
+        if (delta_t > 10) {
+
+            if (this.current_y_state == this.y_state.STATIONARY) {
+                this.offset += 0.01 * this.offset_dir;
+
+                if (this.offset >= 0.3 || this.offset <= -0.3) this.offset_dir *= -1;
+                this.posY += this.offset;
+            }
+
+        }
+
         this.posX += this.velocity * Math.sin(this.angleY);
         this.posZ += this.velocity * Math.cos(this.angleY);
+
 
         this.position += this.velocity * (delta_t / 1000);
 

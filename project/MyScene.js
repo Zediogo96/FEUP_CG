@@ -45,7 +45,7 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = true;
+    this.displayTerrain = false;
 
     this.enableTextures(true);
 
@@ -106,12 +106,7 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
-    this.pushMatrix();
-    this.rotate(0, 1, 0, 0);
-    this.rotate(0, 0, 0, 1);
-    this.tree.display(0,0,0);
-    this.popMatrix();
-
+    
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
       this.pushMatrix();
@@ -119,13 +114,31 @@ export class MyScene extends CGFscene {
       this.sphere.display();
       this.popMatrix();
     }
-
+    
     if (this.displayTerrain) {
       this.pushMatrix();
       this.appearance.apply();
       this.terrain.display();
       this.popMatrix();
     }
+
+    this.pushMatrix();
+    this.rotate(0, 1, 0, 0);
+    this.rotate(0, 0, 0, 1);
+    this.tree.display(-10,0,-10);
+    this.popMatrix();
+
+    this.pushMatrix();
+    this.tree.display(-10,0,-10);
+    this.popMatrix();
+
+    // this.pushMatrix();
+    // this.appearance.apply();
+    // this.rotate(-Math.PI/2, 1, 0, 0);
+    // this.scale(400, 400, 1);
+    // this.plane.display();
+    // this.popMatrix();
+
 
     if (this.displayPanorama){ this.panorama.display();}
 

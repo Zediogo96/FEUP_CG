@@ -20,12 +20,18 @@ export class MyWings extends CGFobject {
     this.wingEnd = new MyTriangularPrism(this.scene, quadHeight, 0.2);
   }
 
-  update(t) {
+  update(t, y_state, velocity) {
     let delta_t = t - this.lastUpdate;
 
     if (delta_t > 15) { // Adjust the time interval based on the desired speed of the animation
-      this.flapAngle += 0.05 * this.flapDirection; // Adjust the increment value based on the desired rotation speed
 
+      if (y_state === 5) {
+        this.flapAngle += 0.05 * this.flapDirection / 1.9
+      }
+      else {
+      
+      this.flapAngle += 0.05 * this.flapDirection * ((velocity < 0.7) ? 2.5 : velocity); // Adjust the increment value based on the desired rotation speed
+      }
       if (this.flapAngle >= Math.PI / 6 || this.flapAngle <= -Math.PI / 6) {
         this.flapDirection *= -1; // Reverse direction when reaching the maximum or minimum angle
       }

@@ -38,14 +38,11 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
-
     this.bird = new MyBird(this,3);
-
-    this.test = new MyTriangularPrism(this, 5);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.scaleFactor = 0.3;
+    this.scaleFactor = 0.45;
     this.displayNormals = false;
     this.shouldMagnify = true;
 
@@ -68,8 +65,8 @@ export class MyScene extends CGFscene {
     this.appearance.setShininess(10.0);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
-
   }
+
   initLights() {
     this.lights[0].setPosition(15, 5, 5, 1);
     this.lights[0].setAmbient(1.0, 1.0, 1.0, 1.0);
@@ -84,6 +81,7 @@ export class MyScene extends CGFscene {
     this.lights[1].update();
 
   }
+
   initCameras() {
     this.camera = new CGFcamera(
       2,
@@ -120,7 +118,6 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyR")) {
       this.bird.reset();
     }
-
     /* if (keysPressed)
       console.log(text); */
   }
@@ -177,10 +174,6 @@ export class MyScene extends CGFscene {
       this.bird.display();
       this.popMatrix();
     }
-
-    // this.pushMatrix();
-    // this.test.display();
-    // this.popMatrix();
 
     // ---- END Primitive drawing section
   }

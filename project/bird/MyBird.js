@@ -78,7 +78,7 @@ export class MyBird extends CGFobject {
             if (this.current_y_state == this.y_state.STATIONARY || ((this.current_y_state === this.y_state.ASCENDING || this.current_y_state === this.y_state.DESCENDING) && this.velocity === 0)) {
                 this.offset += 0.01 * this.offset_dir;
 
-                if (this.offset >= 0.3 || this.offset <= -0.3) this.offset_dir *= -1;
+                if (this.offset >= 0.21 || this.offset <= -0.21) this.offset_dir *= -1;
                 this.posY += this.offset;
             }
 
@@ -95,7 +95,7 @@ export class MyBird extends CGFobject {
 
         this.bird.tail.update(t);
 
-        this.bird.wings.update(t);
+        this.bird.wings.update(t, this.current_y_state, this.velocity);
     }
 
     display() {

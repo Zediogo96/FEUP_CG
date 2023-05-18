@@ -40,7 +40,7 @@ export class MyScene extends CGFscene {
     this.tree = new MyBillboard(this);
     this.treeGroupPatch = new MyTreeGroupPatch(this);
     this.treeRowPatch = new MyTreeRowPatch(this);
-    this.treeSpawner = new MyTreeSpawner(this, 1, 1);
+    this.treeSpawner = new MyTreeSpawner(this, 0, 0);
     
 
     //Objects connected to MyInterface
@@ -49,7 +49,7 @@ export class MyScene extends CGFscene {
     this.displayNormals = false;
     this.shouldMagnify = true;
 
-    this.displayPanorama = false;
+    this.displayPanorama = true;
     this.displaySphere = false;
     this.displayTerrain = false;
 

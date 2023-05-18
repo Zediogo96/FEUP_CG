@@ -1,8 +1,10 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
-import { MyPlane } from "./MyPlane.js";
-import { MySphere } from "./MySphere.js";
+import { MyPlane } from "./objects/MyPlane.js";
+import { MySphere } from "./objects/MySphere.js";
+import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyBird } from "./bird/MyBird.js";
 import {MyBillboard} from "./MyBillboard.js";
 import { MyTreeGroupPatch } from "./MyTreeGroupPatch.js";
 import { MyTreeRowPatch } from "./MyTreeRowPatch.js";
@@ -31,12 +33,20 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+    // -- Update the scene every 12 milliseconds -- //
+    this.setUpdatePeriod(12);
+
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
+    this.bird = new MyBird(this,3);
+
+    //Objects connected to MyInterface
+    this.displayAxis = true;
+    this.scaleFactor = 0.45;
     this.tree = new MyBillboard(this);
     this.treeGroupPatch = new MyTreeGroupPatch(this);
     this.treeRowPatch = new MyTreeRowPatch(this);
@@ -52,6 +62,10 @@ export class MyScene extends CGFscene {
     this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = true;
+    this.displayBird = true;
+
+    // MOVEMENT RELATED VARIABLES
+    this.speedFactor = 1;
 
     this.enableTextures(true);
 
@@ -64,8 +78,8 @@ export class MyScene extends CGFscene {
     this.appearance.setShininess(10.0);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
-
   }
+
   initLights() {
     this.lights[0].setPosition(15, 5, 5, 1);
     this.lights[0].setAmbient(1.0, 1.0, 1.0, 1.0);
@@ -80,21 +94,59 @@ export class MyScene extends CGFscene {
     this.lights[1].update();
 
   }
+
   initCameras() {
     this.camera = new CGFcamera(
       45,
       0.1,
       500,
-      vec3.fromValues(50, 10, 15),
+      vec3.fromValues(5, 1, 5),
       vec3.fromValues(0, 0, 0)
     );
   }
+
+  checkKeys() {
+    var keysPressed = false;
+    // Check for key codes e.g. in https://keycode.info/
+    if (this.gui.isKeyPressed("KeyW")) {
+      this.bird.accelerate(0.01 * this.speedFactor);
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyS")) {
+      this.bird.accelerate(-0.08 * this.speedFactor);
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyA")) {
+       this.bird.turn(Math.PI / 90);
+    }
+    if (this.gui.isKeyPressed("KeyD")) {
+      this.bird.turn(-Math.PI / 90);
+    }
+    if (this.gui.isKeyPressed("Space")) {
+      this.bird.ascend(0.1  * this.speedFactor);
+    }
+    if (this.gui.isKeyPressed("ControlLeft")) {
+      this.bird.ascend(-0.1 * this.speedFactor);
+    }
+    if (this.gui.isKeyPressed("KeyR")) {
+      this.bird.reset();
+    }
+    /* if (keysPressed)
+      console.log(text); */
+  }
+
   setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
+
+  update(t) {
+    this.checkKeys();
+    this.bird.update(t);
+  }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -128,74 +180,18 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
 
+    if (this.displayPanorama) { this.panorama.display(); }
+
     this.pushMatrix();
     this.treeSpawner.display();
     this.popMatrix();
 
-    // this.pushMatrix();
-    // this.treeRowPatch.display();
-    // this.popMatrix();
-
-      // this.pushMatrix();
-      // this.tree.display(0, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(-10, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(-20, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(30, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(50, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(40, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(60, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(70, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(80, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(90, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(100, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(110, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(120, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(130, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(140, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(140, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(150, 0, 0);
-      // this.popMatrix();
-      // this.pushMatrix();
-      // this.tree.display(170, 0, 0);
-      // this.popMatrix();
-
-
-
-    if (this.displayPanorama){ this.panorama.display();}
-
-    
+    if (this.displayBird) {
+      this.pushMatrix();
+      this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor)
+      this.bird.display();
+      this.popMatrix();
+    }
 
     // ---- END Primitive drawing section
   }

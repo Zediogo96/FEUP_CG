@@ -25,8 +25,8 @@ export class MyPanorama extends CGFobject {
         };
 
         this.appeareance = new CGFappearance(this.scene);
-        this.panoramaTexture = new CGFtexture(this.scene, 'images/panorama4.jpg');
-        
+        this.panoramaTexture = new CGFtexture(this.scene, 'images/cape_hill.jpg');
+        console.log(this.panoramaTexture)
 
         setTextureProperties(this.appeareance, this.panoramaTexture);
     }
@@ -57,9 +57,9 @@ export class MyPanorama extends CGFobject {
         this.scene.pushMatrix();
         this.appeareance.apply();
         // translate the sphere to be centered on the camera position
-        // this.scene.translate(cameraPos[0], cameraPos[1] + (this.sphere.radius / 2), cameraPos[2]);
+       this.scene.translate(cameraPos[0]/2, cameraPos[1]/2 , cameraPos[2]/2);
         // rotate the sphere so that the camera is always looking at the center of the sphere
-        this.scene.rotate(- Math.PI / 2, 0, 0, 1);
+        //this.scene.rotate(- Math.PI / 2, 0, 0, 1); 
         this.sphere.display();
         (this.scene.displayNormals) ? this.sphere.enableNormalViz() : this.sphere.disableNormalViz();
         this.scene.popMatrix();

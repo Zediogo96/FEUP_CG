@@ -5,7 +5,10 @@ import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyBird } from "./bird/MyBird.js";
-
+import {MyBillboard} from "./MyBillboard.js";
+import { MyTreeGroupPatch } from "./MyTreeGroupPatch.js";
+import { MyTreeRowPatch } from "./MyTreeRowPatch.js";
+import { MyTreeSpawner } from "./MyTreeSpawner.js";
 
 /**
  * MyScene
@@ -20,6 +23,7 @@ export class MyScene extends CGFscene {
 
     this.initCameras();
     this.initLights();
+  
 
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -43,6 +47,15 @@ export class MyScene extends CGFscene {
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 0.45;
+    this.tree = new MyBillboard(this);
+    this.treeGroupPatch = new MyTreeGroupPatch(this);
+    this.treeRowPatch = new MyTreeRowPatch(this);
+    this.treeSpawner = new MyTreeSpawner(this, 0, 0);
+    
+
+    //Objects connected to MyInterface
+    this.displayAxis = true;
+    this.scaleFactor = 2;
     this.displayNormals = false;
     this.shouldMagnify = true;
 
@@ -84,9 +97,9 @@ export class MyScene extends CGFscene {
 
   initCameras() {
     this.camera = new CGFcamera(
-      2,
+      45,
       0.1,
-      1000,
+      500,
       vec3.fromValues(5, 1, 5),
       vec3.fromValues(0, 0, 0)
     );
@@ -151,6 +164,7 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
+    
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
       this.pushMatrix();
@@ -158,7 +172,7 @@ export class MyScene extends CGFscene {
       this.sphere.display();
       this.popMatrix();
     }
-
+    
     if (this.displayTerrain) {
       this.pushMatrix();
       this.appearance.apply();
@@ -167,6 +181,10 @@ export class MyScene extends CGFscene {
     }
 
     if (this.displayPanorama) { this.panorama.display(); }
+
+    this.pushMatrix();
+    this.treeSpawner.display();
+    this.popMatrix();
 
     if (this.displayBird) {
       this.pushMatrix();

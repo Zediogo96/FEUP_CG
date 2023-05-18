@@ -4,6 +4,9 @@ import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import {MyBillboard} from "./MyBillboard.js";
+import { MyTreeGroupPatch } from "./MyTreeGroupPatch.js";
+import { MyTreeRowPatch } from "./MyTreeRowPatch.js";
+import { MyTreeSpawner } from "./MyTreeSpawner.js";
 
 /**
  * MyScene
@@ -35,6 +38,9 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
     this.tree = new MyBillboard(this);
+    this.treeGroupPatch = new MyTreeGroupPatch(this);
+    this.treeRowPatch = new MyTreeRowPatch(this);
+    this.treeSpawner = new MyTreeSpawner(this, 1, 1);
     
 
     //Objects connected to MyInterface
@@ -123,21 +129,68 @@ export class MyScene extends CGFscene {
     }
 
     this.pushMatrix();
-    this.rotate(0, 1, 0, 0);
-    this.rotate(0, 0, 0, 1);
-    this.tree.display(-10,0,-10);
-    this.popMatrix();
-
-    this.pushMatrix();
-    this.tree.display(-10,0,-10);
+    this.treeSpawner.display();
     this.popMatrix();
 
     // this.pushMatrix();
-    // this.appearance.apply();
-    // this.rotate(-Math.PI/2, 1, 0, 0);
-    // this.scale(400, 400, 1);
-    // this.plane.display();
+    // this.treeRowPatch.display();
     // this.popMatrix();
+
+      // this.pushMatrix();
+      // this.tree.display(0, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(-10, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(-20, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(30, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(50, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(40, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(60, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(70, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(80, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(90, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(100, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(110, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(120, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(130, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(140, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(140, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(150, 0, 0);
+      // this.popMatrix();
+      // this.pushMatrix();
+      // this.tree.display(170, 0, 0);
+      // this.popMatrix();
+
 
 
     if (this.displayPanorama){ this.panorama.display();}

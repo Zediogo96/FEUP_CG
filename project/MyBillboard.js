@@ -10,75 +10,64 @@
             super(scene);
             
             this.quad = new MyQuad(scene);
+
+            // -- Shaders -- //
+            this.treeShader = new CGFshader(scene.gl, "shaders/tree.vert", "shaders/tree.frag");
             
-            this.treeShader = new CGFshader(scene.gl, 'shaders/tree.vert', 'shaders/tree.frag');
             this.texture1 = new CGFtexture(scene, 'images/billboardtree.png');
             this.texture2 = new CGFtexture(scene, 'images/heightmap.jpg');
+
+
             
-            
-            // -- Materials -- //
-            this.material = new CGFappearance(scene);
-            this.material.setAmbient(1.0, 1.0, 1.0, 1.0);
-            this.material.setDiffuse(0.6, 0.6, 0.6, 1.0);
-            this.material.setSpecular(0.4, 0.4, 0.4, 1.0);
-            this.material.setShininess(5.0);
-            this.material.setTextureWrap('REPEAT', 'REPEAT');
-            
-            // -- Textures -- //
-            this.treetex = new CGFtexture(scene, "images/billboardtree.png");
             
         }
+
+        
         
         /**
          * Displays the billboard in a certain position
         */
-       display(x, y, z) {
+       display(x, z) {
         
-            let xc = (x)*0.005;
-            let yc = (z)*0.005;
-           
-           console.log(xc);
-           console.log(yc);    
-           this.treeShader.setUniformsValues({uSampler4: 4, uSampler5:5, xCoord: xc, yCoord: yc});
-           
+
+        var imageURL = "images/heightmap.jpg";
+
+       var imageCoords = convertCoordinatesToImage(x, z, 128);
+       var yCoord;
+       yCoord = getRedFromJPEG(imageURL, imageCoords.x, imageCoords.y);
+      // console.log("X: " + x + " yCoord: " + yCoord);
+    //    if(yCoord == null) return;
+    //    else if (yCoord < 78 || yCoord>150) return;
+    //    else if(yCoord >= 78 && yCoord < 90) yCoord = yCoord *0.385;
+    //     else if(yCoord >= 120 && yCoord <= 150) yCoord = yCoord *0.375;
+    //    else yCoord = yCoord *0.37;
+       
+           this.scene.setActiveShader(this.treeShader);
+           this.treeShader.setUniformsValues({time: performance.now()/1000, xOff: x});
            this.scene.pushMatrix();
             // -- Rotation -- //
-        // this.camDir = this.scene.camera.direction;
             this.camPos = this.scene.camera.position;
             this.billboardToCamera = [this.camPos[0] - x, 0, this.camPos[2] - z];
             this.billboardToCameraNorm = Math.sqrt(this.billboardToCamera[0]*this.billboardToCamera[0] + this.billboardToCamera[1]*this.billboardToCamera[1] + this.billboardToCamera[2]*this.billboardToCamera[2]);
             this.normalDir = [this.quad.normals[0], 0, this.quad.normals[2]];
             this.normalNorm = Math.sqrt(this.normalDir[0]*this.normalDir[0] + this.normalDir[1]*this.normalDir[1] + this.normalDir[2]*this.normalDir[2]);
-            // this.camDirNorm = Math.sqrt(this.camDir[0]*this.camDir[0] + this.camDir[1]*this.camDir[1] + this.camDir[2]*this.camDir[2]);
-            //this.camDir = [-this.camDir[0]/this.camDirNorm, -this.camDir[1]/this.camDirNorm, -this.camDir[2]/this.camDirNorm];
             this.normalDir = [this.normalDir[0]/this.normalNorm, this.normalDir[1]/this.normalNorm, this.normalDir[2]/this.normalNorm];
             this.billboardToCamera = [this.billboardToCamera[0]/this.billboardToCameraNorm, this.billboardToCamera[1]/this.billboardToCameraNorm, this.billboardToCamera[2]/this.billboardToCameraNorm];
-            //console.log(this.billboardToCamera);
             this.angle = vec3.create();
             this.angle = vec3.dot(this.billboardToCamera, this.normalDir);
             this.rotationAngle = Math.acos(this.angle);
             this.rotationAxis = vec3.create();
             vec3.cross(this.rotationAxis, this.normalDir,this.billboardToCamera);
             
-            if(this.rotationAxis[z] < 0)
-                this.rotationAngle = this.rotationAngle;
-                
-            // -- Planes -- //
-            // -- Material -- //
-            this.material.setTexture(this.treetex);
-            this.material.apply();
-            // -- Object Front -- //
+            
 
-            this.scene.setActiveShader(this.treeShader);
-            this.texture1.bind(4);
-            this.texture2.bind(5);
-
-            this.scene.translate(x,y+6,z);
+            this.scene.translate(x,yCoord*0,z);
             this.scene.rotate(this.rotationAngle, this.rotationAxis[2], this.rotationAxis[1], 0);
             this.scene.scale(6, 12, 1);
-            
             this.quad.display();
             this.scene.popMatrix();
+
+            console.log();
 
             
             // restore default shader (will be needed for drawing the axis in next frame)
@@ -97,4 +86,33 @@
         disableNormalViz() {
             this.quad.disableNormalViz()
         }
+
+
+       
     }
+
+    function getRedFromJPEG(imageURL, x, y) {
+        var img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = imageURL;
+
+            var canvas = document.createElement("canvas");
+            var context = canvas.getContext("2d");
+            context.drawImage(img, 0, 0);
+            var imageData = context.getImageData(0, 0, img.width, img.height).data;
+
+            var pixelIndex = (y * img.width + x) * 4;
+            var red = imageData[pixelIndex+1];
+            
+        return red;
+
+    }
+
+
+
+        function convertCoordinatesToImage(x, y, imageSize) {
+            var newX = Math.floor((x + 200) * (imageSize - 1) / 400);
+            var newY = Math.floor((y + 200) * (imageSize - 1) / 400);
+            return { x: newX, y: newY };
+        }
+        

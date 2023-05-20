@@ -14,6 +14,8 @@ import { MyTreeRowPatch } from './MyTreeRowPatch.js';
             this.groupQuantity = groupQuantity;
             this.rowQuantity = rowQuantity;
 
+            
+
             this.treeGroup = new MyTreeGroupPatch(scene);
             this.treeRow = new MyTreeRowPatch(scene);      
             
@@ -21,17 +23,18 @@ import { MyTreeRowPatch } from './MyTreeRowPatch.js';
             this.zCoords = [];
 
             for(let i = 0; i < this.groupQuantity; i++){
-                this.xCoords.push(((Math.random() *2)-1) * 1);
-                this.zCoords.push(((Math.random() *2)-1) * 1);
+                this.xCoords.push(((Math.random() *2)-1) * 150);
+                this.zCoords.push(((Math.random() *2)-1) * 150);
                 
             }
             
             for(let i = 0; i < this.rowQuantity; i++){
-                this.xCoords.push(((Math.random() *2)-1) * 1);
-                this.zCoords.push(((Math.random() *2)-1) * 1);
+                this.xCoords.push(((Math.random() *2)-1) * 150);
+                this.zCoords.push(((Math.random() *2)-1) * 150);
             }
             
-
+            // restore default shader (will be needed for drawing the axis in next frame)
+            this.scene.setActiveShader(this.scene.defaultShader);
         }
 
         
@@ -41,17 +44,19 @@ import { MyTreeRowPatch } from './MyTreeRowPatch.js';
         */
        display() {
         let counter = 0;
+        let treeNumberGroup = this.groupQuantity*9;
+        let treeNumberRow = this.rowQuantity*6;
 
             for(let i = 0; i < this.groupQuantity; i++){
-                this.treeGroup.display(this.xCoords[i], this.zCoords[i]);
+                this.treeGroup.display(this.xCoords[i], this.zCoords[i], treeNumberGroup);
                 counter++;
             }
 
             for(let i = 0; i < this.rowQuantity; i++){
-                this.treeRow.display(this.xCoords[i+counter], this.zCoords[i+counter]);
+                this.treeRow.display(this.xCoords[i+counter], this.zCoords[i+counter], treeNumberRow);
             }
 
-
+            
 
 
 

@@ -31,6 +31,16 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
         this.gui.add(this.scene, 'speedFactor', 0.1, 3).name('Speed Factor');
 
+        //Frame rate element in GUI
+        this.gui.add(this.scene, 'fps').name('FPS').listen();
+        this.gui.add(this.scene, 'terrainFrameTime').name('Terrain Time').listen();
+        this.gui.add(this.scene, 'sphereFrameTime').name('Sphere Time').listen();
+        this.gui.add(this.scene, 'panoramaFrameTime').name('Panorama Time').listen();
+        this.gui.add(this.scene, 'birdFrameTime').name('Bird Time').listen();
+        this.gui.add(this.scene, 'treesFrameTime').name('Trees Time').listen();
+
+
+
         this.initKeys();
 
         return true;

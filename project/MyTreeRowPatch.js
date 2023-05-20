@@ -9,7 +9,11 @@
         constructor(scene) {
             super(scene);
             
-            this.tree = new MyBillboard(scene);       
+            this.tree = new MyBillboard(scene);   
+            
+            
+            // -- Shaders -- //
+            this.treeShader = new CGFshader(scene.gl, "shaders/tree.vert", "shaders/tree.frag");
             
             this.offset1 = ((Math.random() *2)-1) *3;
             this.offset2 = ((Math.random() *2)-1) *3;
@@ -39,6 +43,7 @@
             this.treetex6 = new CGFtexture(scene, "images/tree6.png");
 
             // , this.treetex3, this.treetex4,
+            this.counter = 0;
 
             this.textures = [this.treetex1, this.treetex2, this.treetex5, this.treetex6];
             
@@ -69,32 +74,40 @@
         /**
          * Displays the billboard in a certain position
         */
-       display(x, z) {
+       display(x, z, treeNumberRow) {
+            this.counter++;
 
+            this.treeShader.setUniformsValues({time: performance.now()/1000, xOff: x-30+this.offset1});
             this.material.setTexture(this.textureSelection1);
             this.material.apply();
-            this.tree.display(x-30+this.offset1, z+this.offset6);
+            this.tree.display(x-30+this.offset1, z+this.offset6, treeNumberRow);
             
+            this.treeShader.setUniformsValues({time: performance.now()/1000, xOff: x-20+this.offset5});
             this.material.setTexture(this.textureSelection2);
             this.material.apply();
-            this.tree.display(x-20+this.offset5, z+this.offset3);
+            this.tree.display(x-20+this.offset5, z+this.offset3, treeNumberRow);
             
+            this.treeShader.setUniformsValues({time: performance.now()/1000, xOff: x-10+this.offset9});
             this.material.setTexture(this.textureSelection3);
             this.material.apply();
-            this.tree.display(x-10+this.offset9, z+this.offset4);
+            this.tree.display(x-10+this.offset9, z+this.offset4, treeNumberRow);
 
+            this.treeShader.setUniformsValues({time: performance.now()/1000, xOff:x+this.offset4});
             this.material.setTexture(this.textureSelection4);
             this.material.apply();
-            this.tree.display(x+this.offset4, z+this.offset5);
+            this.tree.display(x+this.offset4, z+this.offset5, treeNumberRow);
             
+            this.treeShader.setUniformsValues({time: performance.now()/1000, xOff: x+10+this.offset6});
             this.material.setTexture(this.textureSelection5);
             this.material.apply();
-            this.tree.display(x+10+this.offset6, z+this.offset7);
+            this.tree.display(x+10+this.offset6, z+this.offset7, treeNumberRow);
             
+            this.treeShader.setUniformsValues({time: performance.now()/1000, xOff: x+20+this.offset2});
             this.material.setTexture(this.textureSelection6);
             this.material.apply();
-            this.tree.display(x+20+this.offset2, z+this.offset8);
+            this.tree.display(x+20+this.offset2, z+this.offset8, treeNumberRow);
 
+            
 
         }
 

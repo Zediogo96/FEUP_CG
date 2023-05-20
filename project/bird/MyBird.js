@@ -91,6 +91,8 @@ export class MyBird extends CGFobject {
 
         this.lastUpdate = t;
 
+        // this.scene.camera.setPosition(this.posX, this.posY+1, this.posZ);
+
         this.bird.update(t);
 
         this.bird.tail.update(t);
@@ -99,6 +101,7 @@ export class MyBird extends CGFobject {
     }
 
     display() {
+        
 
         this.scene.pushMatrix();
         this.scene.translate(this.posX, this.posY, this.posZ);
@@ -122,8 +125,9 @@ export class MyBird extends CGFobject {
         }
 
         this.last_y_state = this.current_y_state;
-
+        this.scene.scale(0.1, 0.1, 0.1);
         this.bird.display();
         this.scene.popMatrix();
+        
     }
 }

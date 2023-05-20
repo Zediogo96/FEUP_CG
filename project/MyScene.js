@@ -50,7 +50,7 @@ export class MyScene extends CGFscene {
     this.tree = new MyBillboard(this);
     this.treeGroupPatch = new MyTreeGroupPatch(this);
     this.treeRowPatch = new MyTreeRowPatch(this);
-    this.treeSpawner = new MyTreeSpawner(this, 0, 0);
+    this.treeSpawner = new MyTreeSpawner(this, 20, 20);
     
 
     //Objects connected to MyInterface
@@ -61,8 +61,15 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = true;
+    this.displayTerrain = false;
     this.displayBird = true;
+
+    this.fps = 0;
+    this.terrainFrameTime = 0;
+    this.sphereFrameTime = 0;
+    this.panoramaFrameTime = 0;
+    this.birdFrameTime = 0;
+    this.treesFrameTime = 0;
 
     // MOVEMENT RELATED VARIABLES
     this.speedFactor = 1;
@@ -148,6 +155,10 @@ export class MyScene extends CGFscene {
   }
 
   display() {
+    
+    console.log(this.camera.position);
+
+    let fullStart = new Date().getTime();
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -167,31 +178,55 @@ export class MyScene extends CGFscene {
     
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
+      let sphereStartTime = new Date().getTime();
       this.pushMatrix();
       this.appearance.apply();
       this.sphere.display();
       this.popMatrix();
+      let sphereEndTime = new Date().getTime();
+      this.sphereFrameTime = sphereEndTime - sphereStartTime;
     }
     
     if (this.displayTerrain) {
+      let terrainStartTime = new Date().getTime();
       this.pushMatrix();
       this.appearance.apply();
       this.terrain.display();
       this.popMatrix();
+      let terrainEndTime = new Date().getTime();
+      this.terrainFrameTime = terrainEndTime - terrainStartTime;
     }
 
-    if (this.displayPanorama) { this.panorama.display(); }
+    if (this.displayPanorama) {
+      let panoramaStartTime = new Date().getTime();
+       this.panorama.display();
+      let panoramaEndTime = new Date().getTime();
+      this.panoramaFrameTime = panoramaEndTime - panoramaStartTime;
+       }
 
+    let treeStartTime = new Date().getTime();
     this.pushMatrix();
     this.treeSpawner.display();
     this.popMatrix();
+    let treesEndTime = new Date().getTime();
+    this.treesFrameTime = treesEndTime - treeStartTime;
 
     if (this.displayBird) {
+      let birdStartTime = new Date().getTime();
       this.pushMatrix();
+      this.setActiveShader(this.defaultShader);
       this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor)
       this.bird.display();
       this.popMatrix();
+      let birdEndTime = new Date().getTime();
+      this.birdFrameTime = birdEndTime - birdStartTime;
     }
+    //this.camera.setPosition(this.bird.x, this.bird.y, this.bird.z);
+
+    let fullEnd = new Date().getTime();
+    let fullTime = fullEnd - fullStart;
+    this.fps = 1000 / fullTime;
+    // console.log(fullTime);
 
     // ---- END Primitive drawing section
   }

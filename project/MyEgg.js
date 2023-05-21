@@ -10,7 +10,7 @@ import { MyHemisphere } from './MyHemisphere.js';
  * @param scene - Reference to MyScene object
  */
 export class MyEgg extends CGFobject {
-    constructor(scene) {
+    constructor(scene, posX, posY, posZ) {
 
         super(scene);
 
@@ -19,6 +19,8 @@ export class MyEgg extends CGFobject {
 
         this.hemisphere1 = new MyHemisphere(this.scene, 30, 16, 2, false);
         this.hemisphere2 = new MyHemisphere(this.scene, 30, 16, 2, false);
+
+        this.position = [posX, posY, posZ];
 
         this.initBuffers();
         this.initMaterials();
@@ -75,5 +77,10 @@ export class MyEgg extends CGFobject {
         this.hemisphere2.display();
         this.scene.popMatrix();
         
+    }
+
+
+    updatePosition(posX, posY, posZ) {
+        this.position = [posX, posY, posZ];
     }
 }

@@ -10,7 +10,7 @@ import { MyHemisphere } from './MyHemisphere.js';
  * @param scene - Reference to MyScene object
  */
 export class MyNest extends CGFobject {
-    constructor(scene) {
+    constructor(scene, posX, posY, posZ) {
 
         super(scene);
 
@@ -18,6 +18,8 @@ export class MyNest extends CGFobject {
         //this.nestShader = new CGFshader(scene.gl, 'lib/CGF/shaders/Gouraud/textured/fragment.glsl');
         this.tex1 = new CGFtexture(this.scene, 'images/cape_hill.jpg');
         this.tex2 = new CGFtexture(this.scene, 'images/terrain.jpg');
+
+        this.position = [posX, posY, posZ];
 
         this.hemisphere1 = new MyHemisphere(this.scene, 30, 16, 2, false);
         this.hemisphere2 = new MyHemisphere(this.scene, 30, 16, 2, true);

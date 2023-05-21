@@ -26,7 +26,6 @@ export class MyScene extends CGFscene {
     this.initCameras();
     this.initLights();
 
-
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -44,8 +43,8 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
-    this.egg = new MyEgg(this);
-    this.nest = new MyNest(this);
+    this.egg = new MyEgg(this, 0, 32.5, 21);
+    this.nest = new MyNest(this, -45, 32.5, -27);
     this.bird = new MyBird(this, 30);
 
     //Objects connected to MyInterface
@@ -186,6 +185,7 @@ export class MyScene extends CGFscene {
 
     if (this.displayEgg) {
       this.pushMatrix();
+      this.translate(this.egg.position[0], this.egg.position[1], this.egg.position[2])
       this.appearance.apply();
       this.egg.display();
       this.popMatrix();
@@ -193,6 +193,7 @@ export class MyScene extends CGFscene {
 
     if (this.displayNest) {
       this.pushMatrix();
+      this.translate(this.nest.position[0], this.nest.position[1], this.nest.position[2])
       this.appearance.apply();
       this.nest.display();
       this.popMatrix();

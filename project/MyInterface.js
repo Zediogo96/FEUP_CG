@@ -29,6 +29,7 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayNest').name('Display Nest');
         this.gui.add(this.scene, 'displayBird').name('Display Bird');
         this.gui.add(this.scene, 'displayTrees').name('Display Trees');
+        this.gui.add(this.scene, 'followCamera').name('Follow Camera');
 
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');

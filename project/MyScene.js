@@ -54,13 +54,14 @@ export class MyScene extends CGFscene {
     this.tree = new MyBillboard(this);
     this.treeGroupPatch = new MyTreeGroupPatch(this);
     this.treeRowPatch = new MyTreeRowPatch(this);
-    this.treeSpawner = new MyTreeSpawner(this, 20, 20);
+    this.treeSpawner = new MyTreeSpawner(this, 10, 10);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 2;
     this.displayNormals = false;
     this.shouldMagnify = true;
+    this.followCamera = true;
 
     this.displayPanorama = false;
     this.displaySphere = false;
@@ -115,7 +116,7 @@ export class MyScene extends CGFscene {
       45,
       0.1,
       500,
-      vec3.fromValues(150, 300, 150),
+      vec3.fromValues(115, 225, 115),
       vec3.fromValues(0, 30, 0)
     );
   }
@@ -234,30 +235,36 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
     let treesEndTime = new Date().getTime();
-    this.treesFrameTime = treesEndTime - treeStartTime;    
+    this.treesFrameTime = treesEndTime - treeStartTime;
 
     let actualSpeed = Math.max(this.speedFactor * 4, 1);
 
-    let offsetX = 100; // Adjust the X-axis offset as desired
-    let offsetY = 100; // Adjust the Y-axis offset as desired
-    let offsetZ = 100; // Adjust the Z-axis offset as desired
+    if (this.followCamera) {
 
-    this.camera.setPosition(vec3.fromValues(
-      this.bird.posX * actualSpeed + offsetX,
-      this.bird.posY * 3 + offsetY,
-      this.bird.posZ * actualSpeed + offsetZ
-    ));
+      // let offsetX = 100; // Adjust the X-axis offset as desired
+      // let offsetY = 100; // Adjust the Y-axis offset as desired
+      // let offsetZ = 100; // Adjust the Z-axis offset as desired
+
+      // this.camera.setPosition(vec3.fromValues(
+      //   this.bird.posX * actualSpeed + offsetX,
+      //   this.bird.posY * 3 + offsetY,
+      //   this.bird.posZ * actualSpeed + offsetZ
+      // ));
+
+      this.camera.setTarget(vec3.fromValues(
+        this.bird.posX * actualSpeed,
+        this.bird.posY * 3,
+        this.bird.posZ * actualSpeed
+      ));
+
+    }
 
 
-    if (this.displayPanorama){ this.panorama.display();}
+    if (this.displayPanorama) { this.panorama.display(); }
 
 
-    
-    this.camera.setTarget(vec3.fromValues(
-      this.bird.posX * actualSpeed,
-      this.bird.posY * 3,
-      this.bird.posZ * actualSpeed
-    ));
+
+
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();

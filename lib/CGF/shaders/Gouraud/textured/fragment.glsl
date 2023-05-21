@@ -19,7 +19,7 @@ void main() {
 		if(textureColor.a < 0.99)
 			discard;
 		else
-			fragColor = textureColor * vFinalColor;
+		fragColor = textureColor * vFinalColor;
 	}
 	else
 		fragColor = vFinalColor;

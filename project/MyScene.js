@@ -4,6 +4,8 @@ import { MySphere } from "./objects/MySphere.js";
 import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
+import { MyEgg } from "./MyEgg.js";
+import { MyNest } from "./MyNest.js";
 import { MyBird } from "./bird/MyBird.js";
 import { MyBillboard } from "./MyBillboard.js";
 import { MyTreeGroupPatch } from "./MyTreeGroupPatch.js";
@@ -42,6 +44,8 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
+    this.egg = new MyEgg(this);
+    this.nest = new MyNest(this);
     this.bird = new MyBird(this, 30);
 
     //Objects connected to MyInterface
@@ -61,6 +65,9 @@ export class MyScene extends CGFscene {
     this.displayPanorama = false;
     this.displaySphere = false;
     this.displayTerrain = true;
+    this.displayEgg = true;
+    this.displayNest = true
+
     this.displayBird = true;
     this.displayTrees = true;
 
@@ -77,6 +84,7 @@ export class MyScene extends CGFscene {
     this.enableTextures(true);
 
     this.texture = new CGFtexture(this, "images/earth.jpg");
+    this.texture2 = new CGFtexture(this, "images/egg.png");
 
     this.appearance = new CGFappearance(this);
     this.appearance.setAmbient(0.7, 0.7, 0.7, 1.0);
@@ -175,7 +183,19 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
+    if (this.displayEgg) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.egg.display();
+      this.popMatrix();
+    }
 
+    if (this.displayNest) {
+      this.pushMatrix();
+      this.appearance.apply();
+      this.nest.display();
+      this.popMatrix();
+    }
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
       let sphereStartTime = new Date().getTime();
@@ -190,8 +210,10 @@ export class MyScene extends CGFscene {
     if (this.displayTerrain) {
       let terrainStartTime = new Date().getTime();
       this.pushMatrix();
+      this.appearance.setTexture(this.texture2);
       this.appearance.apply();
       this.terrain.display();
+      this.appearance.setTexture(this.texture);
       this.popMatrix();
       let terrainEndTime = new Date().getTime();
       this.terrainFrameTime = terrainEndTime - terrainStartTime;
@@ -226,6 +248,11 @@ export class MyScene extends CGFscene {
       this.bird.posZ * actualSpeed + offsetZ
     ));
 
+
+    if (this.displayPanorama){ this.panorama.display();}
+
+
+    
     this.camera.setTarget(vec3.fromValues(
       this.bird.posX * actualSpeed,
       this.bird.posY * 3,

@@ -40,7 +40,8 @@ export class MyBird extends CGFobject {
     setCarringEgg(val, egg) {
         this.carrying_egg = val;
         this.egg_being_carried = egg;
-        egg.setBeingCarried(true);
+        if (egg != null) egg.setBeingCarried(val);
+
     }
 
     isCarryingEgg() {
@@ -55,21 +56,18 @@ export class MyBird extends CGFobject {
     checkEggCollision(egg) {
         let egg_pos = egg.getPosition();
         let egg_radius = egg.getRadius();
+        let bird_pos = [this.posX * 2, this.posY * 2, this.posZ * 2];  
+        let bird_radius = 5;
 
-        let bird_pos = [this.posX, this.posY, this.posZ];
-        let bird_radius = 17;
+        let distanceSquared = Math.pow(egg_pos[0] - bird_pos[0], 2) + Math.pow(egg_pos[1] - bird_pos[1], 2) + Math.pow(egg_pos[2] - bird_pos[2], 2);
+        let radiusSquared = Math.pow(egg_radius + bird_radius, 2);
 
-        let distance = Math.sqrt(Math.pow(egg_pos[0] - bird_pos[0], 2) + Math.pow(egg_pos[1] - bird_pos[1], 2) + Math.pow(egg_pos[2] - bird_pos[2], 2));
-
-        console.log(distance);
-
-        if (distance <= egg_radius + bird_radius) {
+        if (distanceSquared <= radiusSquared) {
             return true;
         }
 
         return false;
     }
-
 
     reset() {
         this.velocity = 0;
@@ -123,7 +121,9 @@ export class MyBird extends CGFobject {
 
         this.lastUpdate = t;
 
-        if (this.egg_being_carried != null) this.egg_being_carried.setPosition(this.posX * this.velocity, this.posY * this.velocity, this.posZ * this.velocity);
+        if (this.egg_being_carried != null) {
+            this.egg_being_carried.setPosition(this.posX, this.posY, this.posZ);
+        }
 
         this.bird.update(t);
 
@@ -136,8 +136,10 @@ export class MyBird extends CGFobject {
 
         if (this.egg_being_carried != null) {
             this.scene.pushMatrix();
-            this.scene.translate(this.posX, this.posY - 0.2, this.posZ - 0.4);
-            
+            let new_pos = [this.posX, this.posY - 0.2, this.posZ];
+            this.egg_being_carried.position = new_pos;
+            this.scene.translate(new_pos[0], new_pos[1], new_pos[2])
+
             // TODO - fix egg position when bird is rotating
 
             this.scene.scale(0.5, 0.5, 0.5);

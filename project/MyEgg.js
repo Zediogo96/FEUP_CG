@@ -20,7 +20,6 @@ export class MyEgg extends CGFobject {
         this.radius = 2;
         this.beingCarried = false;
 
-
         this.hemisphere1 = new MyHemisphere(this.scene, 30, 16, this.radius, false);
         this.hemisphere2 = new MyHemisphere(this.scene, 30, 16, this.radius, false);
 
@@ -99,10 +98,5 @@ export class MyEgg extends CGFobject {
         this.hemisphere2.display();
         this.scene.popMatrix();
         
-    }
-
-
-    updatePosition(posX, posY, posZ) {
-        this.position = [posX, posY, posZ];
-    }
+    }x
 }

@@ -212,7 +212,25 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
     let treesEndTime = new Date().getTime();
-    this.treesFrameTime = treesEndTime - treeStartTime;
+    this.treesFrameTime = treesEndTime - treeStartTime;    
+
+    let actualSpeed = Math.max(this.speedFactor * 4, 1);
+
+    let offsetX = 100; // Adjust the X-axis offset as desired
+    let offsetY = 100; // Adjust the Y-axis offset as desired
+    let offsetZ = 100; // Adjust the Z-axis offset as desired
+
+    this.camera.setPosition(vec3.fromValues(
+      this.bird.posX * actualSpeed + offsetX,
+      this.bird.posY * 3 + offsetY,
+      this.bird.posZ * actualSpeed + offsetZ
+    ));
+
+    this.camera.setTarget(vec3.fromValues(
+      this.bird.posX * actualSpeed,
+      this.bird.posY * 3,
+      this.bird.posZ * actualSpeed
+    ));
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();
@@ -223,7 +241,7 @@ export class MyScene extends CGFscene {
       this.popMatrix();
       let birdEndTime = new Date().getTime();
       this.birdFrameTime = birdEndTime - birdStartTime;
-      
+
     }
     //this.camera.setPosition(this.bird.x, this.bird.y, this.bird.z);
 

@@ -75,7 +75,7 @@ export class MyScene extends CGFscene {
     this.displayNest = true
 
     this.displayBird = true;
-    this.displayTrees = true;
+    this.displayTrees = false;
 
     this.fps = 0;
     this.terrainFrameTime = 0;
@@ -152,6 +152,14 @@ export class MyScene extends CGFscene {
     if (this.gui.isKeyPressed("KeyR")) {
       this.bird.reset();
     }
+    if (this.gui.isKeyPressed("KeyE") & !this.bird.carrying_egg) {
+      for (let i = 0; i < this.eggs.length; i++) {
+        if (this.bird.checkEggCollision(this.eggs[i])) {
+          this.bird.setCarringEgg(true, this.eggs[i]);
+          this.eggs.splice(i, 1);
+        }
+      }
+    }
     /* if (keysPressed)
       console.log(text); */
   }
@@ -189,15 +197,7 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
-    if (this.displayEgg) {
-      this.eggs.forEach(e => {
-        this.pushMatrix();
-        this.translate(e.position[0], e.position[1], e.position[2])
-        this.appearance.apply();
-        e.display();
-        this.popMatrix();
-      });
-    }
+    
 
     if (this.displayNest) {
       this.pushMatrix();
@@ -245,6 +245,7 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
     let treesEndTime = new Date().getTime();
+
     this.treesFrameTime = treesEndTime - treeStartTime;
 
     let actualSpeed = Math.max(this.speedFactor * 4, 1);
@@ -269,8 +270,17 @@ export class MyScene extends CGFscene {
 
     }
 
-
     if (this.displayPanorama) { this.panorama.display(); }
+
+    if (this.displayEgg) {
+      this.eggs.forEach(e => {
+        this.pushMatrix();
+        this.translate(e.position[0], e.position[1], e.position[2])
+        this.appearance.apply();
+        e.display();
+        this.popMatrix();
+      });
+    }
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();
@@ -281,8 +291,10 @@ export class MyScene extends CGFscene {
       this.popMatrix();
       let birdEndTime = new Date().getTime();
       this.birdFrameTime = birdEndTime - birdStartTime;
-
     }
+
+    
+
     //this.camera.setPosition(this.bird.x, this.bird.y, this.bird.z);
 
     let fullEnd = new Date().getTime();

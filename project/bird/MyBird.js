@@ -19,6 +19,9 @@ export class MyBird extends CGFobject {
         this.offset_dir = 1;
         this.initial_y = initial_y;
 
+        this.carrying_egg = false;
+        this.egg_being_carried = null;
+
         this.y_state = {
             NORMAL: 1,
             ASCENDING: 2,
@@ -33,6 +36,40 @@ export class MyBird extends CGFobject {
         // -- OBJECTS -- //
         this.bird = new MyBirdObjects(this.scene);
     }
+
+    setCarringEgg(val, egg) {
+        this.carrying_egg = val;
+        this.egg_being_carried = egg;
+        egg.setBeingCarried(true);
+    }
+
+    isCarryingEgg() {
+        return this.carrying_egg;
+    }
+
+    getEggBeingCarried() {
+        return this.egg_being_carried;
+    }
+
+
+    checkEggCollision(egg) {
+        let egg_pos = egg.getPosition();
+        let egg_radius = egg.getRadius();
+
+        let bird_pos = [this.posX, this.posY, this.posZ];
+        let bird_radius = 17;
+
+        let distance = Math.sqrt(Math.pow(egg_pos[0] - bird_pos[0], 2) + Math.pow(egg_pos[1] - bird_pos[1], 2) + Math.pow(egg_pos[2] - bird_pos[2], 2));
+
+        console.log(distance);
+
+        if (distance <= egg_radius + bird_radius) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     reset() {
         this.velocity = 0;
@@ -73,7 +110,7 @@ export class MyBird extends CGFobject {
             if (this.current_y_state == this.y_state.STATIONARY || ((this.current_y_state === this.y_state.ASCENDING || this.current_y_state === this.y_state.DESCENDING) && this.velocity === 0)) {
                 this.offset += 0.01 * this.offset_dir;
 
-                if (this.offset >= 0.21 || this.offset <= -0.21) this.offset_dir *= -1;
+                if (this.offset >= 0.16 || this.offset <= -0.16) this.offset_dir *= -1;
                 this.posY += this.offset;
             }
 
@@ -86,7 +123,7 @@ export class MyBird extends CGFobject {
 
         this.lastUpdate = t;
 
-        // this.scene.camera.setPosition(this.posX, this.posY+1, this.posZ);
+        if (this.egg_being_carried != null) this.egg_being_carried.setPosition(this.posX * this.velocity, this.posY * this.velocity, this.posZ * this.velocity);
 
         this.bird.update(t);
 
@@ -96,7 +133,17 @@ export class MyBird extends CGFobject {
     }
 
     display() {
-        
+
+        if (this.egg_being_carried != null) {
+            this.scene.pushMatrix();
+            this.scene.translate(this.posX, this.posY - 0.2, this.posZ - 0.4);
+            
+            // TODO - fix egg position when bird is rotating
+
+            this.scene.scale(0.5, 0.5, 0.5);
+            this.egg_being_carried.display();
+            this.scene.popMatrix();
+        }
 
         this.scene.pushMatrix();
         this.scene.translate(this.posX, this.posY, this.posZ);
@@ -123,6 +170,5 @@ export class MyBird extends CGFobject {
         this.scene.scale(0.1, 0.1, 0.1);
         this.bird.display();
         this.scene.popMatrix();
-        
     }
 }

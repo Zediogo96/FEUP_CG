@@ -50,7 +50,7 @@ export class MyScene extends CGFscene {
     this.eggs.push(new MyEgg(this, 100, 32.5, 0));
     this.eggs.push(new MyEgg(this, -100, 35, 0));
     
-    this.nest = new MyNest(this, -112, 67, -44);
+    this.nest = new MyNest(this, -121, 65.2, -50);
     this.bird = new MyBird(this, 30);
 
     //Objects connected to MyInterface

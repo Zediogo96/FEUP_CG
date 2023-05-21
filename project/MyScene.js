@@ -50,7 +50,7 @@ export class MyScene extends CGFscene {
     this.eggs.push(new MyEgg(this, 100, 32.5, 0));
     this.eggs.push(new MyEgg(this, -100, 35, 0));
     
-    this.nest = new MyNest(this, -45, 32.5, -27);
+    this.nest = new MyNest(this, -112, 67, -44);
     this.bird = new MyBird(this, 30);
 
     //Objects connected to MyInterface
@@ -202,6 +202,7 @@ export class MyScene extends CGFscene {
     if (this.displayNest) {
       this.pushMatrix();
       this.translate(this.nest.position[0], this.nest.position[1], this.nest.position[2])
+      this.scale(2, 2, 2)
       this.appearance.apply();
       this.nest.display();
       this.popMatrix();
@@ -270,10 +271,6 @@ export class MyScene extends CGFscene {
 
 
     if (this.displayPanorama) { this.panorama.display(); }
-
-
-
-
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();

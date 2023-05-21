@@ -5,7 +5,7 @@ import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyBird } from "./bird/MyBird.js";
-import {MyBillboard} from "./MyBillboard.js";
+import { MyBillboard } from "./MyBillboard.js";
 import { MyTreeGroupPatch } from "./MyTreeGroupPatch.js";
 import { MyTreeRowPatch } from "./MyTreeRowPatch.js";
 import { MyTreeSpawner } from "./MyTreeSpawner.js";
@@ -23,7 +23,7 @@ export class MyScene extends CGFscene {
 
     this.initCameras();
     this.initLights();
-  
+
 
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -42,7 +42,7 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
-    this.bird = new MyBird(this,3);
+    this.bird = new MyBird(this, 30);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -51,7 +51,6 @@ export class MyScene extends CGFscene {
     this.treeGroupPatch = new MyTreeGroupPatch(this);
     this.treeRowPatch = new MyTreeRowPatch(this);
     this.treeSpawner = new MyTreeSpawner(this, 20, 20);
-    
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -61,8 +60,9 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = false;
+    this.displayTerrain = true;
     this.displayBird = true;
+    this.displayTrees = true;
 
     this.fps = 0;
     this.terrainFrameTime = 0;
@@ -107,8 +107,8 @@ export class MyScene extends CGFscene {
       45,
       0.1,
       500,
-      vec3.fromValues(5, 1, 5),
-      vec3.fromValues(0, 0, 0)
+      vec3.fromValues(150, 300, 150),
+      vec3.fromValues(0, 30, 0)
     );
   }
 
@@ -124,13 +124,13 @@ export class MyScene extends CGFscene {
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyA")) {
-       this.bird.turn(Math.PI / 90);
+      this.bird.turn(Math.PI / 90);
     }
     if (this.gui.isKeyPressed("KeyD")) {
       this.bird.turn(-Math.PI / 90);
     }
     if (this.gui.isKeyPressed("Space")) {
-      this.bird.ascend(0.1  * this.speedFactor);
+      this.bird.ascend(0.1 * this.speedFactor);
     }
     if (this.gui.isKeyPressed("ControlLeft")) {
       this.bird.ascend(-0.1 * this.speedFactor);
@@ -155,8 +155,8 @@ export class MyScene extends CGFscene {
   }
 
   display() {
-    
-    console.log(this.camera.position);
+
+    // console.log(this.camera.position);
 
     let fullStart = new Date().getTime();
     // ---- BEGIN Background, camera and axis setup
@@ -175,7 +175,7 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
-    
+
     // ---- BEGIN Primitive drawing section
     if (this.displaySphere) {
       let sphereStartTime = new Date().getTime();
@@ -186,7 +186,7 @@ export class MyScene extends CGFscene {
       let sphereEndTime = new Date().getTime();
       this.sphereFrameTime = sphereEndTime - sphereStartTime;
     }
-    
+
     if (this.displayTerrain) {
       let terrainStartTime = new Date().getTime();
       this.pushMatrix();
@@ -199,15 +199,18 @@ export class MyScene extends CGFscene {
 
     if (this.displayPanorama) {
       let panoramaStartTime = new Date().getTime();
-       this.panorama.display();
+      this.panorama.display();
       let panoramaEndTime = new Date().getTime();
       this.panoramaFrameTime = panoramaEndTime - panoramaStartTime;
-       }
+    }
 
     let treeStartTime = new Date().getTime();
-    this.pushMatrix();
-    this.treeSpawner.display();
-    this.popMatrix();
+
+    if (this.displayTrees) {
+      this.pushMatrix();
+      this.treeSpawner.display();
+      this.popMatrix();
+    }
     let treesEndTime = new Date().getTime();
     this.treesFrameTime = treesEndTime - treeStartTime;
 
@@ -220,6 +223,7 @@ export class MyScene extends CGFscene {
       this.popMatrix();
       let birdEndTime = new Date().getTime();
       this.birdFrameTime = birdEndTime - birdStartTime;
+      
     }
     //this.camera.setPosition(this.bird.x, this.bird.y, this.bird.z);
 

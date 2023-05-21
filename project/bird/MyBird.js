@@ -17,6 +17,7 @@ export class MyBird extends CGFobject {
         this.lastUpdate = 0;
         this.offset = 0;
         this.offset_dir = 1;
+        this.initial_y = initial_y;
 
         this.y_state = {
             NORMAL: 1,
@@ -29,11 +30,6 @@ export class MyBird extends CGFobject {
         this.last_y_state = this.y_state.NORMAL;
         this.current_y_state = this.y_state.NORMAL;
 
-        // -- AUTOPILOT -- //
-        // TODO
-        // TODO
-        // TODO
-
         // -- OBJECTS -- //
         this.bird = new MyBirdObjects(this.scene);
     }
@@ -42,7 +38,7 @@ export class MyBird extends CGFobject {
         this.velocity = 0;
         this.angleY = 0;
         this.posX = 0;
-        this.posY = 0;
+        this.posY = this.initial_y;
         this.posZ = 0;
         this.lastUpdate = 0;
         this.current_y_state = 5;
@@ -70,7 +66,6 @@ export class MyBird extends CGFobject {
 
         if (this.velocity === 0) {
             this.current_y_state = this.y_state.STATIONARY;
-            // MAY NEED TO BE REMOVED IF OTHER FEATURES ARE ADDED
         }
 
         if (delta_t > 10) {

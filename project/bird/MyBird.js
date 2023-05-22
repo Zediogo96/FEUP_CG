@@ -18,16 +18,20 @@ export class MyBird extends CGFobject {
         this.offset = 0;
         this.offset_dir = 1;
         this.initial_y = initial_y;
+        this.cum_delta_raping = 0;
 
         this.carrying_egg = false;
         this.egg_being_carried = null;
+
+        this.lowest_point_raping = false;
 
         this.y_state = {
             NORMAL: 1,
             ASCENDING: 2,
             DESCENDING: 3,
             WAITING_CHANGE: 4,
-            STATIONARY: 5
+            STATIONARY: 5,
+            RAPING: 6
         };
 
         this.last_y_state = this.y_state.NORMAL;
@@ -52,12 +56,16 @@ export class MyBird extends CGFobject {
         return this.egg_being_carried;
     }
 
+    startRaping() {
+        this.current_y_state = this.y_state.RAPING;
+    }
+
 
     checkEggCollision(egg) {
         let egg_pos = egg.getPosition();
         let egg_radius = egg.getRadius();
-        let bird_pos = [this.posX * 2, this.posY * 2, this.posZ * 2];  
-        let bird_radius = 5;
+        let bird_pos = [this.posX * 2, this.posY * 2, this.posZ * 2];
+        let bird_radius = 10;
 
         let distanceSquared = Math.pow(egg_pos[0] - bird_pos[0], 2) + Math.pow(egg_pos[1] - bird_pos[1], 2) + Math.pow(egg_pos[2] - bird_pos[2], 2);
         let radiusSquared = Math.pow(egg_radius + bird_radius, 2);
@@ -102,7 +110,7 @@ export class MyBird extends CGFobject {
         let birdOldPos = [this.posX, this.posY, this.posZ];
         var delta_t = t - this.lastUpdate;
 
-        if (this.velocity === 0) {
+        if (this.velocity === 0 && this.current_y_state != this.y_state.RAPING) {
             this.current_y_state = this.y_state.STATIONARY;
         }
 
@@ -113,8 +121,37 @@ export class MyBird extends CGFobject {
             }
         }
 
+        // HERE 
+        if (this.current_y_state === this.y_state.RAPING) {
+
+            const rapTime = 2000; // Time for the rap animation in milliseconds
+            const descendDistance = 3;
+            const ascendDistance = 3;
+            const descendTime = rapTime / 2; // Time for descending
+            const ascendTime = rapTime / 2; // Time for ascending
+
+            this.cum_delta_raping += t - this.lastUpdate;
+
+            if (this.cum_delta_raping <= descendTime) {
+                // Descending
+                const descendProgress = (t - this.lastUpdate) / descendTime;
+                this.posY -= descendDistance * descendProgress;
+            } else if (this.cum_delta_raping <= rapTime && this.cum_delta_raping > descendTime) {
+                // Ascending
+                this.lowest_point_raping = true;
+                const ascendProgress = (t - this.lastUpdate) / ascendTime;
+                this.posY += ascendDistance * ascendProgress;
+
+            } else {
+                // Rap animation finished
+                this.lowest_point_raping = false;
+                this.current_y_state = this.y_state.NORMAL;
+                this.cum_delta_raping = 0;
+            }
+        }
+
         this.posX += this.velocity * Math.sin(this.angleY);
-        this.posZ += this.velocity * Math.cos(this.angleY);       
+        this.posZ += this.velocity * Math.cos(this.angleY);
 
         this.lastUpdate = t;
 
@@ -123,14 +160,13 @@ export class MyBird extends CGFobject {
         }
 
         this.bird.update(t, this.current_y_state, this.velocity);
-        
+
         this.bird.tail.update(t);
-       
+
         this.bird.wings.update(t, this.current_y_state, this.velocity);
 
         let birdNewPos = [this.posX, this.posY, this.posZ];
-        let birdOffset = [(birdNewPos[0] - birdOldPos[0]) , (birdNewPos[1] - birdOldPos[1]), (birdNewPos[2] - birdOldPos[2])];
-        // vec3.normalize(birdOffset, birdOffset);
+        let birdOffset = [(birdNewPos[0] - birdOldPos[0]), (birdNewPos[1] - birdOldPos[1]), (birdNewPos[2] - birdOldPos[2])];
         birdOffset[0] *= -4;
         birdOffset[1] *= 0;
         birdOffset[2] *= -4;

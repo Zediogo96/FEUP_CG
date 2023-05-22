@@ -155,7 +155,8 @@ export class MyScene extends CGFscene {
       if (this.gui.isKeyPressed("KeyR")) {
         this.bird.reset();
       }
-      if (this.gui.isKeyPressed("KeyP") & !((this.bird.posY * 2) + 3 < this.eggHeight) & !this.bird.carrying_egg) {
+      
+      if (this.gui.isKeyPressed("KeyP") & ((this.bird.posY * 2) + 4 > this.eggHeight) & !this.bird.carrying_egg) {
         this.bird.startRaping();
       }
 

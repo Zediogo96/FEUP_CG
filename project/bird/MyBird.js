@@ -65,7 +65,7 @@ export class MyBird extends CGFobject {
         let egg_pos = egg.getPosition();
         let egg_radius = egg.getRadius();
         let bird_pos = [this.posX * 2, this.posY * 2, this.posZ * 2];
-        let bird_radius = 10;
+        let bird_radius = 8;
 
         let distanceSquared = Math.pow(egg_pos[0] - bird_pos[0], 2) + Math.pow(egg_pos[1] - bird_pos[1], 2) + Math.pow(egg_pos[2] - bird_pos[2], 2);
         let radiusSquared = Math.pow(egg_radius + bird_radius, 2);

@@ -10,7 +10,7 @@ export class MyTerrain extends CGFobject {
         this.texture2 = new CGFtexture(scene, 'images/heightmap.jpg');
         this.texture3 = new CGFtexture(scene, 'images/altimetry.png')
 
-        this.terrainShader.setUniformsValues({ uSampler1: 1, uSampler2: 2, uSampler3: 3});
+        this.terrainShader.setUniformsValues({ uSampler1: 1, uSampler2: 2, uSampler3: 3 });
         this.plane = new MyPlane(scene, 200);
     }
 
@@ -26,7 +26,7 @@ export class MyTerrain extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(0, 0, 0);
         this.scene.rotate(-Math.PI / 2, 1, 0, 0);
-        this.scene.scale(400,400,400);
+        this.scene.scale(400, 400, 400);
         this.plane.display();
 
         this.scene.popMatrix();
@@ -39,8 +39,7 @@ export class MyTerrain extends CGFobject {
         this.plane.setFillMode();
     }
 
-    setLineMode()
-    {
+    setLineMode() {
         this.plane.setLineMode();
 
     };

@@ -23,8 +23,6 @@ export class MyLegs extends CGFobject {
         this.legEnd = new MyTriangle(this.scene, 0.5);
     }
 
-    
-
     display() {
         this.scene.pushMatrix();
         this.scene.translate(-3, 0, -1)

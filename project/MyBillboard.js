@@ -20,13 +20,7 @@ export class MyBillboard extends CGFobject {
         this.yCalculated = false;
         this.treeCounter = 0;
         this.treeHeights = [];
-
-
-
-
     }
-
-
 
     /**
      * Displays the billboard in a certain position
@@ -70,14 +64,14 @@ export class MyBillboard extends CGFobject {
         this.normalDir = [this.quad.normals[0], 0, this.quad.normals[2]];
         let normalDirNorm = vec3.create();
         vec3.normalize(normalDirNorm, this.normalDir);
-        
-        this.angle = vec3.dot(normalDirNorm,billboardToCameraNorm);
+
+        this.angle = vec3.dot(normalDirNorm, billboardToCameraNorm);
         this.angle = Math.max(-1, Math.min(this.angle, 1));
         //this.angle = vec3.dot(billboardToCameraNorm, normalDirNorm);
         this.rotationAngle = Math.atan2(Math.sqrt(1 - this.angle * this.angle), this.angle);
         this.rotationAxis = vec3.create();
         vec3.cross(this.rotationAxis, normalDirNorm, billboardToCameraNorm);
-    
+
 
         this.scene.translate(x, yCoord, z);
         this.scene.rotate(this.rotationAngle, this.rotationAxis[0], this.rotationAxis[1], this.rotationAxis[2]);
@@ -88,11 +82,6 @@ export class MyBillboard extends CGFobject {
 
         let end = performance.now();
         let time = end - start;
-        // if(time > 0){
-        //     console.log("Billboard Group: " + time + " ms");
-        // }
-
-
 
     }
 
@@ -108,9 +97,6 @@ export class MyBillboard extends CGFobject {
     disableNormalViz() {
         this.quad.disableNormalViz()
     }
-
-
-
 }
 
 function getRedFromJPEG(imageURL, x, y) {
@@ -129,9 +115,6 @@ function getRedFromJPEG(imageURL, x, y) {
     return red;
 
 }
-
-
-
 
 function convertCoordinatesToImage(x, y, imageSize) {
     var newX = Math.floor((x + 200) * (imageSize - 1) / 400);

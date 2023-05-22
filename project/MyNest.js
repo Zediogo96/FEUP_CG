@@ -14,7 +14,6 @@ export class MyNest extends CGFobject {
 
         super(scene);
 
-
         //this.nestShader = new CGFshader(scene.gl, 'lib/CGF/shaders/Gouraud/textured/fragment.glsl');
         this.tex1 = new CGFtexture(this.scene, 'images/cape_hill.jpg');
         this.tex2 = new CGFtexture(this.scene, 'images/terrain.jpg');
@@ -67,7 +66,6 @@ export class MyNest extends CGFobject {
         this.currentEggs.push(egg);
     }
 
-
     initMaterials() {
         const setMaterialProperties = (material, texture) => {
             material.setAmbient(0.9, 0.9, 0.9, 1);
@@ -80,9 +78,7 @@ export class MyNest extends CGFobject {
 
         this.hemisphere = new CGFappearance(this.scene);
         setMaterialProperties(this.hemisphere, 'images/nest.png');
-
     }
-
 
     processTextureFiltering() {
         if (this.scene.shouldMagnify) {
@@ -95,8 +91,6 @@ export class MyNest extends CGFobject {
 
 
     display() {
-
-        //this.processTextureFiltering();
 
         this.scene.pushMatrix();
         this.hemisphere.apply();
@@ -120,8 +114,6 @@ export class MyNest extends CGFobject {
             this.scene.translate(this.currentEggs[i].position[0], this.currentEggs[i].position[1], this.currentEggs[i].position[2]);
             this.currentEggs[i].display();
             this.scene.popMatrix();
-
         }
-
     }
 }

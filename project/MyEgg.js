@@ -49,7 +49,6 @@ export class MyEgg extends CGFobject {
         this.position = [posX, posY, posZ];
     }
 
-    
     initMaterials() {
         const setMaterialProperties = (material, texture) => {
             material.setAmbient(0.9, 0.9, 0.9, 1);
@@ -68,7 +67,6 @@ export class MyEgg extends CGFobject {
 
     }
 
-
     processTextureFiltering() {
         if (this.scene.shouldMagnify) {
             this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
@@ -77,7 +75,6 @@ export class MyEgg extends CGFobject {
             this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.LINEAR);
         }
     }
-
 
     display() {
 
@@ -98,5 +95,5 @@ export class MyEgg extends CGFobject {
         this.hemisphere2.display();
         this.scene.popMatrix();
         
-    }x
+    }
 }

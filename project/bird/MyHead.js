@@ -23,7 +23,7 @@ export class MyHead extends CGFobject {
         this.beakTex = beakTex;
         this.wingTex = wingTex;
         this.eyeTex = eyeTex;
-        
+
         this.headSphere = new MySphere(this.scene, 30, 16, 2, false);
         this.eyes = new MyEyes(this.scene);
         this.beak = new MyBeak(this.scene);
@@ -64,12 +64,10 @@ export class MyHead extends CGFobject {
             }
 
             this.offset += 0.01 * this.flapDirection;
-            
+
             this.lastUpdate = t;
         }
     }
-
-
 
     display() {
 

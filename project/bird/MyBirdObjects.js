@@ -94,11 +94,9 @@ export class MyBirdObjects extends CGFobject {
             }
 
             this.offset += 0.01 * this.flapDirection;
-
             this.lastUpdate = t;
         }
     }
-
 
     display(current_y_state) {
 
@@ -134,6 +132,7 @@ export class MyBirdObjects extends CGFobject {
             this.scene.translate(0, 0.5, 0)
             this.scene.rotate(-Math.PI / 3, 0, 0, 1);
         }
+
         this.scene.translate(3, -1.5, 0)
         this.legs.display();
         this.scene.popMatrix();

@@ -121,7 +121,6 @@ export class MyBird extends CGFobject {
             }
         }
 
-        // HERE 
         if (this.current_y_state === this.y_state.RAPING) {
 
             const rapTime = 2000; // Time for the rap animation in milliseconds
@@ -151,7 +150,7 @@ export class MyBird extends CGFobject {
         }
 
         this.posX += this.velocity * Math.sin(this.angleY);
-        this.posZ += this.velocity * Math.cos(this.angleY);       
+        this.posZ += this.velocity * Math.cos(this.angleY);
 
         this.lastUpdate = t;
 
@@ -162,19 +161,15 @@ export class MyBird extends CGFobject {
         this.bird.update(t, this.current_y_state, this.velocity);
 
         this.bird.tail.update(t);
-        
+
         this.bird.wings.update(t, this.current_y_state, this.velocity);
 
         let birdNewPos = [this.posX, this.posY, this.posZ];
-        let birdOffset = [(birdNewPos[0] - birdOldPos[0]) , (birdNewPos[1] - birdOldPos[1]), (birdNewPos[2] - birdOldPos[2])];
-        // vec3.normalize(birdOffset, birdOffset);
-
+        let birdOffset = [(birdNewPos[0] - birdOldPos[0]), (birdNewPos[1] - birdOldPos[1]), (birdNewPos[2] - birdOldPos[2])];
         this.scene.birdOffset = birdOffset;
-
     }
 
     display() {
-
 
         if (this.egg_being_carried != null) {
             this.scene.pushMatrix();

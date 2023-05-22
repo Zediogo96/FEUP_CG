@@ -44,8 +44,6 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'birdFrameTime').name('Bird Time').listen();
         this.gui.add(this.scene, 'treesFrameTime').name('Trees Time').listen();
 
-
-
         this.initKeys();
 
         return true;

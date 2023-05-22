@@ -39,7 +39,7 @@ export class MyTail extends CGFobject {
     this.scene.pushMatrix();
     this.scene.translate(-3.5, 3.5, -3);
     this.scene.rotate(- Math.PI / 2, 1, 0, 0);
-    this.scene.rotate(this.flapAngle, 0,1,0)
+    this.scene.rotate(this.flapAngle, 0, 1, 0)
     this.scene.translate(-1.4, -1.8, 0);
     this.scene.scale(0.7, 0.7, 0.7);
     this.tail.display();

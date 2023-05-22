@@ -7,7 +7,7 @@ export class MyHemisphere extends CGFobject {
     this.numSectors = slices;
     this.radius = radius;
     this.inverted = inverted;
-    
+
     this.initBuffers();
   }
 
@@ -37,7 +37,7 @@ export class MyHemisphere extends CGFobject {
         const z = this.radius * Math.sin(-theta) * sinPhi;
         this.vertices.push(x, y, z);
 
-        if (slice < this.numSlices && sector < this.numSectors/2  && !this.inverted) {
+        if (slice < this.numSlices && sector < this.numSectors / 2 && !this.inverted) {
           const currentIndex = slice * numVerticesPerSlice + sector;
           const nextIndex = currentIndex + numVerticesPerSlice;
 
@@ -49,7 +49,7 @@ export class MyHemisphere extends CGFobject {
             this.indices.push(currentIndex + 1, nextIndex, nextIndex + 1);
           }
         }
-        else if (slice < this.numSlices/2 && sector < this.numSectors  && this.inverted) {
+        else if (slice < this.numSlices / 2 && sector < this.numSectors && this.inverted) {
           const currentIndex = slice * numVerticesPerSlice + sector;
           const nextIndex = currentIndex + numVerticesPerSlice;
 
@@ -77,7 +77,7 @@ export class MyHemisphere extends CGFobject {
         const tv = sliceSize * slice;
 
         if (this.inverted) {
-          this.texCoords.push(1 - tv,1- tu);
+          this.texCoords.push(1 - tv, 1 - tu);
         } else this.texCoords.push(tu, tv);
       }
       phi += phiIncrement;

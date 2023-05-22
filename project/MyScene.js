@@ -1,4 +1,4 @@
-import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
+import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./objects/MyPlane.js";
 import { MySphere } from "./objects/MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
@@ -21,7 +21,7 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-    
+
     this.bird = new MyBird(this, 30);
     this.initCameras();
     this.initLights();
@@ -75,7 +75,7 @@ export class MyScene extends CGFscene {
     this.displayTerrain = true;
     this.displayEgg = true;
     this.displayNest = true;
-    
+
     this.displayBird = true;
     this.displayTrees = true;
 
@@ -125,7 +125,7 @@ export class MyScene extends CGFscene {
       45,
       0.1,
       500,
-      vec3.fromValues(50, 200 ,50),
+      vec3.fromValues(50, 200, 50),
       vec3.fromValues(0, 30, 0)
     );
   }
@@ -158,7 +158,7 @@ export class MyScene extends CGFscene {
       if (this.gui.isKeyPressed("KeyR")) {
         this.bird.reset();
       }
-      
+
       if (this.gui.isKeyPressed("KeyP") & ((this.bird.posY * 2) + 4 > this.eggHeight) & !this.bird.carrying_egg) {
         this.bird.startRaping();
       }
@@ -169,7 +169,6 @@ export class MyScene extends CGFscene {
           this.bird.setCarringEgg(false, null);
         }
       }
-
     }
   }
 
@@ -182,7 +181,7 @@ export class MyScene extends CGFscene {
 
   update(t) {
 
-    if (this.bird.lowest_point_raping){
+    if (this.bird.lowest_point_raping) {
       for (let i = 0; i < this.eggs.length; i++) {
         if (this.bird.checkEggCollision(this.eggs[i])) {
           this.bird.setCarringEgg(true, this.eggs[i]);
@@ -279,44 +278,39 @@ export class MyScene extends CGFscene {
 
       let offset = vec3.fromValues(0, 2, -20);
 
-      const birdPosition = [this.bird.posX * actualSpeed, (this.bird.posY * 3 * 1.3)+2, this.bird.posZ * actualSpeed];
-      //const birdOrientation = this.birdOffset;
-      console.log("Bird: " + birdPosition);
-      console.log("Camera: " + this.camera.position);
+      const birdPosition = [this.bird.posX * actualSpeed, (this.bird.posY * 3 * 1.3) + 2, this.bird.posZ * actualSpeed];
 
       // Calculate the camera position by adding the offset to the bird's position
       const cameraPosition = vec3.create();
 
-      if(this.thirdPersonCamera){
-        if(this.bird.velocity == 0) {
-          if(this.previousOffset[0]== 0 && this.previousOffset[2] == 0 && this.previousOffset[1] == 0){
+      if (this.thirdPersonCamera) {
+        if (this.bird.velocity == 0) {
+          if (this.previousOffset[0] == 0 && this.previousOffset[2] == 0 && this.previousOffset[1] == 0) {
             offset = [0, 5, -20];
           }
-          else{
+          else {
             offset = [-this.previousOffset[0] * 20, 5, -this.previousOffset[2] * 20];
           }
         }
-        else{
-          offset = [(-this.birdOffset[0] * (20*(1/this.bird.velocity))) , 5*(1+this.bird.velocity), (-this.birdOffset[2] * (20*(1/this.bird.velocity)))];
+        else {
+          offset = [(-this.birdOffset[0] * (20 * (1 / this.bird.velocity))), 5 * (1 + this.bird.velocity), (-this.birdOffset[2] * (20 * (1 / this.bird.velocity)))];
           vec3.normalize(this.previousOffset, this.birdOffset);
-          
+
         }
         vec3.add(cameraPosition, birdPosition, offset);
 
         // Set the camera's position and target
         this.camera.setPosition(cameraPosition);
         birdPosition[1] += 5;
-        
-        // Update the camera's orientation to match the bird's orientation
       }
-      else{
+      else {
         vec3.add(cameraPosition, birdPosition, offset);
         this.camera.setPosition(cameraPosition);
       }
       this.camera.setTarget(birdPosition);
-      }
+    }
 
-    if (this.displayPanorama) {this.setActiveShader(this.defaultShader); this.panorama.display(); }
+    if (this.displayPanorama) { this.setActiveShader(this.defaultShader); this.panorama.display(); }
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();

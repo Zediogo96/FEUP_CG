@@ -1,6 +1,6 @@
 
 import { CGFobject } from '../../lib/CGF.js';
-import { MyTriangularPrism } from '../objects/MyTriangularPrism.js';
+import { MyWing } from './MyWing.js';
 
 /**
  * MyWing
@@ -16,48 +16,43 @@ export class MyWings extends CGFobject {
     this.flapAngle = 0; // Initial angle
     this.flapDirection = 1; // 1 for up, -1 for down
 
-    this.wing = new MyTriangularPrism(this.scene, quadHeight, 0.2);
-    this.wingEnd = new MyTriangularPrism(this.scene, quadHeight, 0.2);
+    this.wing = new MyWing(this.scene, quadHeight);
   }
 
   update(t, y_state, velocity) {
+    y_state = 5;
     let delta_t = t - this.lastUpdate;
 
     if (delta_t > 15) { // Adjust the time interval based on the desired speed of the animation
 
       if (y_state === 5) {
-        this.flapAngle += 0.05 * this.flapDirection / 1.9
+        this.flapAngle = 0.5 * Math.sin(t / 200);
       }
       else {
       
-      this.flapAngle += 0.05 * this.flapDirection * ((velocity < 0.7) ? 2.5 : velocity); // Adjust the increment value based on the desired rotation speed
-      }
-      if (this.flapAngle >= Math.PI / 6 || this.flapAngle <= -Math.PI / 6) {
-        this.flapDirection *= -1; // Reverse direction when reaching the maximum or minimum angle
+      this.flapAngle = ((velocity < 0.2) ? 0.5 * Math.sin(t / 50) : 0.5 * Math.sin(t / 150)); // Adjust the increment value based on the desired rotation speed
       }
 
       this.lastUpdate = t;
+
+      this.wing.update(t, delta_t, y_state, velocity, this.flapAngle);
     }
   }
 
   display() {
 
     this.scene.pushMatrix();
-    this.scene.translate(0, 3, 2);
-    this.scene.rotate(-Math.PI / 2, 0, 0, 1);
-    this.scene.rotate(this.flapAngle, 0, 1, 0);
-    this.scene.scale(1, -0.5, -1.3);
-    this.scene.translate(0, -0.7, -0.8);
+    this.scene.translate(0, 3, 1.6);
+    this.scene.rotate(this.flapAngle, 1, 0, 0);
     this.wing.display();
     this.scene.popMatrix();
 
     this.scene.pushMatrix();
-    this.scene.translate(0, 3, -2);
-    this.scene.rotate(-Math.PI / 2, 0, 0, 1);
-    this.scene.rotate(-this.flapAngle, 0, 1, 0);
-    this.scene.scale(1, -0.5, 1.3);
-    this.scene.translate(0, -0.7, -0.8);
+    this.scene.translate(0, 3, -1.6);
+    this.scene.rotate(-this.flapAngle, 1, 0, 0);
+    this.scene.scale(1, 1, -1);
     this.wing.display();
     this.scene.popMatrix();
+
   }
 }

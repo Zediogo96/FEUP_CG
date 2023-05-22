@@ -129,6 +129,8 @@ export class MyBirdObjects extends CGFobject {
         this.beakTex.apply();
         this.scene.translate(0, 0.8, 0);
         this.legs.display();
-        this.scene.popMatrix();        
+        this.scene.popMatrix();    
+        
+        
     }
 }

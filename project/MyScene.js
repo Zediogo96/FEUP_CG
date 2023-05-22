@@ -1,7 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./objects/MyPlane.js";
 import { MySphere } from "./objects/MySphere.js";
-import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyEgg } from "./MyEgg.js";
@@ -51,7 +50,7 @@ export class MyScene extends CGFscene {
     this.eggs.push(new MyEgg(this, -100, 35, 0));
     
     this.nest = new MyNest(this, -121, 65.2, -50);
-    this.bird = new MyBird(this, 30);
+    this.bird = new MyBird(this, 0);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -70,9 +69,9 @@ export class MyScene extends CGFscene {
 
     this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = true;
-    this.displayEgg = true;
-    this.displayNest = true
+    this.displayTerrain = false;
+    this.displayEgg = false;
+    this.displayNest = false;
 
     this.displayBird = true;
     this.displayTrees = false;
@@ -121,7 +120,7 @@ export class MyScene extends CGFscene {
       45,
       0.1,
       500,
-      vec3.fromValues(115, 225, 115),
+      vec3.fromValues(25, 175, 25),
       vec3.fromValues(0, 30, 0)
     );
   }

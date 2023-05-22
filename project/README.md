@@ -33,7 +33,7 @@ Screenshot 3 - Bird
 
 Screenshot 4 - Terrain with bird and background
 
-![4-Terrain_Bg_Bird](Screenshots/4project-t6g11-4.png) 
+![4-Terrain_Bg_Bird](Screenshots/project-t6g11-4.png) 
 
 Screenshot 5 - Eggs and nest
 

@@ -22,6 +22,7 @@ export class MyLegs extends CGFobject {
         this.leg = new MyCuboid(this.scene, 0.2, 1.5, 0.2, this.tex1, this.tex1, this.tex1, this.tex1, this.tex1,this.tex1);
         this.legEnd = new MyTriangle(this.scene, 0.5);
     }
+
     
 
     display() {

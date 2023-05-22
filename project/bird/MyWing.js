@@ -29,7 +29,7 @@ export class MyWing extends CGFobject {
           }
           else {
           
-          this.flapAngle = ((velocity < 0.2) ? 0.5 * Math.sin(t / 50) : 0.5 * Math.sin(t / 150)); // Adjust the increment value based on the desired rotation speed
+          this.flapAngle = ((velocity < 0.3) ? 0.5 * Math.sin(t / 100) : 0.5 * Math.sin(t / 150)); // Adjust the increment value based on the desired rotation speed
           }
     
           this.lastUpdate = t;

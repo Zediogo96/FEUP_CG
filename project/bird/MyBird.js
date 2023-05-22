@@ -122,7 +122,7 @@ export class MyBird extends CGFobject {
             this.egg_being_carried.setPosition(this.posX, this.posY, this.posZ);
         }
 
-        this.bird.update(t);
+        this.bird.update(t, this.current_y_state, this.velocity);
         
         this.bird.tail.update(t);
         
@@ -146,8 +146,6 @@ export class MyBird extends CGFobject {
             let new_pos = [this.posX, this.posY - 0.2, this.posZ];
             this.egg_being_carried.position = new_pos;
             this.scene.translate(new_pos[0], new_pos[1], new_pos[2])
-
-            // TODO - fix egg position when bird is rotating
 
             this.scene.scale(0.5, 0.5, 0.5);
             this.egg_being_carried.display();
@@ -177,7 +175,7 @@ export class MyBird extends CGFobject {
 
         this.last_y_state = this.current_y_state;
         this.scene.scale(0.1, 0.1, 0.1);
-        this.bird.display();
+        this.bird.display(this.current_y_state);
         this.scene.popMatrix();
     }
 }

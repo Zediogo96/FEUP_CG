@@ -50,7 +50,7 @@ export class MyScene extends CGFscene {
     this.eggs.push(new MyEgg(this, -100, 35, 0));
     
     this.nest = new MyNest(this, -121, 65.2, -50);
-    this.bird = new MyBird(this, 35);
+    this.bird = new MyBird(this, 0);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -67,14 +67,14 @@ export class MyScene extends CGFscene {
     this.shouldMagnify = true;
     this.followCamera = true;
 
-    this.displayPanorama = true;
+    this.displayPanorama = false;
     this.displaySphere = false;
-    this.displayTerrain = true;
-    this.displayEgg = true;
-    this.displayNest = true;
+    this.displayTerrain = false;
+    this.displayEgg = false;;
+    this.displayNest = false;
 
     this.displayBird = true;
-    this.displayTrees = true;
+    this.displayTrees = false;
 
     this.fps = 0;
     this.terrainFrameTime = 0;

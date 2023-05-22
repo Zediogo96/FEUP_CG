@@ -125,7 +125,7 @@ export class MyBird extends CGFobject {
         this.bird.update(t, this.current_y_state, this.velocity);
         
         this.bird.tail.update(t);
-        
+       
         this.bird.wings.update(t, this.current_y_state, this.velocity);
 
         let birdNewPos = [this.posX, this.posY, this.posZ];

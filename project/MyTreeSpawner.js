@@ -55,11 +55,6 @@ import { MyTreeRowPatch } from './MyTreeRowPatch.js';
             for(let i = 0; i < this.rowQuantity; i++){
                 this.treeRow.display(this.xCoords[i+counter], this.zCoords[i+counter], treeNumberRow);
             }
-
-            
-
-
-
         }
 
         /**

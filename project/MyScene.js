@@ -67,16 +67,16 @@ export class MyScene extends CGFscene {
     this.scaleFactor = 2;
     this.displayNormals = false;
     this.shouldMagnify = true;
-    this.followCamera = false;
-    this.thirdPersonCamera = false;
+    this.followCamera = true;
+    this.thirdPersonCamera = true;
 
     this.displayPanorama = true;
-    this.displaySphere = false;
+    this.displaySphere = true;
     this.displayTerrain = true;
-    this.displayEgg = false;
-    this.displayNest = false;
+    this.displayEgg = true;
+    this.displayNest = true;
     
-    this.displayBird = false;
+    this.displayBird = true;
     this.displayTrees = true;
 
     this.fps = 0;

@@ -11,7 +11,6 @@
             
             this.tree = new MyBillboard(scene);   
             
-            
             // -- Shaders -- //
             this.treeShader = new CGFshader(scene.gl, "shaders/tree.vert", "shaders/tree.frag");
             
@@ -65,11 +64,7 @@
             this.textures = mixElements(this.textures);
             this.textureSelection6 = this.textures[0];
 
-
-
-        }
-
-        
+        }      
         
         /**
          * Displays the billboard in a certain position
@@ -106,9 +101,6 @@
             this.material.setTexture(this.textureSelection6);
             this.material.apply();
             this.tree.display(x+20+this.offset2, z+this.offset8, treeNumberRow);
-
-            
-
         }
 
         /**
@@ -124,8 +116,6 @@
             this.quad.disableNormalViz()
         }
 
-
-       
     }
     function mixElements(list) {
         for (let i = list.length - 1; i > 0; i--) {

@@ -25,7 +25,6 @@ export class MyBeak extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-
         this.scene.translate(6.8, 3.1, 0);
         this.scene.rotate(- Math.PI / 2, 0, 0, 1);
         // rotate 10 degrees is Math.PI/18

@@ -10,20 +10,46 @@ import { MyHemisphere } from './MyHemisphere.js';
  * @param scene - Reference to MyScene object
  */
 export class MyEgg extends CGFobject {
-    constructor(scene) {
+    constructor(scene, posX, posY, posZ) {
 
         super(scene);
 
         this.tex1 = new CGFtexture(this.scene, 'images/cape_hill.jpg');
         this.tex2 = new CGFtexture(this.scene, 'images/terrain.jpg');
 
-        this.hemisphere1 = new MyHemisphere(this.scene, 30, 16, 2, false);
-        this.hemisphere2 = new MyHemisphere(this.scene, 30, 16, 2, false);
+        this.radius = 2;
+        this.beingCarried = false;
+
+        this.hemisphere1 = new MyHemisphere(this.scene, 30, 16, this.radius, false);
+        this.hemisphere2 = new MyHemisphere(this.scene, 30, 16, this.radius, false);
+
+        this.position = [posX, posY, posZ];
 
         this.initBuffers();
         this.initMaterials();
     }
 
+    getPosition() {
+        return this.position;
+    }
+
+    getRadius() {
+        return this.radius;
+    }
+
+    isBeingCarried() {
+        return this.beingCarried;
+    }
+
+    setBeingCarried(val) {
+        this.beingCarried = val;
+    }
+
+    setPosition(posX, posY, posZ) {
+        this.position = [posX, posY, posZ];
+    }
+
+    
     initMaterials() {
         const setMaterialProperties = (material, texture) => {
             material.setAmbient(0.9, 0.9, 0.9, 1);
@@ -55,11 +81,8 @@ export class MyEgg extends CGFobject {
 
     display() {
 
-        //this.processTextureFiltering();
-
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
-
         this.scene.translate(0, 0, -0.4);
         this.scene.rotate(Math.PI , 0, 0, 1);
         this.scene.scale(0.2, 0.2, 0.3);
@@ -75,5 +98,5 @@ export class MyEgg extends CGFobject {
         this.hemisphere2.display();
         this.scene.popMatrix();
         
-    }
+    }x
 }

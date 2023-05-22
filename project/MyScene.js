@@ -1,7 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./objects/MyPlane.js";
 import { MySphere } from "./objects/MySphere.js";
-import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyEgg } from "./MyEgg.js";
@@ -26,6 +25,7 @@ export class MyScene extends CGFscene {
     this.initCameras();
     this.initLights();
 
+    this.eggHeight = 29.5;
 
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -44,9 +44,15 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this, 30, 30, 5, false);
     this.panorama = new MyPanorama(this, 30, 30, 5, false);
     this.terrain = new MyTerrain(this);
-    this.egg = new MyEgg(this);
-    this.nest = new MyNest(this);
-    this.bird = new MyBird(this, 30);
+    // Creation of 4 eggs
+    this.eggs = [];
+    this.eggs.push(new MyEgg(this, -5, this.eggHeight, 19));
+    this.eggs.push(new MyEgg(this, 0, this.eggHeight, -100));
+    this.eggs.push(new MyEgg(this, 100, this.eggHeight, 0));
+    this.eggs.push(new MyEgg(this, -65, this.eggHeight, -10));
+
+    this.nest = new MyNest(this, -121, 65.2, -50);
+    this.bird = new MyBird(this, 35);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -67,10 +73,10 @@ export class MyScene extends CGFscene {
     this.displaySphere = false;
     this.displayTerrain = true;
     this.displayEgg = true;
-    this.displayNest = true
+    this.displayNest = true;
 
     this.displayBird = true;
-    this.displayTrees = true;
+    this.displayTrees = false;
 
     this.fps = 0;
     this.terrainFrameTime = 0;
@@ -116,7 +122,7 @@ export class MyScene extends CGFscene {
       45,
       0.1,
       500,
-      vec3.fromValues(115, 225, 115),
+      vec3.fromValues(25, 175, 25),
       vec3.fromValues(0, 30, 0)
     );
   }
@@ -124,31 +130,44 @@ export class MyScene extends CGFscene {
   checkKeys() {
     var keysPressed = false;
     // Check for key codes e.g. in https://keycode.info/
-    if (this.gui.isKeyPressed("KeyW")) {
-      this.bird.accelerate(0.01 * this.speedFactor);
-      keysPressed = true;
+
+    if (this.bird.current_y_state != this.bird.y_state.RAPING) {
+      if (this.gui.isKeyPressed("KeyW")) {
+        this.bird.accelerate(0.01 * this.speedFactor);
+        keysPressed = true;
+      }
+      if (this.gui.isKeyPressed("KeyS")) {
+        this.bird.accelerate(-0.08 * this.speedFactor);
+        keysPressed = true;
+      }
+      if (this.gui.isKeyPressed("KeyA")) {
+        this.bird.turn(Math.PI / 90);
+      }
+      if (this.gui.isKeyPressed("KeyD")) {
+        this.bird.turn(-Math.PI / 90);
+      }
+      if (this.gui.isKeyPressed("Space")) {
+        this.bird.ascend(0.1 * this.speedFactor);
+      }
+      if (this.gui.isKeyPressed("KeyX")) {
+        this.bird.ascend(-0.1 * this.speedFactor);
+      }
+      if (this.gui.isKeyPressed("KeyR")) {
+        this.bird.reset();
+      }
+      
+      if (this.gui.isKeyPressed("KeyP") & ((this.bird.posY * 2) + 4 > this.eggHeight) & !this.bird.carrying_egg) {
+        this.bird.startRaping();
+      }
+
+      if (this.gui.isKeyPressed("KeyO") & this.bird.carrying_egg) {
+        if (this.nest.checkEggCollision(this.bird.getEggBeingCarried())) {
+          this.nest.addEgg(this.bird.getEggBeingCarried());
+          this.bird.setCarringEgg(false, null);
+        }
+      }
+
     }
-    if (this.gui.isKeyPressed("KeyS")) {
-      this.bird.accelerate(-0.08 * this.speedFactor);
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyA")) {
-      this.bird.turn(Math.PI / 90);
-    }
-    if (this.gui.isKeyPressed("KeyD")) {
-      this.bird.turn(-Math.PI / 90);
-    }
-    if (this.gui.isKeyPressed("Space")) {
-      this.bird.ascend(0.1 * this.speedFactor);
-    }
-    if (this.gui.isKeyPressed("ControlLeft")) {
-      this.bird.ascend(-0.1 * this.speedFactor);
-    }
-    if (this.gui.isKeyPressed("KeyR")) {
-      this.bird.reset();
-    }
-    /* if (keysPressed)
-      console.log(text); */
   }
 
   setDefaultAppearance() {
@@ -159,14 +178,21 @@ export class MyScene extends CGFscene {
   }
 
   update(t) {
+
+    if (this.bird.lowest_point_raping){
+      for (let i = 0; i < this.eggs.length; i++) {
+        if (this.bird.checkEggCollision(this.eggs[i])) {
+          this.bird.setCarringEgg(true, this.eggs[i]);
+          this.eggs.splice(i, 1);
+        }
+      }
+    }
+
     this.checkKeys();
     this.bird.update(t);
   }
 
   display() {
-
-    // console.log(this.camera.position);
-
     let fullStart = new Date().getTime();
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -185,14 +211,18 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
 
     if (this.displayEgg) {
-      this.pushMatrix();
-      this.appearance.apply();
-      this.egg.display();
-      this.popMatrix();
+      this.eggs.forEach(e => {
+        this.pushMatrix();
+        this.translate(e.position[0], e.position[1], e.position[2])
+        e.display();
+        this.popMatrix();
+      });
     }
 
     if (this.displayNest) {
       this.pushMatrix();
+      this.translate(this.nest.position[0], this.nest.position[1], this.nest.position[2])
+      this.scale(2, 2, 2)
       this.appearance.apply();
       this.nest.display();
       this.popMatrix();
@@ -221,6 +251,7 @@ export class MyScene extends CGFscene {
     }
 
     if (this.displayPanorama) {
+      this.setActiveShader(this.defaultShader);
       let panoramaStartTime = new Date().getTime();
       this.panorama.display();
       let panoramaEndTime = new Date().getTime();
@@ -235,36 +266,21 @@ export class MyScene extends CGFscene {
       this.popMatrix();
     }
     let treesEndTime = new Date().getTime();
+
     this.treesFrameTime = treesEndTime - treeStartTime;
 
     let actualSpeed = Math.max(this.speedFactor * 4, 1);
 
     if (this.followCamera) {
 
-      // let offsetX = 100; // Adjust the X-axis offset as desired
-      // let offsetY = 100; // Adjust the Y-axis offset as desired
-      // let offsetZ = 100; // Adjust the Z-axis offset as desired
-
-      // this.camera.setPosition(vec3.fromValues(
-      //   this.bird.posX * actualSpeed + offsetX,
-      //   this.bird.posY * 3 + offsetY,
-      //   this.bird.posZ * actualSpeed + offsetZ
-      // ));
-
       this.camera.setTarget(vec3.fromValues(
         this.bird.posX * actualSpeed,
         this.bird.posY * 3,
         this.bird.posZ * actualSpeed
       ));
-
     }
 
-
     if (this.displayPanorama) { this.panorama.display(); }
-
-
-
-
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();
@@ -275,15 +291,11 @@ export class MyScene extends CGFscene {
       this.popMatrix();
       let birdEndTime = new Date().getTime();
       this.birdFrameTime = birdEndTime - birdStartTime;
-
     }
-    //this.camera.setPosition(this.bird.x, this.bird.y, this.bird.z);
 
     let fullEnd = new Date().getTime();
     let fullTime = fullEnd - fullStart;
     this.fps = 1000 / fullTime;
-    // console.log(fullTime);
-
     // ---- END Primitive drawing section
   }
 }

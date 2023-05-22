@@ -36,15 +36,12 @@
             // -- Textures -- //
             this.treetex1 = new CGFtexture(scene, "images/billboardtree.png");
             this.treetex2 = new CGFtexture(scene, "images/tree2.png");
-            // this.treetex3 = new CGFtexture(scene, "images/tree3.png");
-            // this.treetex4 = new CGFtexture(scene, "images/tree4.png");
-            this.treetex5 = new CGFtexture(scene, "images/tree5.png");
             this.treetex6 = new CGFtexture(scene, "images/tree6.png");
 
             // , this.treetex3, this.treetex4,
             this.counter = 0;
 
-            this.textures = [this.treetex1, this.treetex2, this.treetex5, this.treetex6];
+            this.textures = [this.treetex1, this.treetex2, this.treetex6];
             
             this.textures = mixElements(this.textures);
             this.textureSelection1 = this.textures[0];

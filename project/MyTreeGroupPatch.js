@@ -13,10 +13,7 @@
             
             // -- Shaders -- //
             this.treeShader = new CGFshader(scene.gl, "shaders/tree.vert", "shaders/tree.frag");
-            
-            
             // -- Random Offsets -- //
-            
             this.offset1 = ((Math.random() *2)-1) *3;
             this.offset2 = ((Math.random() *2)-1) *3;
             this.offset3 = ((Math.random() *2)-1) *2;
@@ -29,9 +26,6 @@
 
             this.counter = 0;
 
-            
-            
-            
             // -- Materials -- //
             this.material = new CGFappearance(scene);
             this.material.setAmbient(1.0, 1.0, 1.0, 1.0);
@@ -43,14 +37,11 @@
             // -- Textures -- //
             this.treetex1 = new CGFtexture(scene, "images/billboardtree.png");
             this.treetex2 = new CGFtexture(scene, "images/tree2.png");
-            // this.treetex3 = new CGFtexture(scene, "images/tree3.png");
-            // this.treetex4 = new CGFtexture(scene, "images/tree4.png");
-            this.treetex5 = new CGFtexture(scene, "images/tree5.png");
             this.treetex6 = new CGFtexture(scene, "images/tree6.png");
 
             // , this.treetex3, this.treetex4,
 
-            this.textures = [this.treetex1, this.treetex2, this.treetex5, this.treetex6];
+            this.textures = [this.treetex1, this.treetex2, this.treetex6];
             
             this.textures = mixElements(this.textures);
             this.textureSelection1 = this.textures[0];

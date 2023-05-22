@@ -30,6 +30,9 @@ export class MyWings extends CGFobject {
       else {
         this.flapAngle = ((velocity < 0.3) ? 0.5 * Math.sin(t / 100) : 0.5 * Math.sin(t / 150)); // Adjust the increment value based on the desired rotation speed
       }
+      // if (this.flapAngle >= Math.PI / 6 || this.flapAngle <= -Math.PI / 6) {
+      //   this.flapDirection *= -1; // Reverse direction when reaching the maximum or minimum angle
+      // }
 
       this.lastUpdate = t;
 

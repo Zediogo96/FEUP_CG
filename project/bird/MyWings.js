@@ -20,7 +20,6 @@ export class MyWings extends CGFobject {
   }
 
   update(t, y_state, velocity) {
-    y_state = 5;
     let delta_t = t - this.lastUpdate;
 
     if (delta_t > 15) { // Adjust the time interval based on the desired speed of the animation
@@ -29,8 +28,7 @@ export class MyWings extends CGFobject {
         this.flapAngle = 0.5 * Math.sin(t / 200);
       }
       else {
-      
-      this.flapAngle = ((velocity < 0.2) ? 0.5 * Math.sin(t / 50) : 0.5 * Math.sin(t / 150)); // Adjust the increment value based on the desired rotation speed
+      this.flapAngle = ((velocity < 0.3) ? 0.5 * Math.sin(t / 100) : 0.5 * Math.sin(t / 150)); // Adjust the increment value based on the desired rotation speed
       }
 
       this.lastUpdate = t;

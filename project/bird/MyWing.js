@@ -20,7 +20,6 @@ export class MyWing extends CGFobject {
     }
 
     update(t, y_state, velocity) {
-        y_state = 5;
         let delta_t = t - this.lastUpdate;
     
         if (delta_t > 15) { // Adjust the time interval based on the desired speed of the animation

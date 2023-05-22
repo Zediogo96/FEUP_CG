@@ -88,6 +88,7 @@ export class MyBird extends CGFobject {
     accelerate(val) {
         this.velocity += val * this.scene.speedFactor;
         this.velocity = ((this.velocity > 0) ? this.velocity : 0);
+        this.velocity = Math.min(this.velocity, 0.8);
         this.current_y_state = 1;
     }
 

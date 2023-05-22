@@ -50,7 +50,7 @@ export class MyScene extends CGFscene {
     this.eggs.push(new MyEgg(this, -100, 35, 0));
     
     this.nest = new MyNest(this, -121, 65.2, -50);
-    this.bird = new MyBird(this, 0);
+    this.bird = new MyBird(this, 35);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -67,14 +67,14 @@ export class MyScene extends CGFscene {
     this.shouldMagnify = true;
     this.followCamera = true;
 
-    this.displayPanorama = false;
+    this.displayPanorama = true;
     this.displaySphere = false;
-    this.displayTerrain = false;
-    this.displayEgg = false;
-    this.displayNest = false;
+    this.displayTerrain = true;
+    this.displayEgg = true;
+    this.displayNest = true;
 
     this.displayBird = true;
-    this.displayTrees = false;
+    this.displayTrees = true;
 
     this.fps = 0;
     this.terrainFrameTime = 0;
@@ -167,8 +167,6 @@ export class MyScene extends CGFscene {
         this.bird.setCarringEgg(false, null);
       }
     }
-    /* if (keysPressed)
-      console.log(text); */
   }
 
   setDefaultAppearance() {
@@ -184,9 +182,6 @@ export class MyScene extends CGFscene {
   }
 
   display() {
-
-    // console.log(this.camera.position);
-
     let fullStart = new Date().getTime();
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -245,6 +240,7 @@ export class MyScene extends CGFscene {
     }
 
     if (this.displayPanorama) {
+      this.setActiveShader(this.defaultShader);
       let panoramaStartTime = new Date().getTime();
       this.panorama.display();
       let panoramaEndTime = new Date().getTime();

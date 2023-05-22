@@ -193,6 +193,7 @@ export class MyScene extends CGFscene {
   display() {
 
     // console.log(this.camera.position);
+    
    
 
     let fullStart = new Date().getTime();
@@ -279,16 +280,18 @@ export class MyScene extends CGFscene {
 
       const birdPosition = [this.bird.posX * actualSpeed, (this.bird.posY * 3 * 1.3)+2, this.bird.posZ * actualSpeed];
       //const birdOrientation = this.birdOffset;
+      console.log("Bird: " + birdPosition);
+      console.log("Camera: " + this.camera.position);
 
       // Calculate the camera position by adding the offset to the bird's position
       const cameraPosition = vec3.create();
 
       if(this.thirdPersonCamera){
         // Get the bird's position and orientation
-        console.log(this.bird.velocity);
-        console.log(this.previousOffset);
+        // console.log(this.bird.velocity);
+        // console.log(this.previousOffset);
         if(this.bird.velocity == 0) {
-          console.log("here");
+          //console.log("here");
           if(this.previousOffset[0]== 0 && this.previousOffset[2] == 0 && this.previousOffset[1] == 0){
             offset = [0, 5, -20];
           }
@@ -297,12 +300,12 @@ export class MyScene extends CGFscene {
           }
         }
         else{
-          console.log("here3");
+          // console.log("here3");
           offset = [(-this.birdOffset[0] * (20*(1/this.bird.velocity))) , 5*(1+this.bird.velocity), (-this.birdOffset[2] * (20*(1/this.bird.velocity)))];
           vec3.normalize(this.previousOffset, this.birdOffset);
           
         }
-        console.log(offset);
+        // console.log(offset);
         vec3.add(cameraPosition, birdPosition, offset);
 
         // Set the camera's position and target

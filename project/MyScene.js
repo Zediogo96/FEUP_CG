@@ -67,16 +67,16 @@ export class MyScene extends CGFscene {
     this.scaleFactor = 2;
     this.displayNormals = false;
     this.shouldMagnify = true;
-    this.followCamera = true;
-    this.thirdPersonCamera = true;
+    this.followCamera = false;
+    this.thirdPersonCamera = false;
 
     this.displayPanorama = true;
     this.displaySphere = false;
     this.displayTerrain = true;
-    this.displayEgg = true;
-    this.displayNest = true;
+    this.displayEgg = false;
+    this.displayNest = false;
     
-    this.displayBird = true;
+    this.displayBird = false;
     this.displayTrees = true;
 
     this.fps = 0;
@@ -118,7 +118,6 @@ export class MyScene extends CGFscene {
     this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[1].enable();
     this.lights[1].update();
-
   }
 
   initCameras() {
@@ -289,11 +288,7 @@ export class MyScene extends CGFscene {
       const cameraPosition = vec3.create();
 
       if(this.thirdPersonCamera){
-        // Get the bird's position and orientation
-        // console.log(this.bird.velocity);
-        // console.log(this.previousOffset);
         if(this.bird.velocity == 0) {
-          //console.log("here");
           if(this.previousOffset[0]== 0 && this.previousOffset[2] == 0 && this.previousOffset[1] == 0){
             offset = [0, 5, -20];
           }
@@ -302,12 +297,10 @@ export class MyScene extends CGFscene {
           }
         }
         else{
-          // console.log("here3");
           offset = [(-this.birdOffset[0] * (20*(1/this.bird.velocity))) , 5*(1+this.bird.velocity), (-this.birdOffset[2] * (20*(1/this.bird.velocity)))];
           vec3.normalize(this.previousOffset, this.birdOffset);
           
         }
-        // console.log(offset);
         vec3.add(cameraPosition, birdPosition, offset);
 
         // Set the camera's position and target

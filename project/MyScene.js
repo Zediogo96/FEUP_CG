@@ -22,7 +22,8 @@ export class MyScene extends CGFscene {
   }
   init(application) {
     super.init(application);
-
+    
+    this.bird = new MyBird(this, 30);
     this.initCameras();
     this.initLights();
 
@@ -51,7 +52,6 @@ export class MyScene extends CGFscene {
     this.eggs.push(new MyEgg(this, -100, 35, 0));
     
     this.nest = new MyNest(this, -121, 65.2, -50);
-    this.bird = new MyBird(this, 30);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -67,15 +67,17 @@ export class MyScene extends CGFscene {
     this.displayNormals = false;
     this.shouldMagnify = true;
     this.followCamera = true;
+    this.thirdPersonCamera = true;
 
-    this.displayPanorama = false;
+    this.displayPanorama = true;
     this.displaySphere = false;
     this.displayTerrain = true;
     this.displayEgg = true;
     this.displayNest = true
+    
 
     this.displayBird = true;
-    this.displayTrees = false;
+    this.displayTrees = true;
 
     this.fps = 0;
     this.terrainFrameTime = 0;
@@ -83,6 +85,10 @@ export class MyScene extends CGFscene {
     this.panoramaFrameTime = 0;
     this.birdFrameTime = 0;
     this.treesFrameTime = 0;
+
+    this.birdOffset = [0, 0, 0];
+    this.previousOffset = [0, 0, 0];
+
 
     // MOVEMENT RELATED VARIABLES
     this.speedFactor = 1;
@@ -121,7 +127,7 @@ export class MyScene extends CGFscene {
       45,
       0.1,
       500,
-      vec3.fromValues(115, 225, 115),
+      vec3.fromValues(50, 200 ,50),
       vec3.fromValues(0, 30, 0)
     );
   }
@@ -187,6 +193,7 @@ export class MyScene extends CGFscene {
   display() {
 
     // console.log(this.camera.position);
+   
 
     let fullStart = new Date().getTime();
     // ---- BEGIN Background, camera and axis setup
@@ -265,26 +272,53 @@ export class MyScene extends CGFscene {
 
     let actualSpeed = Math.max(this.speedFactor * 4, 1);
 
-    if (this.followCamera) {
+    if (this.followCamera || this.thirdPersonCamera) {
 
-      // let offsetX = 100; // Adjust the X-axis offset as desired
-      // let offsetY = 100; // Adjust the Y-axis offset as desired
-      // let offsetZ = 100; // Adjust the Z-axis offset as desired
 
-      // this.camera.setPosition(vec3.fromValues(
-      //   this.bird.posX * actualSpeed + offsetX,
-      //   this.bird.posY * 3 + offsetY,
-      //   this.bird.posZ * actualSpeed + offsetZ
-      // ));
+      let offset = vec3.fromValues(0, 2, -20);
 
-      this.camera.setTarget(vec3.fromValues(
-        this.bird.posX * actualSpeed,
-        this.bird.posY * 3,
-        this.bird.posZ * actualSpeed
-      ));
-    }
+      const birdPosition = [this.bird.posX * actualSpeed, (this.bird.posY * 3 * 1.3)+2, this.bird.posZ * actualSpeed];
+      //const birdOrientation = this.birdOffset;
 
-    if (this.displayPanorama) { this.panorama.display(); }
+      // Calculate the camera position by adding the offset to the bird's position
+      const cameraPosition = vec3.create();
+
+      if(this.thirdPersonCamera){
+        // Get the bird's position and orientation
+        console.log(this.bird.velocity);
+        console.log(this.previousOffset);
+        if(this.bird.velocity == 0) {
+          console.log("here");
+          if(this.previousOffset[0]== 0 && this.previousOffset[2] == 0 && this.previousOffset[1] == 0){
+            offset = [0, 5, -20];
+          }
+          else{
+            offset = [-this.previousOffset[0] * 20, 5, -this.previousOffset[2] * 20];
+          }
+        }
+        else{
+          console.log("here3");
+          offset = [(-this.birdOffset[0] * (20*(1/this.bird.velocity))) , 5*(1+this.bird.velocity), (-this.birdOffset[2] * (20*(1/this.bird.velocity)))];
+          vec3.normalize(this.previousOffset, this.birdOffset);
+          
+        }
+        console.log(offset);
+        vec3.add(cameraPosition, birdPosition, offset);
+
+        // Set the camera's position and target
+        this.camera.setPosition(cameraPosition);
+        birdPosition[1] += 5;
+        
+        // Update the camera's orientation to match the bird's orientation
+      }
+      else{
+        vec3.add(cameraPosition, birdPosition, offset);
+        this.camera.setPosition(cameraPosition);
+      }
+      this.camera.setTarget(birdPosition);
+      }
+
+    if (this.displayPanorama) {this.setActiveShader(this.defaultShader); this.panorama.display(); }
 
     if (this.displayBird) {
       let birdStartTime = new Date().getTime();

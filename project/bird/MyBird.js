@@ -22,6 +22,7 @@ export class MyBird extends CGFobject {
         this.carrying_egg = false;
         this.egg_being_carried = null;
 
+
         this.y_state = {
             NORMAL: 1,
             ASCENDING: 2,
@@ -97,6 +98,8 @@ export class MyBird extends CGFobject {
     }
 
     update(t) {
+
+        let birdOldPos = [this.posX, this.posY, this.posZ];
         var delta_t = t - this.lastUpdate;
 
         if (this.velocity === 0) {
@@ -105,19 +108,17 @@ export class MyBird extends CGFobject {
 
         if (delta_t > 10) {
 
-            if (this.current_y_state == this.y_state.STATIONARY || ((this.current_y_state === this.y_state.ASCENDING || this.current_y_state === this.y_state.DESCENDING) && this.velocity === 0)) {
-                this.offset += 0.01 * this.offset_dir;
+            if ((this.current_y_state == this.y_state.STATIONARY || this.current_y_state === this.y_state.ASCENDING || this.current_y_state === this.y_state.DESCENDING) && this.velocity === 0) {
+                // this.offset = 0.01 * this.offset_dir;
 
-                if (this.offset >= 0.16 || this.offset <= -0.16) this.offset_dir *= -1;
-                this.posY += this.offset;
+                // if (this.offset >= 0.16 || this.offset <= -0.16) this.offset_dir *= -1;
+                this.posY += 0.15 * Math.sin(t / 200);
             }
 
         }
 
         this.posX += this.velocity * Math.sin(this.angleY);
-        this.posZ += this.velocity * Math.cos(this.angleY);
-
-        this.position += this.velocity * (delta_t / 1000);
+        this.posZ += this.velocity * Math.cos(this.angleY);       
 
         this.lastUpdate = t;
 
@@ -125,14 +126,23 @@ export class MyBird extends CGFobject {
             this.egg_being_carried.setPosition(this.posX, this.posY, this.posZ);
         }
 
+        
         this.bird.update(t);
-
+        
         this.bird.tail.update(t);
-
+        
         this.bird.wings.update(t, this.current_y_state, this.velocity);
+
+        let birdNewPos = [this.posX, this.posY, this.posZ];
+        let birdOffset = [(birdNewPos[0] - birdOldPos[0]) , (birdNewPos[1] - birdOldPos[1]), (birdNewPos[2] - birdOldPos[2])];
+        // vec3.normalize(birdOffset, birdOffset);
+
+        this.scene.birdOffset = birdOffset;
+
     }
 
     display() {
+
 
         if (this.egg_being_carried != null) {
             this.scene.pushMatrix();
@@ -171,6 +181,7 @@ export class MyBird extends CGFobject {
         this.last_y_state = this.current_y_state;
         this.scene.scale(0.1, 0.1, 0.1);
         this.bird.display();
+        
         this.scene.popMatrix();
     }
 }

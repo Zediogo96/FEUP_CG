@@ -61,23 +61,30 @@ export class MyBillboard extends CGFobject {
 
         this.scene.pushMatrix();
         // -- Rotation -- //
-        this.camPos = this.scene.camera.position;
-        this.billboardToCamera = [this.camPos[0] - x, 0, this.camPos[2] - z];
-        this.billboardToCameraNorm = Math.sqrt(this.billboardToCamera[0] * this.billboardToCamera[0] + this.billboardToCamera[1] * this.billboardToCamera[1] + this.billboardToCamera[2] * this.billboardToCamera[2]);
+        this.camPos = this.scene.camera.target;
+
+        this.billboardToCamera = [this.camPos[0] - x , 0, this.camPos[2] - z];
+        let billboardToCameraNorm = vec3.create();
+        vec3.normalize(billboardToCameraNorm, this.billboardToCamera);
+        //this.billboardToCameraNorm = Math.sqrt(this.billboardToCamera[0] * this.billboardToCamera[0] + this.billboardToCamera[1] * this.billboardToCamera[1] + this.billboardToCamera[2] * this.billboardToCamera[2]);
         this.normalDir = [this.quad.normals[0], 0, this.quad.normals[2]];
-        this.normalNorm = Math.sqrt(this.normalDir[0] * this.normalDir[0] + this.normalDir[1] * this.normalDir[1] + this.normalDir[2] * this.normalDir[2]);
-        this.normalDir = [this.normalDir[0] / this.normalNorm, this.normalDir[1] / this.normalNorm, this.normalDir[2] / this.normalNorm];
-        this.billboardToCamera = [this.billboardToCamera[0] / this.billboardToCameraNorm, this.billboardToCamera[1] / this.billboardToCameraNorm, this.billboardToCamera[2] / this.billboardToCameraNorm];
+        let normalDirNorm = vec3.create();
+        //this.normalNorm = Math.sqrt(this.normalDir[0] * this.normalDir[0] + this.normalDir[1] * this.normalDir[1] + this.normalDir[2] * this.normalDir[2]);
+        vec3.normalize(normalDirNorm, this.normalDir);
+        //this.billboardToCamera = [this.billboardToCamera[0] / this.billboardToCameraNorm, this.billboardToCamera[1] / this.billboardToCameraNorm, this.billboardToCamera[2] / this.billboardToCameraNorm];
+        
         this.angle = vec3.create();
-        this.angle = vec3.dot(this.billboardToCamera, this.normalDir);
+        this.angle = vec3.dot(billboardToCameraNorm, normalDirNorm);
         this.rotationAngle = Math.acos(this.angle);
         this.rotationAxis = vec3.create();
-        vec3.cross(this.rotationAxis, this.normalDir, this.billboardToCamera);
+        vec3.cross(this.rotationAxis, normalDirNorm, billboardToCameraNorm);
 
 
 
         this.scene.translate(x, yCoord, z);
-        this.scene.rotate(this.rotationAngle, this.rotationAxis[2], this.rotationAxis[1], 0);
+        // if(this.rotationAngle > 1 || this.rotationAngle < -1){
+            this.scene.rotate(this.rotationAngle, this.rotationAxis[2], this.rotationAxis[1], 0);
+        // 
         this.scene.scale(6, 12, 1);
         this.quad.display();
         this.scene.popMatrix();

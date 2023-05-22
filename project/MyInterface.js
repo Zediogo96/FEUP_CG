@@ -18,18 +18,19 @@ export class MyInterface extends CGFinterface {
         this.gui = new dat.GUI();
 
         //Checkbox element in GUI
-        this.gui.add(this.scene, 'displayAxis').name('Display Axis');
-        this.gui.add(this.scene, 'displayNormals').name('Display Normals');
+        this.gui.add(this.scene, 'displayAxis').name('Axis');
+        this.gui.add(this.scene, 'displayNormals').name('Normals');
         this.gui.add(this.scene, 'shouldMagnify').name('Magnify');
 
-        this.gui.add(this.scene, 'displayPanorama').name('Display Panorama');
-        this.gui.add(this.scene, 'displaySphere').name('Display Sphere');
-        this.gui.add(this.scene, 'displayTerrain').name('Display Terrain');
-        this.gui.add(this.scene, 'displayEgg').name('Display Egg');
-        this.gui.add(this.scene, 'displayNest').name('Display Nest');
-        this.gui.add(this.scene, 'displayBird').name('Display Bird');
-        this.gui.add(this.scene, 'displayTrees').name('Display Trees');
+        this.gui.add(this.scene, 'displayPanorama').name('Panorama');
+        this.gui.add(this.scene, 'displaySphere').name('Sphere');
+        this.gui.add(this.scene, 'displayTerrain').name('Terrain');
+        this.gui.add(this.scene, 'displayEgg').name('Egg');
+        this.gui.add(this.scene, 'displayNest').name('Nest');
+        this.gui.add(this.scene, 'displayBird').name('Bird');
+        this.gui.add(this.scene, 'displayTrees').name('Trees');
         this.gui.add(this.scene, 'followCamera').name('Follow Camera');
+        this.gui.add(this.scene, 'thirdPersonCamera').name('Third Person');
 
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');

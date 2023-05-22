@@ -67,17 +67,17 @@ export class MyScene extends CGFscene {
     this.scaleFactor = 2;
     this.displayNormals = false;
     this.shouldMagnify = true;
-    this.followCamera = false;
-    this.thirdPersonCamera = false;
+    this.followCamera = true;
+    this.thirdPersonCamera = true;
 
-    this.displayPanorama = false;
+    this.displayPanorama = true;
     this.displaySphere = false;
     this.displayTerrain = true;
-    this.displayEgg = false;
-    this.displayNest = false;
+    this.displayEgg = true;
+    this.displayNest = true;
     
-    this.displayBird = false;
-    this.displayTrees = false;
+    this.displayBird = true;
+    this.displayTrees = true;
 
     this.fps = 0;
     this.terrainFrameTime = 0;
@@ -88,7 +88,6 @@ export class MyScene extends CGFscene {
 
     this.birdOffset = [0, 0, 0];
     this.previousOffset = [0, 0, 0];
-
 
     // MOVEMENT RELATED VARIABLES
     this.speedFactor = 1;

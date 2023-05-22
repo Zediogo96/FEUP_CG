@@ -1,7 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./objects/MyPlane.js";
 import { MySphere } from "./objects/MySphere.js";
-import { MyTriangularPrism } from "./objects/MyTriangularPrism.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyTerrain } from "./MyTerrain.js";
 import { MyEgg } from "./MyEgg.js";
@@ -27,6 +26,8 @@ export class MyScene extends CGFscene {
     this.initCameras();
     this.initLights();
 
+    this.eggHeight = 29.5;
+
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -46,11 +47,11 @@ export class MyScene extends CGFscene {
     this.terrain = new MyTerrain(this);
     // Creation of 4 eggs
     this.eggs = [];
-    this.eggs.push(new MyEgg(this, 0, 32.5, 21));
-    this.eggs.push(new MyEgg(this, 0, 32.5, -100));
-    this.eggs.push(new MyEgg(this, 100, 32.5, 0));
-    this.eggs.push(new MyEgg(this, -100, 35, 0));
-    
+    this.eggs.push(new MyEgg(this, -5, this.eggHeight, 19));
+    this.eggs.push(new MyEgg(this, 0, this.eggHeight, -100));
+    this.eggs.push(new MyEgg(this, 100, this.eggHeight, 0));
+    this.eggs.push(new MyEgg(this, -65, this.eggHeight, -10));
+
     this.nest = new MyNest(this, -121, 65.2, -50);
 
     //Objects connected to MyInterface
@@ -135,47 +136,44 @@ export class MyScene extends CGFscene {
   checkKeys() {
     var keysPressed = false;
     // Check for key codes e.g. in https://keycode.info/
-    if (this.gui.isKeyPressed("KeyW")) {
-      this.bird.accelerate(0.01 * this.speedFactor);
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyS")) {
-      this.bird.accelerate(-0.08 * this.speedFactor);
-      keysPressed = true;
-    }
-    if (this.gui.isKeyPressed("KeyA")) {
-      this.bird.turn(Math.PI / 90);
-    }
-    if (this.gui.isKeyPressed("KeyD")) {
-      this.bird.turn(-Math.PI / 90);
-    }
-    if (this.gui.isKeyPressed("Space")) {
-      this.bird.ascend(0.1 * this.speedFactor);
-    }
-    if (this.gui.isKeyPressed("KeyX")) {
-      this.bird.ascend(-0.1 * this.speedFactor);
-    }
-    if (this.gui.isKeyPressed("KeyR")) {
-      this.bird.reset();
-    }
-    if (this.gui.isKeyPressed("KeyE") & !this.bird.carrying_egg) {
-      for (let i = 0; i < this.eggs.length; i++) {
-        if (this.bird.checkEggCollision(this.eggs[i])) {
-          this.bird.setCarringEgg(true, this.eggs[i]);
-          this.eggs.splice(i, 1);
-          
+
+    if (this.bird.current_y_state != this.bird.y_state.RAPING) {
+      if (this.gui.isKeyPressed("KeyW")) {
+        this.bird.accelerate(0.01 * this.speedFactor);
+        keysPressed = true;
+      }
+      if (this.gui.isKeyPressed("KeyS")) {
+        this.bird.accelerate(-0.08 * this.speedFactor);
+        keysPressed = true;
+      }
+      if (this.gui.isKeyPressed("KeyA")) {
+        this.bird.turn(Math.PI / 90);
+      }
+      if (this.gui.isKeyPressed("KeyD")) {
+        this.bird.turn(-Math.PI / 90);
+      }
+      if (this.gui.isKeyPressed("Space")) {
+        this.bird.ascend(0.1 * this.speedFactor);
+      }
+      if (this.gui.isKeyPressed("KeyX")) {
+        this.bird.ascend(-0.1 * this.speedFactor);
+      }
+      if (this.gui.isKeyPressed("KeyR")) {
+        this.bird.reset();
+      }
+      
+      if (this.gui.isKeyPressed("KeyP") & ((this.bird.posY * 2) + 4 > this.eggHeight) & !this.bird.carrying_egg) {
+        this.bird.startRaping();
+      }
+
+      if (this.gui.isKeyPressed("KeyO") & this.bird.carrying_egg) {
+        if (this.nest.checkEggCollision(this.bird.getEggBeingCarried())) {
+          this.nest.addEgg(this.bird.getEggBeingCarried());
+          this.bird.setCarringEgg(false, null);
         }
       }
-    }
 
-    if (this.gui.isKeyPressed("KeyO") & this.bird.carrying_egg) {
-      if (this.nest.checkEggCollision(this.bird.getEggBeingCarried())) {
-        this.nest.addEgg(this.bird.getEggBeingCarried());
-        this.bird.setCarringEgg(false, null);
-      }
     }
-    /* if (keysPressed)
-      console.log(text); */
   }
 
   setDefaultAppearance() {
@@ -186,16 +184,21 @@ export class MyScene extends CGFscene {
   }
 
   update(t) {
+
+    if (this.bird.lowest_point_raping){
+      for (let i = 0; i < this.eggs.length; i++) {
+        if (this.bird.checkEggCollision(this.eggs[i])) {
+          this.bird.setCarringEgg(true, this.eggs[i]);
+          this.eggs.splice(i, 1);
+        }
+      }
+    }
+
     this.checkKeys();
     this.bird.update(t);
   }
 
   display() {
-
-    // console.log(this.camera.position);
-    
-   
-
     let fullStart = new Date().getTime();
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -211,7 +214,7 @@ export class MyScene extends CGFscene {
     this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
 
     // Draw axis
-    if (this.displayAxis) this.axis.display();  
+    if (this.displayAxis) this.axis.display();
 
     if (this.displayEgg) {
       this.eggs.forEach(e => {
@@ -254,6 +257,7 @@ export class MyScene extends CGFscene {
     }
 
     if (this.displayPanorama) {
+      this.setActiveShader(this.defaultShader);
       let panoramaStartTime = new Date().getTime();
       this.panorama.display();
       let panoramaEndTime = new Date().getTime();
@@ -334,12 +338,9 @@ export class MyScene extends CGFscene {
       this.birdFrameTime = birdEndTime - birdStartTime;
     }
 
-    //this.camera.setPosition(this.bird.x, this.bird.y, this.bird.z);
-
     let fullEnd = new Date().getTime();
     let fullTime = fullEnd - fullStart;
     this.fps = 1000 / fullTime;
-
     // ---- END Primitive drawing section
   }
 }

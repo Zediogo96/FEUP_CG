@@ -18,17 +18,20 @@ export class MyBird extends CGFobject {
         this.offset = 0;
         this.offset_dir = 1;
         this.initial_y = initial_y;
+        this.cum_delta_raping = 0;
 
         this.carrying_egg = false;
         this.egg_being_carried = null;
 
+        this.lowest_point_raping = false;
 
         this.y_state = {
             NORMAL: 1,
             ASCENDING: 2,
             DESCENDING: 3,
             WAITING_CHANGE: 4,
-            STATIONARY: 5
+            STATIONARY: 5,
+            RAPING: 6
         };
 
         this.last_y_state = this.y_state.NORMAL;
@@ -53,12 +56,16 @@ export class MyBird extends CGFobject {
         return this.egg_being_carried;
     }
 
+    startRaping() {
+        this.current_y_state = this.y_state.RAPING;
+    }
+
 
     checkEggCollision(egg) {
         let egg_pos = egg.getPosition();
         let egg_radius = egg.getRadius();
-        let bird_pos = [this.posX * 2, this.posY * 2, this.posZ * 2];  
-        let bird_radius = 5;
+        let bird_pos = [this.posX * 2, this.posY * 2, this.posZ * 2];
+        let bird_radius = 8;
 
         let distanceSquared = Math.pow(egg_pos[0] - bird_pos[0], 2) + Math.pow(egg_pos[1] - bird_pos[1], 2) + Math.pow(egg_pos[2] - bird_pos[2], 2);
         let radiusSquared = Math.pow(egg_radius + bird_radius, 2);
@@ -89,6 +96,7 @@ export class MyBird extends CGFobject {
     accelerate(val) {
         this.velocity += val * this.scene.speedFactor;
         this.velocity = ((this.velocity > 0) ? this.velocity : 0);
+        this.velocity = Math.min(this.velocity, 0.8);
         this.current_y_state = 1;
     }
 
@@ -102,19 +110,44 @@ export class MyBird extends CGFobject {
         let birdOldPos = [this.posX, this.posY, this.posZ];
         var delta_t = t - this.lastUpdate;
 
-        if (this.velocity === 0) {
+        if (this.velocity === 0 && this.current_y_state != this.y_state.RAPING) {
             this.current_y_state = this.y_state.STATIONARY;
         }
 
         if (delta_t > 10) {
 
             if ((this.current_y_state == this.y_state.STATIONARY || this.current_y_state === this.y_state.ASCENDING || this.current_y_state === this.y_state.DESCENDING) && this.velocity === 0) {
-                // this.offset = 0.01 * this.offset_dir;
-
-                // if (this.offset >= 0.16 || this.offset <= -0.16) this.offset_dir *= -1;
-                this.posY += 0.15 * Math.sin(t / 200);
+                this.posY += 0.05 * Math.sin(t / 200);
             }
+        }
 
+        // HERE 
+        if (this.current_y_state === this.y_state.RAPING) {
+
+            const rapTime = 2000; // Time for the rap animation in milliseconds
+            const descendDistance = 3;
+            const ascendDistance = 3;
+            const descendTime = rapTime / 2; // Time for descending
+            const ascendTime = rapTime / 2; // Time for ascending
+
+            this.cum_delta_raping += t - this.lastUpdate;
+
+            if (this.cum_delta_raping <= descendTime) {
+                // Descending
+                const descendProgress = (t - this.lastUpdate) / descendTime;
+                this.posY -= descendDistance * descendProgress;
+            } else if (this.cum_delta_raping <= rapTime && this.cum_delta_raping > descendTime) {
+                // Ascending
+                this.lowest_point_raping = true;
+                const ascendProgress = (t - this.lastUpdate) / ascendTime;
+                this.posY += ascendDistance * ascendProgress;
+
+            } else {
+                // Rap animation finished
+                this.lowest_point_raping = false;
+                this.current_y_state = this.y_state.NORMAL;
+                this.cum_delta_raping = 0;
+            }
         }
 
         this.posX += this.velocity * Math.sin(this.angleY);
@@ -126,9 +159,8 @@ export class MyBird extends CGFobject {
             this.egg_being_carried.setPosition(this.posX, this.posY, this.posZ);
         }
 
-        
-        this.bird.update(t);
-        
+        this.bird.update(t, this.current_y_state, this.velocity);
+
         this.bird.tail.update(t);
         
         this.bird.wings.update(t, this.current_y_state, this.velocity);
@@ -149,8 +181,6 @@ export class MyBird extends CGFobject {
             let new_pos = [this.posX, this.posY - 0.2, this.posZ];
             this.egg_being_carried.position = new_pos;
             this.scene.translate(new_pos[0], new_pos[1], new_pos[2])
-
-            // TODO - fix egg position when bird is rotating
 
             this.scene.scale(0.5, 0.5, 0.5);
             this.egg_being_carried.display();
@@ -180,8 +210,7 @@ export class MyBird extends CGFobject {
 
         this.last_y_state = this.current_y_state;
         this.scene.scale(0.1, 0.1, 0.1);
-        this.bird.display();
-        
+        this.bird.display(this.current_y_state);
         this.scene.popMatrix();
     }
 }

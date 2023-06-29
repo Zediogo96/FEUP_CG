@@ -8,7 +8,7 @@
 | Eduardo Silva    | 202005283 | up202005283@fe.up.pt |
 | José Pinto       | 202003529 | up202003529@fe.up.pt |
 
-## Project Grade - 20
+## Project Grade - 19.7
 
 ----
 
